@@ -1,3 +1,1 @@
-from lib.predictors.span_class_predictor import SpanClassifierPredictor
-from lib.predictors.spanmask_generate_predictor import SpanmaskGeneratorPredictor
 from lib.predictors.span_tagger_predictor import SpanTaggerPredictor

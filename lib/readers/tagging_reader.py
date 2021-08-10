@@ -1,7 +1,5 @@
 import glob
 from lib.readers.reader_utils.my_read_utils import *
-from lib.readers.reader_utils.my_span_utils import my_enumerate_spans
-from lib.readers.reader_utils.my_fields import DiscontiguousMaskField as DSpanField
 
 from typing import Dict, List, Optional, Sequence, Iterable, Any
 import logging

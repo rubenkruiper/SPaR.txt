@@ -13,7 +13,7 @@ from allennlp.nn import InitializerApplicator
 import allennlp.nn.util as util
 from allennlp.training.metrics import CategoricalAccuracy
 
-from lib.modules.my_crf import allowed_transitions
+from lib.modules.adapted_crf import allowed_transitions
 from lib.metrics.span_based_f1_measure import SpanBasedF1Measure
 
 
