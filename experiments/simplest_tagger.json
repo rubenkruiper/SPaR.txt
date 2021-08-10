@@ -1,0 +1,92 @@
+{
+  "dataset_reader": {
+    "type": "tag_reader",
+    "tokenizer": {
+      "type": "pretrained_transformer",
+      "model_name": "SpanBERT/spanbert-base-cased",
+      "add_special_tokens": true
+    },
+    "token_indexers": {
+      "tokens": {
+        "type": "pretrained_transformer",
+        "model_name": "SpanBERT/spanbert-base-cased",
+        "max_length": 512
+      }
+    }
+  },
+  "data_loader": {
+    "batch_sampler": {
+      "type": "bucket",
+      "sorting_keys": ["tokens"],
+      "batch_size": 32
+    }
+  },
+  "train_data_path": "data/gold/train/",
+  "validation_data_path": "data/gold/val/",
+  "model": {
+        "type": "my_tagger",
+        "encoder": {
+            "type": "pass_through",
+            "input_dim": 768,   // transformer hidden dim
+        },
+        "include_start_end_transitions": false,
+        "label_encoding": "DiscontiguousTest",
+        "text_field_embedder": {
+                "token_embedders": {
+        "tokens": {
+          "type": "pretrained_transformer",
+          "train_parameters": false,
+          "model_name": "SpanBERT/spanbert-base-cased",
+          "max_length": 512
+        }
+      }
+//          "token_embedders": {
+//            "tokens": {
+//                "type": "pretrained_transformer_mismatched",
+//                "model_name": transformer_model,
+//                "max_length": max_length
+//            }
+//          }
+        },
+        "verbose_metrics": false
+    },
+    "trainer": {
+        "optimizer": {
+          "type": "huggingface_adamw",
+          "lr": 0.001, //1e-5,
+//          "lr": 0.01, // higher LR for overfitting on minimal dataset (0.01 sets validation on 1.0 in 10 epochs)
+          "weight_decay": 0.1,
+          "parameter_groups": [[["bias", "LayerNorm\\.weight", "layer_norm\\.weight"], {"weight_decay": 0.05}]],
+          "eps": 1e-8,
+          "correct_bias": true,
+        },
+        "learning_rate_scheduler": {
+          "type": "slanted_triangular",
+        },
+        "callbacks": {
+//            "tensorboard": {
+//              "summary_interval": 1,
+//              "distribution_interval": 1,
+//              "batch_size_interval": 1,
+//              "should_log_parameter_statistics": true,
+//              "should_log_learning_rate": true,
+//          },
+            "wandb": {
+              "summary_interval": 1,
+              "distribution_interval": 1,
+              "batch_size_interval": 1,
+              "should_log_parameter_statistics": true,
+              "should_log_learning_rate": true,
+              "project": "iReC",
+              "entity": "rkruiper",
+              "name": "debugging_gpu",
+          }
+        },
+        "grad_norm": 1.0,
+        "cuda_device": -1, // 0
+        "num_epochs": 60,
+        "num_serialized_models_to_keep": 1,
+        "validation_metric": "+f1-measure-overall",
+        "patience": 20
+    }
+}

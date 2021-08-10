@@ -3,6 +3,19 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+######
+
+trained_models/
+resources/
+notebooks/*.pkl
+notebooks/*.json
+
+
+# ignore .idea config files
+.idea/
+.DS_Store
+######
+
 # C extensions
 *.so
 
@@ -14,7 +27,6 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
 lib64/
 parts/
 sdist/
