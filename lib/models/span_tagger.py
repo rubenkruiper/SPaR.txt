@@ -6,15 +6,15 @@ from torch.nn.modules.linear import Linear
 
 from allennlp.common.checks import check_dimensions_match, ConfigurationError
 from allennlp.data import TextFieldTensors, Vocabulary
-from allennlp.modules import Seq2SeqEncoder, TimeDistributed, TextFieldEmbedder
-from allennlp.modules import ConditionalRandomField, FeedForward
+from allennlp.modules import Seq2SeqEncoder, TimeDistributed, TextFieldEmbedder, FeedForward
 from allennlp.models.model import Model
 from allennlp.nn import InitializerApplicator
 import allennlp.nn.util as util
 from allennlp.training.metrics import CategoricalAccuracy
 
 from lib.modules.adapted_crf import allowed_transitions
-from lib.metrics.span_based_f1_measure import SpanBasedF1Measure
+from lib.modules.adapted_crf import ConditionalRandomField
+from lib.metrics.crf_f1_measure import SpanBasedF1Measure
 
 
 @Model.register("my_tagger")

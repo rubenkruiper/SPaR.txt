@@ -1,5 +1,4 @@
 from typing import List, Tuple, Set
-from allennlp.data.tokenizers import Token
 
 
 def no_gaps_in_annotations_check(span_buffer, doc_name):

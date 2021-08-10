@@ -80,9 +80,9 @@ if __name__ == "__main__":
         ]
 
         # Use overrides to train on CPU.
-        # if not torch.cuda.is_available():
-        #     overrides = json.dumps({"trainer": {"cuda_device": -1},
-        #                             "data_loader": {"batch_sampler": {"batch_size": 8}}})
-        #     sys.argv += ["-o", overrides]
+        if not torch.cuda.is_available():
+            overrides = json.dumps({"trainer": {"cuda_device": -1},
+                                    "data_loader": {"batch_sampler": {"batch_size": 8}}})
+            sys.argv += ["-o", overrides]
 
     main()
