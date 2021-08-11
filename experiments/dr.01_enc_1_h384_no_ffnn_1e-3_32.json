@@ -61,7 +61,7 @@
     "trainer": {
         "optimizer": {
           "type": "huggingface_adamw",
-          "lr": 1e-4,
+          "lr": 1e-3,
 //          "lr": 0.01, // higher LR for overfitting on minimal dataset (0.01 sets validation on 1.0 in 10 epochs)
           "weight_decay": 0.1,
           "parameter_groups": [[["bias", "LayerNorm\\.weight", "layer_norm\\.weight"], {"weight_decay": 0.05}]],
@@ -80,7 +80,7 @@
               "should_log_learning_rate": true,
               "project": "MWE",
               "entity": "rkruiper",
-              "name": "debugging_gpu",
+              "name": "dr.01_enc_1_h384_no_ffnn_1e-3_32",
           }
         },
         "grad_norm": 1.0,
