@@ -112,6 +112,8 @@ class AdaptedCrfTagger(Model):
             output_dim = feedforward.get_output_dim()
         else:
             output_dim = self.encoder.get_output_dim()
+            # if self.encoder.is_bidirectional():
+            #     output_dim *= 2
 
         self.tag_projection_layer = TimeDistributed(Linear(output_dim, self.num_tags))
 
@@ -239,7 +241,7 @@ class AdaptedCrfTagger(Model):
         # Just get the top tags and ignore the scores.
         predicted_tags = cast(List[List[int]], [x[0][0] for x in best_paths])
 
-        output = {"logits": logits, "mask": mask, "tags": predicted_tags}
+        output = {"mask": mask, "tags": predicted_tags}
 
         if self.top_k > 1:
             output["top_k_tags"] = best_paths
@@ -268,6 +270,8 @@ class AdaptedCrfTagger(Model):
                 self._f1_metric(class_probabilities, gold_labels, mask)
         if metadata is not None:
             output["words"] = [x["words"] for x in metadata]
+            output["sentence"] = [x["original_text"] for x in metadata]
+            output["doc_id"] = [x["doc_id"] for x in metadata]
         return output
 
     @overrides

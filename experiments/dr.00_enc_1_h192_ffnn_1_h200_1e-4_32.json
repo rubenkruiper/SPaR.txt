@@ -25,7 +25,7 @@
   "validation_data_path": "data/val/",
   "model": {
         "type": "my_tagger",
-        "dropout": 0.01,
+        // "dropout": 0.01,
 //        "encoder": {
 //            "type": "pass_through",
 //            "input_dim": 768,   // transformer hidden dim
@@ -33,17 +33,17 @@
         "encoder": {
             "type": "gru",
             "input_size": 768,    // transformer hidden dim
-            "hidden_size": 384,  // any type of dim you want ?
+            "hidden_size": 192,  // any type of dim you want ?
             "num_layers": 1,
             "bidirectional": true // matters whether it's bidirectional...
         },
-//        "feedforward": {
-//            "input_dim": 768,       // (2 * seq2vec_encoder)
-//            "num_layers": 1,
-//            "hidden_dims": 200,
-//            "activations": "relu",
-//            "dropout": 0.0
-//        },
+        "feedforward": {
+            "input_dim": 768,       // (2 * seq2vec_encoder)
+            "num_layers": 1,
+            "hidden_dims": 200,
+            "activations": "relu",
+            "dropout": 0.0
+        },
         "include_start_end_transitions": false,
         "label_encoding": "DiscontiguousTest",
         "text_field_embedder": {
@@ -61,7 +61,7 @@
     "trainer": {
         "optimizer": {
           "type": "huggingface_adamw",
-          "lr": 0.001, //1e-5,
+          "lr": 1e-4,
 //          "lr": 0.01, // higher LR for overfitting on minimal dataset (0.01 sets validation on 1.0 in 10 epochs)
           "weight_decay": 0.1,
           "parameter_groups": [[["bias", "LayerNorm\\.weight", "layer_norm\\.weight"], {"weight_decay": 0.05}]],
@@ -72,16 +72,16 @@
           "type": "slanted_triangular",
         },
         "callbacks": {
-//            "wandb": {
-//              "summary_interval": 1,
-//              "distribution_interval": 1,
-//              "batch_size_interval": 1,
-//              "should_log_parameter_statistics": true,
-//              "should_log_learning_rate": true,
-//              "project": "MWE",
-//              "entity": "rkruiper",
-//              "name": "debugging_gpu",
-//          }
+            "wandb": {
+              "summary_interval": 1,
+              "distribution_interval": 1,
+              "batch_size_interval": 1,
+              "should_log_parameter_statistics": true,
+              "should_log_learning_rate": true,
+              "project": "MWE",
+              "entity": "rkruiper",
+              "name": "debugging_gpu",
+          }
         },
         "grad_norm": 1.0,
         "cuda_device":  0,

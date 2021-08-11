@@ -9,10 +9,6 @@ from allennlp.nn.util import get_lengths_from_binary_sequence_mask
 from allennlp.data.vocabulary import Vocabulary
 from allennlp.training.metrics.metric import Metric
 from allennlp.data.dataset_readers.dataset_utils.span_utils import (
-    bio_tags_to_spans,
-    bioul_tags_to_spans,
-    iob1_tags_to_spans,
-    bmes_tags_to_spans,
     TypedStringSpan,
 )
 
@@ -25,17 +21,9 @@ TAGS_TO_SPANS_FUNCTION_TYPE = Callable[[List[str], Optional[List[str]]], List[Ty
 @Metric.register("my_span_f1")
 class SpanBasedF1Measure(Metric):
     """
-    The Conll SRL metrics are based on exact span matching. This metric
-    implements span-based precision and recall metrics for a BIO tagging
-    scheme. It will produce precision, recall and F1 measures per tag, as
-    well as overall statistics. Note that the implementation of this metric
-    is not exactly the same as the perl script used to evaluate the CONLL 2005
-    data - particularly, it does not consider continuations or reference spans
-    as constituents of the original span. However, it is a close proxy, which
-    can be helpful for judging model performance during training. This metric
-    works properly when the spans are unlabeled (i.e., your labels are
-    simply "B", "I", "O" if using the "BIO" label encoding).
-
+    ToDo - describe
+    I think the only thing I changed is add 'DiscontiguousTest' as label_encoding, allowing me
+    to run my_read_utils.discontiguous_tags_to_spans as "tags_to_spans_function"
     """
 
     def __init__(
@@ -43,7 +31,7 @@ class SpanBasedF1Measure(Metric):
         vocabulary: Vocabulary,
         tag_namespace: str = "tags",
         ignore_classes: List[str] = None,
-        label_encoding: Optional[str] = "BIO",
+        label_encoding: Optional[str] = "DiscontiguousTest",
         tags_to_spans_function: Optional[TAGS_TO_SPANS_FUNCTION_TYPE] = None,
     ) -> None:
         """
@@ -70,7 +58,7 @@ class SpanBasedF1Measure(Metric):
             This is helpful for instance, to avoid computing metrics for "V"
             spans in a BIO tagging scheme which are typically not included.
 
-        label_encoding : `str`, optional (default = `"BIO"`)
+        label_encoding : `str`, optional (default = `"DiscontiguousTest"`)
             The encoding used to specify label span endpoints in the sequence.
             Assuming you'll use "DiscontiguousTest".
 

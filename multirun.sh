@@ -1,19 +1,19 @@
-python run_seq2vec.py -c experiments/simplest_span_class.json -m /mnt/sda/iReC/simplest_span_classifier
+python run_tagger.py -c experiments/dr.00_enc_1_h192_ffnn_1_h200_1e-4_32.json -m /mnt/sda/mwe/00_enc_1_h192_ffnn_1_h200_1e
 wait 
-python run_seq2vec.py -c experiments/s2v_con_mask.json -m /mnt/sda/iReC/s2v_con_mask
+python run_tagger.py -c experiments/dr.00_enc_1_h384_ffnn_1_h200_1e-4_32.json -m /mnt/sda/mwe/dr.00_enc_1_h384_ffnn_1_h200_1e-4_32
 wait 
-python run_seq2vec.py -c experiments/s2v_con_cls.json -m /mnt/sda/iReC/s2v_con_cls
+python run_tagger.py -c experiments/dr.01_enc_1_h384_ffnn_1_h200_1e-3_32.json -m /mnt/sda/mwe/dr.01_enc_1_h384_ffnn_1_h200_1e-3_32
 wait 
-python run_seq2vec.py -c experiments/s2v_con_pad.json -m /mnt/sda/iReC/s2v_con_pad
+python run_tagger.py -c experiments/dr.01_enc_1_h384_ffnn_1_h200_1e-4_32.json -m /mnt/sda/mwe/dr.01_enc_1_h384_ffnn_1_h200_1e-4_32
 wait
-python run_seq2vec.py -c experiments/s2v_con_sep.json -m /mnt/sda/iReC/s2v_con_sep
+python run_tagger.py -c experiments/dr.01_enc_1_h384_no_ffnn_1e-4_32.json -m /mnt/sda/mwe/dr.01_enc_1_h384_no_ffnn_1e-4_32
 wait
-python run_seq2vec.py -c experiments/s2v_con_zero.json -m /mnt/sda/iReC/s2v_con_zero
+python run_tagger.py -c experiments/dr.01_enc_1_h786_ffnn_1_h200_1e-4_32.json -m /mnt/sda/mwe/dr.01_enc_1_h786_ffnn_1_h200_1e-4_32
 wait
-python run_seq2vec.py -c experiments/s2v_noc_cls.json -m /mnt/sda/iReC/s2v_noc_cls
+python run_tagger.py -c experiments/dr.01_enc_1_h786_ffnn_2_h200_1e-4_32.json -m /mnt/sda/mwe/dr.01_enc_1_h786_ffnn_2_h200_1e-4_32
 wait 
-python run_seq2vec.py -c experiments/s2v_noc_pad.json -m /mnt/sda/iReC/s2v_noc_pad
+python run_tagger.py -c experiments/dr.01_enc_2_h192_ffnn_1_h200_1e-4_32.json -m /mnt/sda/mwe/dr.01_enc_2_h192_ffnn_1_h200_1e-4_32
 wait
-python run_seq2vec.py -c experiments/s2v_noc_sep.json -m /mnt/sda/iReC/s2v_noc_sep
+python run_tagger.py -c experiments/dr.01_enc_2_h384_ffnn_1_h200_1e-4_32.json -m /mnt/sda/mwe/dr.01_enc_2_h384_ffnn_1_h200_1e-4_32
 wait
-python run_seq2vec.py -c experiments/s2v_noc_zero.json -m /mnt/sda/iReC/s2v_noc_zero
+python run_tagger.py -c experiments/dr.01_enc_passthrough_ffnn_1_h200_1e-4_32.json -m /mnt/sda/mwe/dr.01_enc_passthrough_ffnn_1_h200_1e-4_32
