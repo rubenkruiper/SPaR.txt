@@ -5,6 +5,7 @@ __pycache__/
 
 ######
 
+data/iReC/
 trained_models/
 resources/
 notebooks/*.pkl

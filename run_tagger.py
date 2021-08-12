@@ -31,8 +31,8 @@ if __name__ == "__main__":
             "--use-dataset-reader",
             "--batch-size", str(args.batchsize)
         ]
-        # Add output-file if none specified
-        if predictions_output == "":
+        # Add output-file if specified
+        if predictions_output != "":
             sys.argv += ["--output-file", predictions_output]
         # Actually run prediction
         main()

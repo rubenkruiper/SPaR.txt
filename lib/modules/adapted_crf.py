@@ -41,15 +41,13 @@ def allowed_transitions(constraint_type: str, labels: Dict[int, str]) -> List[Tu
             from_tag = from_label
             from_entity = ""
         else:
-            from_tag = from_label[0]
-            from_entity = from_label[1:]
+            from_tag, from_entity = from_label.split('-')
         for to_label_index, to_label in labels_with_boundaries:
             if to_label in ("START", "END"):
                 to_tag = to_label
                 to_entity = ""
             else:
-                to_tag = to_label[0]
-                to_entity = to_label[1:]
+                to_tag, to_entity = to_label.split('-')
             if is_transition_allowed(constraint_type, from_tag, from_entity, to_tag, to_entity):
                 allowed.append((from_label_index, to_label_index))
     return allowed
@@ -91,25 +89,25 @@ def is_transition_allowed(
 
     if constraint_type == "DiscontiguousTest":
         if from_tag == "START":
-            return to_tag in ("P")              # ("O", "B", "U")
+            return to_tag in ("PD")              # ("O", "B", "U")
         if to_tag == "END":
-            return from_tag in ("P")            # ("O", "L", "U")
-        if from_tag == "P":
+            return from_tag in ("PD")            # ("O", "L", "U")
+        if from_tag == "PD":
             return to_tag in ("BH", "END")
         return any(
             [
                 # for any types;
-                # BH can transition to BH-*, P
-                # BD can transition to BH-*, P
+                # BH can transition to BH-*, BD-*, P
+                # BD can transition to BH-*, BD-*, P
                 # IH can transition to BH-*, BD-*, P
                 # ID can transition to BH-*, BD-*, P
-                from_tag in ("BH", "BD", "IH", "ID") and to_tag in ("BH", "BD", "P"),
+                from_tag in ("BH", "BD", "IH", "ID") and to_tag in ("BH", "BD", "PD"),
                 # for same type;
                 # BH-x can only transition to IH-x
                 # BD-x can only transition to ID-x
                 # IH-x can only transition to IH-x
                 # ID-x can only transition to ID-x
-                from_tag in ("BH", "BD", "IH", "ID") and to_tag in ("IH", "ID") and from_type == to_type,
+                from_tag in ("BH", "BD", "IH", "ID") and to_tag in ("IH", "ID") and from_type == to_type
             ]
         )
     else:

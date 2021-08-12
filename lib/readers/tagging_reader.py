@@ -1,4 +1,4 @@
-import glob
+import glob, json
 from lib.readers.reader_utils.my_read_utils import *
 
 from typing import Dict, List, Optional, Sequence, Iterable, Any
@@ -67,6 +67,7 @@ class TagReader(DatasetReader):
 
     @overrides
     def _read(self, file_path: PathOrStr) -> Iterable[Instance]:
+
         text_files = sorted(glob.glob(file_path + "*.txt"))
         ann_files = sorted(glob.glob(file_path + "*.ann"))
 
@@ -81,7 +82,7 @@ class TagReader(DatasetReader):
                 tag_list = get_annotations_from_ann_file(ann_file, original_sentence, token_list)
                 yield self.text_to_instance(doc_name, original_sentence, token_list, self._token_indexer, tag_list)
         else:
-            # no annotations
+            # .txt files as input without annotations
             for text_file in text_files:
                 doc_name = text_file.rsplit('/', 1)[1].rsplit('.', 1)[0]
                 with open(text_file, "r") as tf:
@@ -98,7 +99,7 @@ class TagReader(DatasetReader):
         tag_list: List[str] = None
     ) -> Instance:
         """
-        Need to describe this
+        Should describe this
         """
         token_sequence = TextField(tokens, token_indexer)
         label_field = SequenceLabelField(tag_list, token_sequence, label_namespace="labels")
