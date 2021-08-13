@@ -31,10 +31,9 @@ class TagReader(DatasetReader):
     """
 
     def __init__(self,
-                 tokenizer: Tokenizer = None,
+                 bert_model_name: str = None,
                  token_indexers: Dict[str, TokenIndexer] = None,
                  max_instances: Optional[int] = None,
-                 bert_model_name: str = None,
                  **kwargs) -> None:
         """
         https://github.com/allenai/allennlp-models/tree/845fe4cc5896d5492ed16b4299da5ff69ddb99ed/allennlp_models/structured_prediction
@@ -46,24 +45,19 @@ class TagReader(DatasetReader):
 
         self.max_instances = max_instances
 
-        # set tokenizer
-        if tokenizer is not None:
-            self.tokenizer = tokenizer
-        elif bert_model_name is not None:
+        # Set a pretrained_transformer_tokenizer
+        if "uncased" in bert_model_name:
             self.tokenizer = PretrainedTransformerTokenizer(bert_model_name)
-            self.lowercase_input = "uncased" in bert_model_name
         else:
-            self._tokenizer = None
-            self.lowercase_input = False
+            # Force cased tokenization for SpanBERT
+            self.tokenizer = PretrainedTransformerTokenizer(bert_model_name,
+                                                            tokenizer_kwargs={"do_lower_case": False})
 
         # set token_indexer
         if token_indexers is not None:
             self._token_indexer = token_indexers
-        elif bert_model_name is not None:
-            from allennlp.data.token_indexers import PretrainedTransformerIndexer
-            self._token_indexer = {"tokens": PretrainedTransformerIndexer(bert_model_name)}
         else:
-            self._token_indexer = {"tokens": TokenIndexer()}
+            print("set token_indexer!")
 
     @overrides
     def _read(self, file_path: PathOrStr) -> Iterable[Instance]:
@@ -87,7 +81,7 @@ class TagReader(DatasetReader):
                 doc_name = text_file.rsplit('/', 1)[1].rsplit('.', 1)[0]
                 with open(text_file, "r") as tf:
                     original_sentence = tf.read()
-                token_list = self.bert_tokenizer.tokenize(original_sentence)
+                token_list = self.tokenizer.tokenize(original_sentence)
                 yield self.text_to_instance(doc_name, original_sentence, token_list, self._token_indexer)
 
     def text_to_instance(  # type: ignore
@@ -102,18 +96,20 @@ class TagReader(DatasetReader):
         Should describe this
         """
         token_sequence = TextField(tokens, token_indexer)
-        label_field = SequenceLabelField(tag_list, token_sequence, label_namespace="labels")
 
-        # Store the full annotation information as metadata
         metadata: Dict[str, Any] = {"original_text": sentence,
                                     "words": [x.text for x in tokens],
                                     "token_len": len(tokens),
-                                    "gold_labels": tag_list,
                                     "doc_id": doc_name}
 
         instance_fields: Dict[str, Field] = {"tokens": token_sequence,
-                                             "gold_labels": label_field,
                                              "metadata": MetadataField(metadata)}
+
+        if tag_list:
+            label_field = SequenceLabelField(tag_list, token_sequence, label_namespace="labels")
+            # Store the full annotation information as metadata, eases evaluation
+            metadata["gold_labels"] = tag_list
+            instance_fields["gold_labels"] = label_field
 
         return Instance(instance_fields)
 

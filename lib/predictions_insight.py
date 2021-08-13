@@ -22,6 +22,8 @@ class PredictionInsight():
         with open(predictions_fp, 'r') as f:
             predictions_list = [json.loads(jsonline) for jsonline in f.readlines()]
 
+        discontiguous_obj_count = 0
+        discontiguous_act_count = 0
         all_mwes = {"objects": [],
                     "actions": []}
         for prediction in predictions_list:
@@ -33,13 +35,20 @@ class PredictionInsight():
 
             # not sure if this is necessary; doesn't seem to be
             predicted_tags = [t for m, t in zip(mask, tag_list) if m]
+            mwes, discontiguous_count = self.get_mwes(token_list, predicted_tags, 'obj')
+            discontiguous_obj_count += discontiguous_count
+            all_mwes["objects"] += mwes
 
-            all_mwes["objects"] += self.get_mwes(token_list, predicted_tags, 'obj')
-            all_mwes["actions"] += self.get_mwes(token_list, predicted_tags, 'act')
+            mwes, discontiguous_count = self.get_mwes(token_list, predicted_tags, 'act')
+            discontiguous_act_count += discontiguous_count
+            all_mwes["actions"] += mwes
+
+        print("Found {} discontiguous spans of type 'object'".format(discontiguous_obj_count))
+        print("Found {} discontiguous spans of type 'action'".format(discontiguous_act_count))
 
         return all_mwes
 
-    def get_mwes(self, word_list, tag_list, type):
+    def get_mwes(self, word_list, tag_list, mwe_type):
         """
         Collects the MWEs found by a trained tagger, handles discontiguous spans.
         """
@@ -48,9 +57,11 @@ class PredictionInsight():
         current_mwe = []
         previous_head = []
         just_removed = []
+        number_of_discontiguous_mwes = 0
 
         for idx, t in enumerate(tag_list):
-            if t[-3:] != type:
+            t_head, t_type = t.split('-')
+            if t_type != mwe_type:
                 # We're only interested in collecting a specific type of MWE for now, e.g., objects / actions
                 if current_mwe != []:
                     # store mwe
@@ -62,7 +73,7 @@ class PredictionInsight():
                 current_mwe = []
                 continue
 
-            if t[:2] == 'BH':
+            if t_head == 'BH':
                 just_removed = []
 
                 if current_mwe == []:
@@ -73,12 +84,13 @@ class PredictionInsight():
                     mwes.append(current_mwe)
                     previous_head = current_mwe
                     current_mwe = [word_list[idx]]
-            elif t[:2] == 'IH':
+            elif t_head == 'IH':
                 # Continue collecting the same object
                 current_mwe.append(word_list[idx])
-            elif t[:2] == 'BD':
+            elif t_head == 'BD':
+                number_of_discontiguous_mwes += 1
                 # Remove singleton previous_head from mwes once
-                if just_removed != previous_head:
+                if just_removed != previous_head and previous_head in mwes:
                     mwes.reverse()
                     mwes.remove(previous_head)
                     mwes.reverse()
@@ -86,10 +98,10 @@ class PredictionInsight():
 
                 # Append token.text to previous_mwe
                 current_mwe = previous_head + [word_list[idx]]
-            elif t[:2] == 'ID':
+            elif t_head == 'ID':
                 current_mwe.append(word_list[idx])
 
-        return mwes
+        return mwes, number_of_discontiguous_mwes
 
     def mwe_list_to_string(self, mwe_list):
         text = ''
@@ -98,27 +110,34 @@ class PredictionInsight():
                 text += w[2:]
             else:
                 text += " " + w
+
+        text = text[1:]
+        if text.startswith('the ') or text.startswith('The '):
+            text = text[4:]
+        elif text.startswith('a ') or text.startswith('A '):
+            text = text[2:]
+        elif text.startswith('an ') or text.startswith('An '):
+            text = text[3:]
         return text
 
-    def print_mwe_stats(self, all_mwes):
-
+    def count_mwes(self, all_mwes):
+        counter_list = []
         for k in all_mwes:
-            print("MWE type: {}".format(k))
             counter = Counter()
             for mwe in all_mwes[k]:
                 counter[self.mwe_list_to_string(mwe)] += 1
-
-            print("Top 20 counts: \n{}".format(counter.most_common(20)))
-
-
-
-
+            counter_list.append(counter)
+        return counter_list
 
 
 if __name__ == "__main__":
 
     my_pred_obj = PredictionInsight()
-    mwe_dict = my_pred_obj.collect_mwes('predictions/debug_output.json')
-    my_pred_obj.print_mwe_stats(mwe_dict)
+    mwe_dict = my_pred_obj.collect_mwes('predictions/all_sentence_predictions.json')
+    # mwe_dict = my_pred_obj.collect_mwes('predictions/debug_output.json')
+    mwe_counter_lists = my_pred_obj.count_mwes(mwe_dict)
+    for counter in mwe_counter_lists:
+        print("Top 20 counts: \n{}".format(counter.most_common(20)))
+    print("Need to determine what I want to do/see with the counts")
 
 

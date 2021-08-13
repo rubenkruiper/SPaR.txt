@@ -8,6 +8,7 @@ __pycache__/
 data/iReC/
 trained_models/
 resources/
+predictions/*.json
 notebooks/*.pkl
 notebooks/*.json
 
