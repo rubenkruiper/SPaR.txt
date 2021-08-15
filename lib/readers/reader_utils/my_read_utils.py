@@ -1,71 +1,6 @@
+import copy
 from typing import List, Tuple, Set
 
-
-def no_gaps_in_annotations_check(span_buffer, doc_name):
-    """
-    The order of annotations doesn't always match the order of the actual text spans / tokens.
-    """
-    all_spans = []
-    for span in span_buffer:
-        if span_buffer[span]['gap_start'] != '':
-            s = int(span_buffer[span]['span_start'])
-            gs = int(span_buffer[span]['gap_start'])
-            ge = int(span_buffer[span]['gap_end'])
-            e = int(span_buffer[span]['span_end'])
-            text = span_buffer[span]['text']
-
-            part_one = (s, gs, text[s:gs])
-            part_two = (ge, e, text[gs+1:])
-
-            all_spans.append(part_one)
-            all_spans.append(part_two)
-
-        else:
-            all_spans.append((int(span_buffer[span]['span_start']),
-                              int(span_buffer[span]['span_end']),
-                              span_buffer[span]['text']))
-    issues = False
-
-    if all_spans == []:
-        print("File has no annotations: {}".format(doc_name))
-        return True
-
-    # discontiguous spans may share a start_idx, but not the end_idx with other spans
-    # e.g. [standards] 2.4 and 2.5 --> [standards 2.4] and [standards (gap) 2.5]
-    unique_starts = []
-    ends_for_s = {}
-    for s, e, _ in all_spans:
-        if s not in ends_for_s:
-            ends_for_s[s] = e
-        else:
-            ends_for_s[s] = max(e, ends_for_s[s])
-        if s not in unique_starts:
-            unique_starts.append(s)
-
-    max_end = max(ends_for_s.values())
-    for e in ends_for_s.values():
-        # doesn't check the very last span
-        if e != max_end:
-            # +1 if there's a space between words, otherwise +0
-            if (e + 1 not in unique_starts) and (e not in unique_starts):
-                issues = True
-                # note that if the .txt file contains multiple spaces, the brat indices are spaced out further
-                print('{} Annotation may have gaps at span ending with idx:\t{}'.format(doc_name, e))
-
-    return issues
-
-
-def brat_to_spacy_tokens(doc, span_buffer):
-    # CONVERT SPAN INDICES TO SPACY TOKEN INDICES - not used rn
-    for token in doc:
-        for span in span_buffer:
-            span_start_idx = int(span_buffer[span]['span_start'])
-            spand_end_idx = int(span_buffer[span]['span_end'])
-            if token.idx == span_start_idx:
-                span_buffer[span]['span_start'] = str(token.i)
-            if token.idx + len(token.text) == spand_end_idx:
-                span_buffer[span]['span_end'] = str(token.i)
-    return span_buffer
 
 def annotations_as_dict(ann_file, original_sentence):
     """
@@ -147,6 +82,9 @@ def brat_indices_to_token_indices(brat_start, brat_end, token_list):
 
 def brat_to_PretainedTransformerTokenizer(token_list, span_buffer):
     """ Convert brat indices to BERT indices """
+    # sometimes you don't want to update the same dict with new indices
+    bert_indexed_spans = copy.deepcopy(span_buffer)
+
     for span_idx, span in span_buffer.items():
         span_start_idx = span['span_start']
         gap_start_idx = span['gap_start']
@@ -156,20 +94,20 @@ def brat_to_PretainedTransformerTokenizer(token_list, span_buffer):
         if gap_start_idx == span_end_idx:
             # contiguous span
             ss, ee = brat_indices_to_token_indices(span_start_idx, span_end_idx, token_list)
-            span_buffer[span_idx]['span_start'] = ss
-            span_buffer[span_idx]['gap_start'] = ee
-            span_buffer[span_idx]['gap_end'] = ee
-            span_buffer[span_idx]['span_end'] = ee
+            bert_indexed_spans[span_idx]['span_start'] = ss
+            bert_indexed_spans[span_idx]['gap_start'] = ee
+            bert_indexed_spans[span_idx]['gap_end'] = ee
+            bert_indexed_spans[span_idx]['span_end'] = ee
         else:
             # discontiguous spans
             one_start, one_end = brat_indices_to_token_indices(span_start_idx, gap_start_idx, token_list)
             two_start, two_end = brat_indices_to_token_indices(gap_end_idx, span_end_idx, token_list)
-            span_buffer[span_idx]['span_start'] = one_start
-            span_buffer[span_idx]['gap_start'] = one_end
-            span_buffer[span_idx]['gap_end'] = two_start
-            span_buffer[span_idx]['span_end'] = two_end
+            bert_indexed_spans[span_idx]['span_start'] = one_start
+            bert_indexed_spans[span_idx]['gap_start'] = one_end
+            bert_indexed_spans[span_idx]['gap_end'] = two_start
+            bert_indexed_spans[span_idx]['span_end'] = two_end
 
-    return span_buffer
+    return bert_indexed_spans
 
 
 def compute_tags_for_spans(span_buffer, token_list):
@@ -214,7 +152,7 @@ def compute_tags_for_spans(span_buffer, token_list):
 
         if tag_list[span_start_idx] != none_token and tag_list[span_start_idx] != first_token_tag:
             # Figure out why a token receives two different tags, this shouldn't happen
-            print('Annotation issue in:\n{}'.format(span_buffer))
+            print('Annotation issue in:\n{}'.format(span))
 
         tag_list[span_start_idx] = first_token_tag
         if span_start_idx != gap_start_idx:
@@ -229,15 +167,24 @@ def compute_tags_for_spans(span_buffer, token_list):
                 first_token_tag = begin_discontiguous + '-' + action_type
                 further_tags = inside_discontiguous + '-' + action_type
 
-
-            if tag_list[gap_end_idx] != none_token:
-                # Figure out why a token receives two different tags, this shouldn't happen
-                print('Annotation issue in:\n{}'.format(span_buffer))
+            # if tag_list[span_start_idx] != none_token:
+            #     # Figure out why a token receives two different tags, this shouldn't happen
+            #     print('Annotation issue in:\n{}'.format(span))
             tag_list[gap_end_idx] = first_token_tag
             if gap_end_idx != span_end_idx:
                 tag_list[gap_end_idx + 1:span_end_idx + 1] = [further_tags] * (span_end_idx - gap_end_idx)
 
     return tag_list
+
+
+def order_annotations_for_file(span_buffer):
+    # ToDo - is the ordering necessary? Probably have to re-write
+    # order the spans by occurrence in the sentence
+    ordered_spans = sorted(span_buffer.values(), key=lambda item: item['span_end'])
+    ordered_span_buffer = {}
+    for idx, v in enumerate(ordered_spans):
+        ordered_span_buffer[idx] = v
+    return ordered_span_buffer
 
 
 def get_annotations_from_ann_file(ann_file, original_text, token_list):
@@ -246,25 +193,17 @@ def get_annotations_from_ann_file(ann_file, original_text, token_list):
     them in our json format.
     """
     span_buffer = annotations_as_dict(ann_file, original_text)
-
-    # ToDo - is the ordering necessary? Probably have to re-write
-    # order the spans by occurrence in the sentence
-    ordered_spans = sorted(span_buffer.values(), key=lambda item: item['span_end'])
-    ordered_span_buffer = {}
-    for idx, v in enumerate(ordered_spans):
-        ordered_span_buffer[idx] = v
+    ordered_span_buffer = order_annotations_for_file(span_buffer)
 
     # convert brat indices to BERT indices
     ordered_span_buffer = brat_to_PretainedTransformerTokenizer(token_list, ordered_span_buffer)
 
-    # Return tags for each of the spans
+    # compute and return the tags
     return compute_tags_for_spans(ordered_span_buffer, token_list)
 
 
-### span utils
-
-
 TypedStringSpan = Tuple[str, Tuple[int, int]]
+
 
 class InvalidTagSequence(Exception):
     def __init__(self, tag_sequence=None):
@@ -343,3 +282,72 @@ def discontiguous_tags_to_spans(tag_sequence: List[str], types_to_ignore: List[s
     if active_type is not None:
         spans.add((active_type, (span_start, span_end)))
     return list(spans)
+
+
+
+# def no_gaps_in_annotations_check(span_buffer, doc_name):
+#     """
+#     Check that every word or punctuaction has been annotated. This can be hard to see in BRAT sometimes.
+#     The order of annotations doesn't always match the order of the actual text spans / tokens.
+#     """
+#     all_spans = []
+#     for span in span_buffer:
+#         if span_buffer[span]['gap_start'] != '':
+#             s = int(span_buffer[span]['span_start'])
+#             gs = int(span_buffer[span]['gap_start'])
+#             ge = int(span_buffer[span]['gap_end'])
+#             e = int(span_buffer[span]['span_end'])
+#             text = span_buffer[span]['text']
+#
+#             part_one = (s, gs, text[s:gs])
+#             part_two = (ge, e, text[gs+1:])
+#
+#             all_spans.append(part_one)
+#             all_spans.append(part_two)
+#
+#         else:
+#             all_spans.append((int(span_buffer[span]['span_start']),
+#                               int(span_buffer[span]['span_end']),
+#                               span_buffer[span]['text']))
+#     issues = False
+#
+#     if all_spans == []:
+#         print("File has no annotations: {}".format(doc_name))
+#         return True
+#
+#     # discontiguous spans may share a start_idx, but not the end_idx with other spans
+#     # e.g. [standards] 2.4 and 2.5 --> [standards 2.4] and [standards (gap) 2.5]
+#     unique_starts = []
+#     ends_for_s = {}
+#     for s, e, _ in all_spans:
+#         if s not in ends_for_s:
+#             ends_for_s[s] = e
+#         else:
+#             ends_for_s[s] = max(e, ends_for_s[s])
+#         if s not in unique_starts:
+#             unique_starts.append(s)
+#
+#     max_end = max(ends_for_s.values())
+#     for e in ends_for_s.values():
+#         # doesn't check the very last span
+#         if e != max_end:
+#             # +1 if there's a space between words, otherwise +0
+#             if (e + 1 not in unique_starts) and (e not in unique_starts):
+#                 issues = True
+#                 # note that if the .txt file contains multiple spaces, the brat indices are spaced out further
+#                 print('{} Annotation may have gaps at span ending with idx:\t{}'.format(doc_name, e))
+#
+#     return issues
+
+
+# def brat_to_spacy_tokens(doc, span_buffer):
+#     # CONVERT SPAN INDICES TO SPACY TOKEN INDICES - not using spacy
+#     for token in doc:
+#         for span in span_buffer:
+#             span_start_idx = int(span_buffer[span]['span_start'])
+#             spand_end_idx = int(span_buffer[span]['span_end'])
+#             if token.idx == span_start_idx:
+#                 span_buffer[span]['span_start'] = str(token.i)
+#             if token.idx + len(token.text) == spand_end_idx:
+#                 span_buffer[span]['span_end'] = str(token.i)
+#     return span_buffer
