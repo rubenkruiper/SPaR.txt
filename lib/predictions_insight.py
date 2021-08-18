@@ -16,7 +16,10 @@ class PredictionInsight():
             self.lowercase_input = "uncased" in bert_model_name
 
 
-    def collect_mwes(self, predictions_fp):
+    def count_spans(self, predictions_fp):
+        """
+        Count and print the number of different span types and lengths.
+        """
 
         # read predictions from output file
         with open(predictions_fp, 'r') as f:
@@ -24,8 +27,11 @@ class PredictionInsight():
 
         discontiguous_obj_count = 0
         discontiguous_act_count = 0
-        all_mwes = {"objects": [],
-                    "actions": []}
+        all_spans = {"objects": [],
+                     "actions": [],
+                     "functional": [],
+                     "discourse": []}
+
         for prediction in predictions_list:
             mask = prediction['mask']
             tag_list = prediction['tags']
@@ -37,16 +43,16 @@ class PredictionInsight():
             predicted_tags = [t for m, t in zip(mask, tag_list) if m]
             mwes, discontiguous_count = self.get_mwes(token_list, predicted_tags, 'obj')
             discontiguous_obj_count += discontiguous_count
-            all_mwes["objects"] += mwes
+            all_spans["objects"] += mwes
 
             mwes, discontiguous_count = self.get_mwes(token_list, predicted_tags, 'act')
             discontiguous_act_count += discontiguous_count
-            all_mwes["actions"] += mwes
+            all_spans["actions"] += mwes
 
         print("Found {} discontiguous spans of type 'object'".format(discontiguous_obj_count))
         print("Found {} discontiguous spans of type 'action'".format(discontiguous_act_count))
 
-        return all_mwes
+        return all_spans
 
     def get_mwes(self, word_list, tag_list, mwe_type):
         """
@@ -133,7 +139,7 @@ class PredictionInsight():
 if __name__ == "__main__":
 
     my_pred_obj = PredictionInsight()
-    mwe_dict = my_pred_obj.collect_mwes('predictions/all_sentence_predictions.json')
+    mwe_dict = my_pred_obj.count_spans('predictions/all_sentence_predictions.json')
     # mwe_dict = my_pred_obj.collect_mwes('predictions/debug_output.json')
     mwe_counter_lists = my_pred_obj.count_mwes(mwe_dict)
     for counter in mwe_counter_lists:

@@ -2,6 +2,7 @@ import itertools, json
 
 def generate_config_dict(num_epochs: int,
                          dropout: float,
+                         encoder_type: str,
                          encoder_layers: int,
                          encoder_hidden: int,
                          ffnn_layers: int,
@@ -13,13 +14,14 @@ def generate_config_dict(num_epochs: int,
                          bert_model_name: str = "SpanBERT/spanbert-base-cased",
                          encoder_bidirectional: bool = True):
 
-    experiment_name = "dr{}_enc_{}_h{}_ffnn_{}_h{}_{}_{}".format(dropout,
-                                                                 encoder_layers,
-                                                                 encoder_hidden,
-                                                                 ffnn_layers,
-                                                                 ffnn_hidden,
-                                                                 learning_rate,
-                                                                 batch_size)
+    experiment_name = "dr{}_{}_{}_h{}_ffnn_{}_h{}_{}_{}".format(dropout,
+                                                                encoder_type,
+                                                                encoder_layers,
+                                                                encoder_hidden,
+                                                                ffnn_layers,
+                                                                ffnn_hidden,
+                                                                learning_rate,
+                                                                batch_size)
 
     if encoder_bidirectional:
         ffnn_in = 2 * encoder_hidden
@@ -45,7 +47,7 @@ def generate_config_dict(num_epochs: int,
                         }}
 
     encoder = {
-                "type": "gru",
+                "type": encoder_type,
                 "input_size": 768,   # transformer hidden dim
                 "hidden_size": encoder_hidden,  # any type of dim you want ?
                 "num_layers": encoder_layers,
@@ -124,24 +126,26 @@ def generate_config_dict(num_epochs: int,
 if __name__ == "__main__":
 
     num_epochs = [50]
-    learning_rates = [1e-3, 5e-4]
+    learning_rates = [1e-3, 5e-3]
 
     batch_sizes = [16, 32]
 
+    dropouts = [.01]
+
     # encoder
-    dropouts = [.01, 0.05]
-    encoder_hiddens = [192, 384, 768]
+    encoder_types = ['lstm', 'gru']
+    encoder_hiddens = [384, 768]
     encoder_layers = [1, 2]
 
     # ffnn
-    ffnn_hiddens = [100, 200, 384]
+    ffnn_hiddens = [50, 100, 384]
     ffnn_layers = [1, 2]
 
     # Create combinations of the different values in the lists above
-    for experiment in itertools.product(num_epochs, dropouts, encoder_layers, encoder_hiddens,
+    for experiment in itertools.product(num_epochs, dropouts, encoder_types, encoder_layers, encoder_hiddens,
                                         ffnn_layers, ffnn_hiddens, learning_rates, batch_sizes):
-        e, dr, el, eh, fl, fh, lr, bs = experiment
-        config, name = generate_config_dict(e, dr, el, eh, fl, fh, lr, bs)
+        e, dr, et, el, eh, fl, fh, lr, bs = experiment
+        config, name = generate_config_dict(e, dr, et, el, eh, fl, fh, lr, bs)
         with open(name + '.json', 'w') as f:
             json.dump(config, f)
 
