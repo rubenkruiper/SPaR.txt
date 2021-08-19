@@ -136,14 +136,85 @@ class PredictionInsight():
         return counter_list
 
 
-if __name__ == "__main__":
+def grab_definitions(file_paths):
+    data = {}
+    for fp in file_paths:
+        f_name = fp.rsplit('/', 1)[1].rsplit('.', 1)[0]
+        with open(fp) as f:
+            data[f_name] = json.load(f)
 
+    # ToDo - AVOID HACKY QUICK SOLUTION HERE
+    definitions = []
+    for file_name, sections in data.items():
+        for subtitle in sections.keys():
+            if subtitle.startswith('Appendix A.'):
+                subsubtitle = [x for x in sections[subtitle].keys() if x != 'url'][0]
+                doc_definitions = [k for k in sections[subtitle][subsubtitle]['definitions'].keys() if k != '']
+                for d in doc_definitions:
+                    if d not in definitions:
+                        definitions.append(d)
+    return definitions
+
+
+if __name__ == "__main__":
+    # first grab the definitions
+    file_paths = ['../i-ReC/data/scottish/domestic_standards.json',
+                  '../i-ReC/data/scottish/non-domestic_standards.json']
+    definitions = grab_definitions(file_paths)
+
+    #
     my_pred_obj = PredictionInsight()
-    mwe_dict = my_pred_obj.count_spans('predictions/all_sentence_predictions.json')
+    mwe_dict = my_pred_obj.count_spans('predictions/GPU_all_predictions.json')
     # mwe_dict = my_pred_obj.collect_mwes('predictions/debug_output.json')
     mwe_counter_lists = my_pred_obj.count_mwes(mwe_dict)
     for counter in mwe_counter_lists:
         print("Top 20 counts: \n{}".format(counter.most_common(20)))
+
+    objects_lower = [x.lower() for x in mwe_counter_lists[0]]
+    actions_lower = [x.lower() for x in mwe_counter_lists[1]]
+    defined_not_found = [d for d in definitions if d.lower().strip() not in objects_lower]
+
+    defined_part_of = []
+    defined_actions = []
+    for d in defined_not_found:
+        overlapping_objects = [x for x in objects_lower if d.lower() in x]
+        if len(overlapping_objects) > 0:
+            print("{} \npart of \n{}\n".format(d, overlapping_objects))
+            defined_part_of.append(d)
+            continue
+
+        for o in objects_lower:
+            if '-' in d:
+                # tokenization is different with -
+                d_parts = d.split('-', 1)
+                d_new = ' - '.join(d_parts)
+                if d_new.lower() in o:
+                    defined_part_of.append(d)
+                    break
+
+    defined_not_found = [x for x in defined_not_found if x not in defined_part_of]
+    # [x for x in objects_lower if "" in x]
+    # NOTE also; the defined term 'Construct' is actually an action!
+    # 'the Act', we have the act in there without the ''
+    # non-combustible, we have a bunch of combustible stuff and 'non - combustibility test ( en iso 1182'
+    # ToDo remove #defined# and #term# from the text files to predict on...
+    # 14 = {str} '# defined # factory buildings'
+    # 15 = {str} '# defined # factory ( class 2 ) # term #'
+    # 'high - speed ready in - building physical infrastructure' we have 'high - speed - ready in - building physical infrastructure'
+    # 'land in different occupation', probably broken up; we have land and occupation
+    # 'major renovation works', probably broken on major - we have 'renovation' and
+    #          various other types of '.. works' chemical, sewage, protective etc.
+    # 'place of special fire risk', we have 'special fire risk'
+    # 'public open space', we have various types of public things and spaces, including 'communal spaces',
+    #           but not public or open
+    # 'reasonably practicable', probably broken, we have practicable
+    # 'statement of sustainability', probably broken, we have statement and sustainability (many types of sustainability)
+    #           including 'level of sustainability', and 'sustainability measures', '... standards', '... labels'
+    # 'storage building (class 1)', we have storage building and storage buildings
+    # 'storage building (class 2)', --> look at above ToDo
+
     print("Need to determine what I want to do/see with the counts")
+
+
 
 

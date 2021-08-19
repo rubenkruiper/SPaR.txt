@@ -11,10 +11,10 @@ def generate_config_dict(num_epochs: int,
                          batch_size: int,
                          train_path: str = "data/train/",
                          val_path: str = "data/val/",
-                         bert_model_name: str = "SpanBERT/spanbert-base-cased",
+                         bert_model_name: str = "bert-base-cased",
                          encoder_bidirectional: bool = True):
 
-    experiment_name = "dr{}_{}_{}_h{}_ffnn_{}_h{}_{}_{}".format(dropout,
+    experiment_name = "BERT{}_{}_{}_h{}_ffnn_{}_h{}_{}_{}".format(dropout,
                                                                 encoder_type,
                                                                 encoder_layers,
                                                                 encoder_hidden,
@@ -126,9 +126,9 @@ def generate_config_dict(num_epochs: int,
 if __name__ == "__main__":
 
     num_epochs = [50]
-    learning_rates = [1e-3, 5e-3]
+    learning_rates = [5e-3]
 
-    batch_sizes = [16, 32]
+    batch_sizes = [16]
 
     dropouts = [.01]
 
@@ -138,8 +138,8 @@ if __name__ == "__main__":
     encoder_layers = [1, 2]
 
     # ffnn
-    ffnn_hiddens = [50, 100, 384]
-    ffnn_layers = [1, 2]
+    ffnn_hiddens = [50, 384]
+    ffnn_layers = [1]
 
     # Create combinations of the different values in the lists above
     for experiment in itertools.product(num_epochs, dropouts, encoder_types, encoder_layers, encoder_hiddens,
