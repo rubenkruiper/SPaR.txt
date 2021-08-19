@@ -1,0 +1,1 @@
+Matters pertaining to overshadowing, neighbouring buildings or orientation are removed from this calculation.

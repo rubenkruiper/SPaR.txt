@@ -1,0 +1,1 @@
+['Protective barriers should be installed where the opening window has:', '\n', [['a sill that is less than 800mm above finished floor level, and', 'an operation that will allow the possibility of falling out, and', 'a difference in level between the floor level and the ground level of more than 600mm.

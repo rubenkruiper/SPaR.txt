@@ -1,0 +1,1 @@
+However this distance may be reduced:', '\n', [['to 1.5 times the diameter of the flue-pipe, if there is a non-combustible shield provided in accordance with the following sketch, or', 'to 0.75 times the diameter of the flue-pipe, if the flue-pipe is totally enclosed in non-combustible material at least 12mm thick with a thermal conductivity of not more than 0.065W/mK.']]]

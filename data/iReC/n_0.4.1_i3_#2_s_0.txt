@@ -1,0 +1,1 @@
+['whether a building falls within the exemptions of schedule 1, for example:', '\n', [['use of a railway signal box as a house (type 8)']]]

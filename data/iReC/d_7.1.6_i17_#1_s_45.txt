@@ -1,0 +1,1 @@
+Measure glazed panes or measure window area including frames then multiply by: ', '\n', [['0.9 for metal frames (patent glazing) or', '0.8 for metal frames (large pane) or ', '0.7 for timber frames (large pane) or ', "0.6 for timber frames (`Georgian' pane).

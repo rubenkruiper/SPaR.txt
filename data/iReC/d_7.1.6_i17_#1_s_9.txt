@@ -1,0 +1,1 @@
+Resource use display: Provide as for Aspect Silver 5, plus the real-time resource display indicates gas use (if gas is used for heating), displaying gas use at least at a daily period.

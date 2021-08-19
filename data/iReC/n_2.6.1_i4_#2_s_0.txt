@@ -1,0 +1,1 @@
+Short fire resistance duration is sufficient where the building is a #DEFINED#factory (Class 2)#TERM#, and is single-storey.

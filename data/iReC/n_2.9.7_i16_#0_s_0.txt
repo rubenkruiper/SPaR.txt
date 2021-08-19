@@ -1,0 +1,1 @@
+['where only 1 roomexit is provided, the escape route from the room should lead to 2 independent storey exits.

@@ -45,24 +45,24 @@
     "validation_data_path": "data/val/",
     "trainer": {
         "callbacks": {
-            "wandb": {
-                "batch_size_interval": 1,
-                "distribution_interval": 1,
-                "entity": "rkruiper",
-                "name": "dr0.01_lstm_2_h384_ffnn_1_h384_0.005_16",
-                "notes": "dr0.01_lstm_2_h384_ffnn_1_h384_0.005_16",
-                "project": "MWE-tagger",
-                "should_log_learning_rate": true,
-                "should_log_parameter_statistics": true,
-                "summary_interval": 1
-            }
+//            "wandb": {
+//                "batch_size_interval": 1,
+//                "distribution_interval": 1,
+//                "entity": "rkruiper",
+//                "name": "dr0.01_lstm_2_h384_ffnn_1_h384_0.005_16",
+//                "notes": "dr0.01_lstm_2_h384_ffnn_1_h384_0.005_16",
+//                "project": "MWE-tagger",
+//                "should_log_learning_rate": true,
+//                "should_log_parameter_statistics": true,
+//                "summary_interval": 1
+//            }
         },
         "cuda_device": 0,
         "grad_norm": 1,
         "learning_rate_scheduler": {
             "type": "slanted_triangular"
         },
-        "num_epochs": 50,
+        "num_epochs": 75,
         "num_serialized_models_to_keep": 1,
         "optimizer": {
             "type": "huggingface_adamw",

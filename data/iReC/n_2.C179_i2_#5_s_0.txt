@@ -1,0 +1,1 @@
+['the fire alarm system should be interfaced with other fire safety systems, to operate automatically in the correct zones.

@@ -1,0 +1,1 @@
+['division of a building into different occupancies, for example:', '\n', [['use of a single shop to provide space for two different occupancies (type 10).']]]

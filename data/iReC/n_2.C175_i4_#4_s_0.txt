@@ -1,0 +1,1 @@
+where mechanical extraction is used, there should be spare fan capacity equivalent to the largest single fan in the reservoir which will operate automatically on the failure of any one of the fans, or which runs concurrently with the fans
