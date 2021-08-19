@@ -1,12 +1,12 @@
 {
     "dataset_reader": {
         "type": "tag_reader",
-        "bert_model_name": "BERT/bert-base-cased",
+        "bert_model_name": "bert-base-cased",
         "token_indexers": {
             "tokens": {
                 "type": "pretrained_transformer",
                 "max_length": 512,
-                "model_name": "BERT/bert-base-cased"
+                "model_name": "bert-base-cased"
             }
         }
     },
@@ -34,7 +34,7 @@
                 "tokens": {
                     "type": "pretrained_transformer",
                     "max_length": 512,
-                    "model_name": "BERT/bert-base-cased",
+                    "model_name": "bert-base-cased",
                     "train_parameters": false
                 }
             }

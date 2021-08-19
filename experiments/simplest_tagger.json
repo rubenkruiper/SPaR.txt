@@ -1,7 +1,7 @@
 {
   "dataset_reader": {
     "type": "tag_reader",
-    "bert_model_name": "BERT/bert-base-cased",// "SpanBERT/spanbert-base-cased",
+    "bert_model_name": "SpanBERT/spanbert-base-cased",
 //    "tokenizer": {
 //      "type": "pretrained_transformer",
 //      "model_name": ,
@@ -10,10 +10,10 @@
 //        "do_lower_case": false
 //      }
 //    },
-    "token_indexers",: {
+    "token_indexers": {
       "tokens": {
         "type": "pretrained_transformer",
-        "model_name": "BERT/bert-base-cased",
+        "model_name": "SpanBERT/spanbert-base-cased",
         "max_length": 512
       }
     }
@@ -55,7 +55,7 @@
                 "tokens": {
                   "type": "pretrained_transformer",
                   "train_parameters": false,
-                  "model_name": "BERT/bert-base-cased",
+                  "model_name": "SpanBERT/spanbert-base-cased",
                   "max_length": 512
                 }
             }
@@ -76,16 +76,16 @@
           "type": "slanted_triangular",
         },
         "callbacks": {
-            "wandb": {
-              "summary_interval": 1,
-              "distribution_interval": 1,
-              "batch_size_interval": 1,
-              "should_log_parameter_statistics": true,
-              "should_log_learning_rate": true,
-              "project": "MWE",
-              "entity": "rkruiper",
-              "name": "debugging_gpu",
-          }
+//            "wandb": {
+//              "summary_interval": 1,
+//              "distribution_interval": 1,
+//              "batch_size_interval": 1,
+//              "should_log_parameter_statistics": true,
+//              "should_log_learning_rate": true,
+//              "project": "MWE",
+//              "entity": "rkruiper",
+//              "name": "debugging_gpu",
+//          }
         },
         "grad_norm": 1.0,
         "cuda_device":  0,
