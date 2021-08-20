@@ -164,7 +164,7 @@ if __name__ == "__main__":
 
     #
     my_pred_obj = PredictionInsight()
-    mwe_dict = my_pred_obj.count_spans('predictions/GPU_all_predictions.json')
+    mwe_dict = my_pred_obj.count_spans('predictions/BERT_gpu_predictions.json')
     # mwe_dict = my_pred_obj.collect_mwes('predictions/debug_output.json')
     mwe_counter_lists = my_pred_obj.count_mwes(mwe_dict)
     for counter in mwe_counter_lists:
@@ -194,24 +194,18 @@ if __name__ == "__main__":
 
     defined_not_found = [x for x in defined_not_found if x not in defined_part_of]
     # [x for x in objects_lower if "" in x]
-    # NOTE also; the defined term 'Construct' is actually an action!
-    # 'the Act', we have the act in there without the ''
-    # non-combustible, we have a bunch of combustible stuff and 'non - combustibility test ( en iso 1182'
-    # ToDo remove #defined# and #term# from the text files to predict on...
-    # 14 = {str} '# defined # factory buildings'
-    # 15 = {str} '# defined # factory ( class 2 ) # term #'
-    # 'high - speed ready in - building physical infrastructure' we have 'high - speed - ready in - building physical infrastructure'
-    # 'land in different occupation', probably broken up; we have land and occupation
-    # 'major renovation works', probably broken on major - we have 'renovation' and
-    #          various other types of '.. works' chemical, sewage, protective etc.
-    # 'place of special fire risk', we have 'special fire risk'
-    # 'public open space', we have various types of public things and spaces, including 'communal spaces',
-    #           but not public or open
-    # 'reasonably practicable', probably broken, we have practicable
-    # 'statement of sustainability', probably broken, we have statement and sustainability (many types of sustainability)
-    #           including 'level of sustainability', and 'sustainability measures', '... standards', '... labels'
-    # 'storage building (class 1)', we have storage building and storage buildings
-    # 'storage building (class 2)', --> look at above ToDo
+
+    # ToDo - count:
+    #  - number of sentences domestic/non-domestic
+    #  - average sentence length (tokens), standard dev, shortest, longest
+    #  - Span types, total and per type
+    #  - Number of discontiguous spans (got this already)
+    #  - Avg. span length (characters), total and per type
+    #  - Number of tag types
+
+    # ToDo - context + span;
+    #  - a dictionary holding all spans and their contexts (sentence, maybe even doc id)
+    #  - remove those spans that coincide with defined terms, then save 165 of them (99% conf level with 10% margin of error)
 
     print("Need to determine what I want to do/see with the counts")
 
