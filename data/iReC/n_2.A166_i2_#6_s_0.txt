@@ -1,1 +1,1 @@
-on the actuation of the fire alarm, a signal should be transmitted automatically to the fire service, either directly or by way of a remote centre, designed and operated in accordance with BS 5979: 2000.
+the audibility level of the fire alarm sounders should be as specified in BS 5839: Part 1: 2002 except in a place of lawful detention including prisons, the alarm need not be sounded throughout the entire building

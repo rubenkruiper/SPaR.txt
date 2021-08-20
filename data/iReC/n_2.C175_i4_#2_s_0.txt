@@ -1,1 +1,0 @@
-smoke should not be allowed to descend to a height of less than 3m above any floor level

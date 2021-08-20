@@ -1,1 +1,1 @@
-['a soakaway constructed in accordance with:', '\n', [['clause 3.6.5, or', "the guidance in BRE Digest 365, `Soakaway Design', or", 'National Annex NA 4 of BS EN 752: 2008, or']]]
+National Annex NA 4 of BS EN 752: 2008, or

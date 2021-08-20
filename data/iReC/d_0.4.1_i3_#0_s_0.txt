@@ -1,1 +1,1 @@
-['domestic buildings, for example:', '\n', [['a hotel to a dwelling (type 1)', 'use of an attic space as a room within a dwelling (type 1)', 'use of a garage attached to a dwelling as a room (type 2)', 'sub-division of a house into two flats (type 3)', 'use of a house as shared residential accommodation (type 4)']]]
+use of a single shop to provide space for two different occupancies (type 10).

@@ -1,1 +1,1 @@
-if the compartment does not contain either a final exit or direct access to a protected zone, then each of the adjoining compartments, should have at least 1 other escape route, which is not through a further compartment, and
+the escape route width available from the adjoining compartment is sufficient for the sum of the occupancy capacities of both compartments.

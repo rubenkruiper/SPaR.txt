@@ -1,1 +1,1 @@
-the audibility level of the fire alarm sounders should be as specified in BS 5839: Part 1: 2002 except in a place of lawful detention including prisons, the alarm need not be sounded throughout the entire building
+the fire alarm should be activated on the operation of manual call points, automatic detection or the operation of the automatic life safety fire suppression system

@@ -1,1 +1,1 @@
-['detection need not be provided in the following locations:', '\n', [['sanitary accommodation', 'a lockable cupboard with a plan area not more than 1m2', 'in a void and roof space which contain only mineral insulated wiring, or wiring laid on metal trays, or in metal conduits, or metal /plastic pipes used for water supply, drainage or ventilating ducting']]]
+the main entrance, or a suitably located secondary entrance to the building, and

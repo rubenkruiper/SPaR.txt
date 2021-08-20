@@ -1,1 +1,0 @@
-['Where it is a combined natural/mechanical ventilation system, by providing:', '\n', [['openings in the wall on every storey of at least 1/40th of the floor area of the storey with at least half of such area in opposite walls, and', 'a mechanical system capable of at least 3 air changes per hour.']]]

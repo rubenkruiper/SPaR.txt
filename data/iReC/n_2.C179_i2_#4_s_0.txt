@@ -1,1 +1,1 @@
-all areas of the shopping centre, including shops, should be alerted using a voice alarm system which follows the guidance in BS 5839: Part 8: 2008, however individual shops may use conventional sounders within the shop itself, or
+the main fire alarm system control panel is installed within the control room and indicator (or repeater) panels are provided at each of the fire fighting access points.

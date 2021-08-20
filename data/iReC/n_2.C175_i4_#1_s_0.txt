@@ -1,1 +1,1 @@
-the smoke reservoirs should be formed by fixed or automatically descending smoke curtains which are no greater than 60m apart, measured along the direction of the mall, and follow the guidance in BS 7346: Part 4:1990
+2 times (3.5 times where the height from floor to roof ventilator is more than 12m) for any ventilator grille.

@@ -1,1 +1,0 @@
-each smoke reservoir should be provided with the necessary number of smoke ventilators or extract fans to extract the calculated volume of smoke produced, spaced evenly throughout the reservoir

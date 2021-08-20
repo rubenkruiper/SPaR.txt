@@ -1,1 +1,0 @@
-['residential buildings, for example:', '\n', [['use of a hotel as office (type 5)', 'use of a hotel as a residential care home (type 6)', 'use of offices as a backpackers hostel (type 7)']]]

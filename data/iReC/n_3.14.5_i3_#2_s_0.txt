@@ -1,1 +1,1 @@
-for occupiable rooms, where a mechanical air supply is provided at a rate of at least 8 litres/second of fresh air per occupant, based on sedentary occupants and the absence of other requirements such as the removal of moisture, or
+#EndTable_1

@@ -1,1 +1,0 @@
-an automatically switched standby power supply provided by a generator should be connected to any fans provided as part of the smoke and heat ventilation system capable of simultaneously operating the fans in the reservoir affected and any of the two adjacent reservoirs

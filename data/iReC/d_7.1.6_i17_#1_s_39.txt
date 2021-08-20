@@ -1,1 +1,0 @@
-', 'The DF is a factor, expressed as a percentage, that will rise or fall depending on the relationship of glazed area and room dimensions.

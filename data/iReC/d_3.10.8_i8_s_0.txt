@@ -1,1 +1,1 @@
-#Figure4#all_figures_dict_key_20#EndFigure4
+all_figures_dict_key_20

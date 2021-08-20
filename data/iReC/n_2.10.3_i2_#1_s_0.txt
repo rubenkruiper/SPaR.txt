@@ -1,1 +1,1 @@
-in a room with an occupancy capacity of more than 60, or in the case of an inner room, the combined occupancy capacity of the inner room plus the adjoining room (and any protected zone or unprotected zone serving these rooms) is more than 60
+a protected zone or unprotected zone serving a storey in a multi-storey non-residential school
