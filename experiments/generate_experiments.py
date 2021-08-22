@@ -146,7 +146,7 @@ if __name__ == "__main__":
     encoder_layers = [1, 2]
 
     # ffnn
-    ffnn_hiddens = [50, 60]
+    ffnn_hiddens = [30, 50, 80]
     ffnn_layers = [1]
 
     # Create combinations of the different values in the lists above
