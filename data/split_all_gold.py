@@ -2,7 +2,7 @@ import glob, random
 from shutil import copyfile
 
 
-random.seed(0)
+random.seed(14)
 # simple script
 path_to_all_gold = "./all_gold/"
 all_txt = glob.glob(path_to_all_gold + "*.txt")

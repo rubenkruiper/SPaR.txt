@@ -164,7 +164,7 @@ if __name__ == "__main__":
 
     #
     my_pred_obj = PredictionInsight()
-    mwe_dict = my_pred_obj.count_spans('predictions/BERT_gpu_predictions.json')
+    mwe_dict = my_pred_obj.count_spans('predictions/all_sentence_predictions.json')
     # mwe_dict = my_pred_obj.collect_mwes('predictions/debug_output.json')
     mwe_counter_lists = my_pred_obj.count_mwes(mwe_dict)
     for counter in mwe_counter_lists:
@@ -173,6 +173,10 @@ if __name__ == "__main__":
     objects_lower = [x.lower() for x in mwe_counter_lists[0]]
     actions_lower = [x.lower() for x in mwe_counter_lists[1]]
     defined_not_found = [d for d in definitions if d.lower().strip() not in objects_lower]
+
+    for idx, d in enumerate(defined_not_found):
+        if d[0] in ["'", '"'] and d[-1] in ["'", '"']:
+            defined_not_found[idx] = d[1:-1]
 
     defined_part_of = []
     defined_actions = []

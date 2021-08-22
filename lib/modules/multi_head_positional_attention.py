@@ -6,6 +6,13 @@ import torch.nn.functional as F
 
 
 class RelativeGlobalAttention(nn.Module):
+    """
+    Implementation of [Huang et al 2018][1] from: https://jaketae.github.io/study/relative-positional-encoding/
+    Similar implementation; https://github.com/chathasphere/pno-ai
+
+    1) https://arxiv.org/pdf/1809.04281.pdf
+    2) https://arxiv.org/pdf/1803.02155.pdf
+    """
     def __init__(self,
                  embedding_dim,
                  num_heads,
