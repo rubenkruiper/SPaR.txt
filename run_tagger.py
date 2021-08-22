@@ -44,24 +44,22 @@ if __name__ == "__main__":
             predictions_output = 'predictions/debug_output.json'
 
         if os.path.exists(predictions_output):
-            predictions_file_exists = True
-        else:
-            predictions_file_exists = False
+            # remove the predictions from previous models
+            os.remove(predictions_output)
 
-        if not predictions_file_exists:
-            # First predict ~ default output is location is 'predictions/debug_output.json'
-            sys.argv = [
-                "allennlp",  # command name, not used by main
-                "predict",
-                serialization_dir,
-                args.input_file_path,
-                "--predictor", "span_tagger",
-                "--output-file", predictions_output,
-                "--include-package", "lib",
-                "--use-dataset-reader",
-                "--batch-size", str(args.batchsize)
-            ]
-            main()
+        # First predict ~ default output is location is 'predictions/debug_output.json'
+        sys.argv = [
+            "allennlp",  # command name, not used by main
+            "predict",
+            serialization_dir,
+            args.input_file_path,
+            "--predictor", "span_tagger",
+            "--output-file", predictions_output,
+            "--include-package", "lib",
+            "--use-dataset-reader",
+            "--batch-size", str(args.batchsize)
+        ]
+        main()
 
         # Then simply run a script to evaluate and print metrics for the output file
         evaluator = SimpleEvaluator(predictions_output, args.input_file_path)
