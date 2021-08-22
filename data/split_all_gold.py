@@ -9,9 +9,9 @@ all_txt = glob.glob(path_to_all_gold + "*.txt")
 
 random.shuffle(all_txt)
 
-train_pairs = all_txt[:140]
-val_pairs = all_txt[140:170]
-test_pairs = all_txt[170:]
+train_pairs = all_txt[:120]
+val_pairs = all_txt[120:160]
+test_pairs = all_txt[160:]
 
 
 def copy_files_to_folders(list_of_texts, destination):
