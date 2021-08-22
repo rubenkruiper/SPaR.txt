@@ -10,12 +10,13 @@ def generate_config_dict(model: str,
                          ffnn_hidden: int,
                          learning_rate: float,
                          batch_size: int,
+                         bert_model_name: str = "bert-base-cased",
                          train_path: str = "data/train/",
                          val_path: str = "data/val/",
-                         bert_model_name: str = "bert-base-cased",
                          encoder_bidirectional: bool = True):
 
-    experiment_name = "BERT{}_{}_{}_h{}_ffnn_{}_h{}_{}_{}".format(dropout,
+    experiment_name = "{}{}_{}_{}_h{}_ffnn_{}_h{}_{}_{}".format(bert_model_name[:4],
+                                                                dropout,
                                                                 encoder_type,
                                                                 encoder_layers,
                                                                 encoder_hidden,
@@ -133,27 +134,30 @@ if __name__ == "__main__":
 
     # model = "my_tagger"
     model = "attention_tagger"
+
+    bert_models = ["bert-base-cased", "SpanBERT/spanbert-base-cased"]
     num_epochs = [50]
-    learning_rates = [5e-3]
+    learning_rates = [1e-2, 5e-3]
 
     batch_sizes = [16]
 
-    dropouts = [.01]
+    dropouts = [0.05, 0.1]
 
     # encoder
     encoder_types = ['lstm']
-    encoder_hiddens = [384, 768]
-    encoder_layers = [1, 2]
+    encoder_hiddens = [384]
+    encoder_layers = [1]
 
     # ffnn
-    ffnn_hiddens = [30, 50, 80]
+    ffnn_hiddens = [30, 60]
     ffnn_layers = [1]
 
     # Create combinations of the different values in the lists above
     for experiment in itertools.product(num_epochs, dropouts, encoder_types, encoder_layers, encoder_hiddens,
                                         ffnn_layers, ffnn_hiddens, learning_rates, batch_sizes):
         e, dr, et, el, eh, fl, fh, lr, bs = experiment
-        config, name = generate_config_dict(model, e, dr, et, el, eh, fl, fh, lr, bs)
-        with open(name + '.json', 'w') as f:
-            json.dump(config, f)
+        for bert_model in bert_models:
+            config, name = generate_config_dict(model, e, dr, et, el, eh, fl, fh, lr, bs, bert_model_name=bert_model)
+            with open(name + '.json', 'w') as f:
+                json.dump(config, f)
 
