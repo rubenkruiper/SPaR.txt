@@ -1,2 +1,2 @@
 # MWE-tagger
-A baseline CRF tagging approach to MWE discovery in building regulatory documents.
+A Scottish Building Regulations dataset and biLSTM+CRF tagger for learning a lexicon (including MWE discovery/identification) in support of Compliance Checking.
