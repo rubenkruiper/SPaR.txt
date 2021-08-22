@@ -6,7 +6,7 @@ from lib.evaluation_script import SimpleEvaluator
 
 if __name__ == "__main__":
     argparse = ArgumentParser(description='lib semantic chunking')
-    argparse.add_argument('-c', "--config_file", type=str, default="experiments/best_model.json")
+    argparse.add_argument('-c', "--config_file", type=str, default="experiments/attention_tagger.json")
     argparse.add_argument('-m', "--model_path", default="trained_models/debugger_train")
     argparse.add_argument('-i', "--input_file_path", default="")
     argparse.add_argument('-o', "--output_file_path", default="")
