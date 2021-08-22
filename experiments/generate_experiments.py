@@ -1,6 +1,7 @@
 import itertools, json
 
-def generate_config_dict(num_epochs: int,
+def generate_config_dict(model: str,
+                         num_epochs: int,
                          dropout: float,
                          encoder_type: str,
                          encoder_layers: int,
@@ -27,6 +28,11 @@ def generate_config_dict(num_epochs: int,
         ffnn_in = 2 * encoder_hidden
     else:
         ffnn_in = encoder_hidden
+
+    if model == "attention_tagger":
+        ffnn_in = 2 * ffnn_in
+    else:
+        ffnn_in = ffnn_in
 
     dataset_reader = {
                       "type": "tag_reader",
@@ -70,7 +76,7 @@ def generate_config_dict(num_epochs: int,
                                   "max_length": 512
                                 }}}
 
-    model = {"type": "my_tagger",
+    model = {"type": model,
              "dropout": dropout,
              "encoder": encoder,
              "feedforward": feedforward,
@@ -81,11 +87,11 @@ def generate_config_dict(num_epochs: int,
              }
 
     optimizer = {"type": "huggingface_adamw",
-              "lr": learning_rate,
-              "weight_decay": 0.1,
-              "parameter_groups": [[["bias", "LayerNorm\\.weight", "layer_norm\\.weight"], {"weight_decay": 0.05}]],
-              "eps": 1e-8,
-              "correct_bias": True}
+                 "lr": learning_rate,
+                 "weight_decay": 0.1,
+                 "parameter_groups": [[["bias", "LayerNorm\\.weight", "layer_norm\\.weight"], {"weight_decay": 0.05}]],
+                 "eps": 1e-8,
+                 "correct_bias": True}
 
     learning_rate_scheduler = {"type": "slanted_triangular"}
 
@@ -125,6 +131,8 @@ def generate_config_dict(num_epochs: int,
 
 if __name__ == "__main__":
 
+    # model = "my_tagger"
+    model = "attention_tagger"
     num_epochs = [50]
     learning_rates = [5e-3]
 
@@ -133,19 +141,19 @@ if __name__ == "__main__":
     dropouts = [.01]
 
     # encoder
-    encoder_types = ['lstm', 'gru']
+    encoder_types = ['lstm']
     encoder_hiddens = [384, 768]
     encoder_layers = [1, 2]
 
     # ffnn
-    ffnn_hiddens = [50, 384]
+    ffnn_hiddens = [50, 60]
     ffnn_layers = [1]
 
     # Create combinations of the different values in the lists above
     for experiment in itertools.product(num_epochs, dropouts, encoder_types, encoder_layers, encoder_hiddens,
                                         ffnn_layers, ffnn_hiddens, learning_rates, batch_sizes):
         e, dr, et, el, eh, fl, fh, lr, bs = experiment
-        config, name = generate_config_dict(e, dr, et, el, eh, fl, fh, lr, bs)
+        config, name = generate_config_dict(model, e, dr, et, el, eh, fl, fh, lr, bs)
         with open(name + '.json', 'w') as f:
             json.dump(config, f)
 

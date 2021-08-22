@@ -3,6 +3,7 @@ from typing import List, Dict, Any
 from allennlp.data.tokenizers import PretrainedTransformerTokenizer
 
 from lib.readers.reader_utils.my_read_utils import *
+from sklearn.metrics import f1_score, classification_report
 
 
 class SimpleEvaluator():
@@ -39,7 +40,8 @@ class SimpleEvaluator():
 
     def evaluate(self):
         # vocab = Vocabulary.from_files("data/vocab_discontiguous_tags/")
-        measure = SimpleF1Measure()
+        # measure = SimpleF1Measure()
+
         # read gold data from 'predictions_input'
         gold_instances = self.read_gold()
 
@@ -47,6 +49,9 @@ class SimpleEvaluator():
         with open(self.predictions_input, 'r') as f:
             predictions_list = [json.loads(jsonline) for jsonline in f.readlines()]
 
+        # sklearn test
+        y_true = []
+        y_pred = []
 
         for prediction in predictions_list:
             mask = prediction['mask']
@@ -58,107 +63,105 @@ class SimpleEvaluator():
                 if gold['token_list'] == token_list:
                     # compare tag_lists
                     predicted_tags = [t for m, t in zip(mask, tag_list) if m]
-                    measure(predicted_tags, gold["tag_list"])
+                    # measure(predicted_tags, gold["tag_list"])
+                    y_true += gold["tag_list"][1:-1]
+                    y_pred += predicted_tags[1:-1]
 
-                    # self.print_possible_objects_etc()
+        # p, r, f = measure.get_metric()
+        # print("Overall precision: {:.4f}, recall: {:.4f}, F1: {:.4f}".format(p, r, f))
 
-        p, r, f = measure.get_metric()
-        print("Overall precision: {:.4f}, recall: {:.4f}, F1: {:.4f}".format(p, r, f))
-
-    def print_possible_objects_etc(self,
-                                   gold: Dict[str, Any],
-                                   pred: List[str]):
-        """ basic informative overview of sentence and identified MWEs """
-        print("sent: {}".format(gold["sentence"]))
-
-        # ToDo - get all MWEs from gold and predicted (divide by type)
-        # ToDo grab this - or part of the function - from predictions_insight.py
-        # gold_objs = self.get_mwes(gold['token_list'], gold['tag_list'], "obj")
-        # pred_objs = self.get_mwes(gold['token_list'], pred, "obj")
+        # check using sklearn
+        # print("sklearn F1: {}".format(f1_score(y_true, y_pred, average='micro')))
+        print(classification_report(y_true, y_pred, digits=4))
 
 
-class SimpleF1Measure():
-    def __init__(self) -> None:
-        self.span_type_acc = F1Scorer(F1Scorer.span_type_accuracy)
+# class SimpleF1Measure():
+#     def __init__(self) -> None:
+#         self.span_type_acc = F1Scorer(F1Scorer.span_type_accuracy)
+#
+#     def __call__(self,  # type: ignore
+#                  predicted_labels: List[str],
+#                  gold_labels: List[str]):
+#         """
+#         """
+#
+#         self.span_type_acc.batch_gold_labels = len([x for x in gold_labels if x != "PD-pad"])
+#         self.span_type_acc.update(gold_labels, predicted_labels)
+#
+#     def get_metric(self, reset: bool = False) -> Tuple[float, float, float]:
+#         span_f1 = self.span_type_acc.get_prf()
+#         if reset:
+#             self.reset()
+#         return span_f1
+#
+#     def reset(self):
+#         self.span_type_acc = F1Scorer(F1Scorer.span_type_accuracy)
+#
+# #### F1 scorer
+# class F1Scorer:
+#     def __init__(self, metric):
+#         ### initialise the object with 0 scores
+#         self.precision_numerator = 0
+#         self.precision_denominator = 0
+#         self.recall_numerator = 0
+#         self.recall_denominator = 0
+#         self.metric = metric
+#         self.batch_gold_labels = 0
+#
+#     def update(self, gold_batch, predicted_batch):
+#         p_num, p_den, r_num, r_den = self.metric(self, gold_batch, predicted_batch)
+#
+#         self.precision_numerator += p_num
+#         self.precision_denominator += p_den
+#         self.recall_numerator += r_num
+#         self.recall_denominator += r_den
+#
+#     def get_f1(self):
+#         precision = 0 if self.precision_denominator == 0 else \
+#             self.precision_numerator / float(self.precision_denominator)
+#         recall = 0 if self.recall_denominator == 0 else \
+#             self.recall_numerator / float(self.recall_denominator)
+#         return 0 if precision + recall == 0 else 2 * precision * recall / (precision + recall)
+#
+#     def get_recall(self):
+#         if self.recall_numerator == 0:
+#             return 0
+#         else:
+#             return self.recall_numerator / float(self.recall_denominator)
+#
+#     def get_precision(self):
+#         if self.precision_numerator == 0:
+#             return 0
+#         else:
+#             return self.precision_numerator / float(self.precision_denominator)
+#
+#     def get_prf(self):
+#         return self.get_precision(), self.get_recall(), self.get_f1()
+#
+#     def span_type_accuracy(self, gold_labels, pred_labels):
+#         """
+#         Accuracy based on correctly predicting correct values of a mask, including only partial mask matches.
+#         ◮ Precision: (# labels correctly assigned ~ p_num) TP / (# labels assigned ~ p_den) TP+FP
+#         ◮ Recall: (# labels correctly assigned ~ r_num) TP / (total # of labels ~ r_den) TP+FN
+#         """
+#         p_num, p_den, r_num = 0, 0, 0
+#         # every gold_span that should be 1 (TP + FN)
+#         r_den = self.batch_gold_labels
+#
+#         for li, label_value in enumerate(pred_labels[1:-1]):
+#             # ignore [CLS] and [SEP]
+#             # if label_value != "PD-pad":  # ignore padding
+#             p_den += 1              # all predicted mask labels, both true and false (TP+FP)
+#             if label_value == gold_labels[li + 1]:
+#                 p_num += 1          # TP
+#                 r_num += 1          # TP
+#
+#         return p_num, p_den, r_num, r_den
 
-    def __call__(self,  # type: ignore
-                 predicted_labels: List[str],
-                 gold_labels: List[str]):
-        """
-        """
 
-        self.span_type_acc.batch_gold_labels = len([x for x in gold_labels if x != "PD-pad"])
-        self.span_type_acc.update(gold_labels, predicted_labels)
-
-    def get_metric(self, reset: bool = False) -> Tuple[float, float, float]:
-        span_f1 = self.span_type_acc.get_prf()
-        if reset:
-            self.reset()
-        return span_f1
-
-    def reset(self):
-        self.span_type_acc = F1Scorer(F1Scorer.span_type_accuracy)
-
-#### F1 scorer
-class F1Scorer:
-    def __init__(self, metric):
-        ### initialise the object with 0 scores
-        self.precision_numerator = 0
-        self.precision_denominator = 0
-        self.recall_numerator = 0
-        self.recall_denominator = 0
-        self.metric = metric
-        self.batch_gold_labels = 0
-
-    def update(self, gold_batch, predicted_batch):
-        p_num, p_den, r_num, r_den = self.metric(self, gold_batch, predicted_batch)
-
-        self.precision_numerator += p_num
-        self.precision_denominator += p_den
-        self.recall_numerator += r_num
-        self.recall_denominator += r_den
-
-    def get_f1(self):
-        precision = 0 if self.precision_denominator == 0 else \
-            self.precision_numerator / float(self.precision_denominator)
-        recall = 0 if self.recall_denominator == 0 else \
-            self.recall_numerator / float(self.recall_denominator)
-        return 0 if precision + recall == 0 else 2 * precision * recall / (precision + recall)
-
-    def get_recall(self):
-        if self.recall_numerator == 0:
-            return 0
-        else:
-            return self.recall_numerator / float(self.recall_denominator)
-
-    def get_precision(self):
-        if self.precision_numerator == 0:
-            return 0
-        else:
-            return self.precision_numerator / float(self.precision_denominator)
-
-    def get_prf(self):
-        return self.get_precision(), self.get_recall(), self.get_f1()
-
-    def span_type_accuracy(self, gold_labels, pred_labels):
-        """
-        Accuracy based on correctly predicting correct values of a mask, including only partial mask matches.
-        ◮ Precision: (# labels correctly assigned ~ p_num) TP / (# labels assigned ~ p_den) TP+FP
-        ◮ Recall: (# labels correctly assigned ~ r_num) TP / (total # of labels ~ r_den) TP+FN
-        """
-        p_num, p_den, r_num = 0, 0, 0
-        # every gold_span that should be 1 (TP + FN)
-        r_den = self.batch_gold_labels
-
-        for li, label_value in enumerate(pred_labels):
-            if label_value != "PD-pad":  # ignore non-spans
-                p_den += 1  # all predicted mask labels, both true and false (TP+FP)
-                if label_value == gold_labels[li]:
-                    p_num += 1
-                    r_num += 1
-
-        return p_num, p_den, r_num, r_den
-
-
-
+if __name__ == "__main__":
+    evaluator = SimpleEvaluator("../predictions/test_predictions.json",
+                                "../data/test/",
+                                "bert-base-cased")
+    evaluator.evaluate()
 
