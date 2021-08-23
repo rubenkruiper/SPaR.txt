@@ -12,19 +12,19 @@
     },
     "model": {
         "type": "attention_tagger",
-        "dropout": 0.01,
+        "dropout": 0.05,
         "encoder": {
             "type": "lstm",
             "bidirectional": true,
-            "hidden_size": 768,
+            "hidden_size": 384,
             "input_size": 768,
-            "num_layers": 2
+            "num_layers": 1
         },
         "feedforward": {
             "activations": "relu",
-            "dropout": 0.01,
-            "hidden_dims": 50,
-            "input_dim": 3072,
+            "dropout": 0.05,
+            "hidden_dims": 100,
+            "input_dim": 1536,
             "num_layers": 1
         },
         "include_start_end_transitions": false,
@@ -49,8 +49,8 @@
                 "batch_size_interval": 1,
                 "distribution_interval": 1,
                 "entity": "rkruiper",
-                "name": "BERT0.01_lstm_2_h768_ffnn_1_h50_0.005_16",
-                "notes": "BERT0.01_lstm_2_h768_ffnn_1_h50_0.005_16",
+                "name": "bert0.05_lstm_1_h384_ffnn_1_h60_0.005_16",
+                "notes": "bert0.05_lstm_1_h384_ffnn_1_h60_0.005_16",
                 "project": "MWE-tagger",
                 "should_log_learning_rate": true,
                 "should_log_parameter_statistics": true,

@@ -7,6 +7,8 @@ for FILE in $(ls "$DIR" | grep .json); do
 	# if not simple_tagger then run and wait
 	if [[ "$filename" == *"simplest_tagger"* ]]; then
 		wait # do nothing
+	if [[ "$filename" == *"attention_tagger"* ]]; then
+		wait # do nothing
 	else
 		# run and store model on HDD
 		fname="${filename%.*}"
