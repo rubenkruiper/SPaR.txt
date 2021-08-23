@@ -23,7 +23,7 @@
         "feedforward": {
             "activations": "relu",
             "dropout": 0.05,
-            "hidden_dims": 100,
+            "hidden_dims": 60,
             "input_dim": 1536,
             "num_layers": 1
         },
