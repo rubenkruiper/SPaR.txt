@@ -1,8 +1,11 @@
 import json
+import numpy as np
+import pandas as pd
 from collections import Counter
 from allennlp.data.tokenizers import PretrainedTransformerTokenizer
 
 from lib.readers.reader_utils.my_read_utils import *
+
 
 class PredictionInsight():
     """ Grab objects from an predictions output_file """
@@ -14,7 +17,62 @@ class PredictionInsight():
         if bert_model_name is not None:
             self.tokenizer = PretrainedTransformerTokenizer(bert_model_name)
             self.lowercase_input = "uncased" in bert_model_name
+        # ToDo - count:
+        #  - number of sentences
+        #  - average sentence length (tokens), standard dev, shortest, longest
+        #  - Span types, total and per type
+        #  - Number of discontiguous spans (got this already)
+        #  - Avg. span length (characters), total and per type
+        #  - Number of tag types
+        self.document_sent_count = Counter()
+        self.sent_tokenlen_list = []
+        # span types, character-based lengths and averages
+        self.span_df = pd.DataFrame({'span_type': [], 'span_length': []})
 
+        self.tag_count = Counter()
+
+    def print_stats(self):
+        """
+        Prints the collected counts
+        """
+        print("\nSentences:")
+        print("Total sentences: {}".format(len(self.sent_tokenlen_list)))
+
+        print("Mean sentence length (tokens): {}".format(np.mean(self.sent_tokenlen_list)))
+        print("Standard deviation length (tokens): {}".format(np.std(self.sent_lengths_list)))
+        print("Shortest sentence: {}".format(np.min(self.sent_lengths_list)))
+        print("Longest sentence: {}".format(np.max(self.sent_lengths_list)))
+
+        type_counts = self.span_df.value_counts('span_type')
+        total_length_per_type =  self.span_df.groupby('span_type').agg('sum')
+        print("Span type counts: \n{}".format(type_counts))
+        print("Span type avg lengths: \n{}".format((total_length_per_type.div(type_counts, axis=0))))
+        num_discontiguous =  self.span_df.value_counts('discontiguous')
+        print("Number of discontiguous spans: {}".format(num_discontiguous[True]))
+
+        # Tag types
+        tag_counter = Counter(self.all_tags)
+        print("Tag counts: {}".format(tag_counter.most_common()))
+
+    def count_doc_id(self, doc_id):
+        if doc_id.startswith('d'):
+            self.document_sent_count['domestic'] += 1
+        else:
+            self.document_sent_count['non-domestic'] += 1
+
+    def count_tokens(self, token_list):
+        # ToDo do we need to remove CLS and SEP? probably
+        self.sent_tokenlen_list.append(len(token_list))
+
+    def count_tag_types(self, tag_list):
+        for tag in tag_list:
+            self.tag_count[tag] += 1
+
+    def count_span_types(self, all_span_dict):
+        for span_type in all_span_dict.keys():
+            for span in all_span_dict[span_type]:
+                length = sum([len(token) for token in span])
+                self.span_df.loc[len(self.span_df.index)] = [span_type, length]
 
     def count_spans(self, predictions_fp):
         """
@@ -36,8 +94,11 @@ class PredictionInsight():
             mask = prediction['mask']
             tag_list = prediction['tags']
             token_list = prediction['words']
-            sentence = prediction["sentence"]
-            doc_id = prediction["doc_id"]
+            # sentence = prediction["sentence"]
+
+            self.count_doc_id(prediction["doc_id"])
+            self.count_tokens(token_list)
+            self.count_tag_types(tag_list)
 
             # not sure if this is necessary; doesn't seem to be
             predicted_tags = [t for m, t in zip(mask, tag_list) if m]
@@ -48,6 +109,15 @@ class PredictionInsight():
             mwes, discontiguous_count = self.get_mwes(token_list, predicted_tags, 'act')
             discontiguous_act_count += discontiguous_count
             all_spans["actions"] += mwes
+
+            dis, _ = self.get_mwes(token_list, predicted_tags, 'dis')
+            all_spans["discourse"] += dis
+            func, _ = self.get_mwes(token_list, predicted_tags, 'func')
+            all_spans["functional"] += func
+
+        self.count_span_types(all_spans)
+
+        self.print_stats()
 
         print("Found {} discontiguous spans of type 'object'".format(discontiguous_obj_count))
         print("Found {} discontiguous spans of type 'action'".format(discontiguous_act_count))
@@ -143,7 +213,6 @@ def grab_definitions(file_paths):
         with open(fp) as f:
             data[f_name] = json.load(f)
 
-    # ToDo - AVOID HACKY QUICK SOLUTION HERE
     definitions = []
     for file_name, sections in data.items():
         for subtitle in sections.keys():
@@ -199,13 +268,6 @@ if __name__ == "__main__":
     defined_not_found = [x for x in defined_not_found if x not in defined_part_of]
     # [x for x in objects_lower if "" in x]
 
-    # ToDo - count:
-    #  - number of sentences domestic/non-domestic
-    #  - average sentence length (tokens), standard dev, shortest, longest
-    #  - Span types, total and per type
-    #  - Number of discontiguous spans (got this already)
-    #  - Avg. span length (characters), total and per type
-    #  - Number of tag types
 
     # ToDo - context + span;
     #  - a dictionary holding all spans and their contexts (sentence, maybe even doc id)

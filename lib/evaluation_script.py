@@ -3,7 +3,7 @@ from typing import List, Dict, Any
 from allennlp.data.tokenizers import PretrainedTransformerTokenizer
 
 from lib.readers.reader_utils.my_read_utils import *
-from sklearn.metrics import f1_score, classification_report
+from sklearn import metrics
 
 
 class SimpleEvaluator():
@@ -71,8 +71,10 @@ class SimpleEvaluator():
         # print("Overall precision: {:.4f}, recall: {:.4f}, F1: {:.4f}".format(p, r, f))
 
         # check using sklearn
-        # print("sklearn F1: {}".format(f1_score(y_true, y_pred, average='micro')))
-        print(classification_report(y_true, y_pred, digits=4))
+        print(metrics.classification_report(y_true, y_pred, digits=4))
+        # print("sklearn P: {}".format(metrics.precision_score(y_true, y_pred, average='macro')))
+        # print("sklearn R: {}".format(metrics.recall_score(y_true, y_pred, average='macro')))
+        # print("sklearn F1: {}".format(metrics.f1_score(y_true, y_pred, average='macro')))
 
 
 # class SimpleF1Measure():
