@@ -1,0 +1,5 @@
+Sentence:
+When determining the equivalent area, the whole ventilator installation, including the external grille or canopy, should be considered as a single unit.
+
+Object identified:
+external grille canopy

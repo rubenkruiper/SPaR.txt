@@ -1,0 +1,5 @@
+Sentence:
+In a residential building, an accessible bedroom (see clause 4.2.9) should be provided with accessible sanitary accommodation.
+
+Object identified:
+clause 4 . 2 . 9

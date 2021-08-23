@@ -1,0 +1,5 @@
+Sentence:
+The same mix should be used in calculation of the DER, including any pro rata contribution made by solutions such as CHP.
+
+Object identified:
+mix

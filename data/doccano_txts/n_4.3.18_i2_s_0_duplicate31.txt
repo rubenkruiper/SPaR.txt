@@ -1,0 +1,5 @@
+Sentence:
+The design of radial gangways - those running `at right angles' to seating rows - should allow safe access and minimise possible hazards to users.
+
+Object identified:
+right angles

@@ -1,0 +1,5 @@
+Sentence:
+The verifier should select the units to be tested by the applicant
+
+Object identified:
+units

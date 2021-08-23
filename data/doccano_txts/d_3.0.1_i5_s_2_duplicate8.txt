@@ -1,0 +1,5 @@
+Sentence:
+It is an offence to cause pollution and courts now impose heavy fines.
+
+Object identified:
+courts

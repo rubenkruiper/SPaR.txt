@@ -1,0 +1,5 @@
+Sentence:
+On completion of the extension or alteration to the building services system, the commissioning information should be updated in the logbooks.
+
+Object identified:
+logbooks

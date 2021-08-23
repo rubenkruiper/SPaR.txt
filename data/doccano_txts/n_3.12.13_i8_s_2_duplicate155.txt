@@ -1,0 +1,5 @@
+Sentence:
+Floor surfaces should have a non-slip finish.
+
+Object identified:
+non - slip finish

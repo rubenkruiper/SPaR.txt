@@ -1,0 +1,5 @@
+Sentence:
+A leaflet giving further information on home improvements is available at http://www.scotland.gov.uk/topics/built-environment/building/building-standards.
+
+Object identified:
+leaflet

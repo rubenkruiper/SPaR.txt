@@ -1,0 +1,5 @@
+Sentence:
+The shaft should be closed at the base and replacement air is provided from the automatic opening ventilator in the adjacent stairwell to help the efficiency of the shaft system.
+
+Object identified:
+stairwell

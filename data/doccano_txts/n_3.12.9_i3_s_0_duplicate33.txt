@@ -1,0 +1,5 @@
+Sentence:
+Where people are moving around, such as within the retail area of a large superstore or the concourse of a shopping mall, their distance from an accessible toilet will vary.
+
+Object identified:
+concourse

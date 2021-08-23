@@ -1,0 +1,5 @@
+Sentence:
+Wood pellet burning appliances can appear similar to other wood fuelled appliances however they are normally designed and manufactured specifically for the combustion of wood pellets fuels only.
+
+Object identified:
+wood pellets fuels

@@ -1,0 +1,5 @@
+Sentence:
+It is important that any outbreak of fire in premises is detected at an early stage in order that the occupants once alerted can commence evacuation of the premises as soon as possible.
+
+Object identified:
+alerted

@@ -1,0 +1,5 @@
+Sentence:
+for healthcare buildings, to recommendations in NHS Scotland Scottish Health Guidance Note `Safe Hot Water and Surface Temperatures'
+
+Object identified:
+NHS Scotland Scottish Health Guidance Note

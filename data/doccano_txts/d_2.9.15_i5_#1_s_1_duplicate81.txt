@@ -1,0 +1,5 @@
+Sentence:
+safety grilles) should be at least 1m2, and
+
+Object identified:
+1m2

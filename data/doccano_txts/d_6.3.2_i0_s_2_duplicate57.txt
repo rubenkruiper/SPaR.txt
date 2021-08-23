@@ -1,0 +1,5 @@
+Sentence:
+a thermostatic radiator valve (TRV) to each radiator.
+
+Object identified:
+thermostatic radiator valve
