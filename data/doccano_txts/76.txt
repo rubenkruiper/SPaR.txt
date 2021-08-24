@@ -1,0 +1,8 @@
+Sentence:
+Radon risk report - the atlas presented in the report contains simplified maps that are indicative rather that definitive with each 1km grid square coloured according to the highest radon potential found within it.
+
+Object identified:
+radon potential
+
+Document id:
+d_3.2.1_i2_s_0

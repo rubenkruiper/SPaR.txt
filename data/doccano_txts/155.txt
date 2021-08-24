@@ -1,0 +1,8 @@
+Sentence:
+There is no maximum U-value for display windows (refer clause 6.2.2).
+
+Object identified:
+clause 6 . 2 . 2
+
+Document id:
+n_6.2.11_i5_#2_s_0

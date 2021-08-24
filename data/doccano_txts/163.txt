@@ -1,0 +1,8 @@
+Sentence:
+Guidance on protection from spillage is provided to Standard 3.24.
+
+Object identified:
+spillage
+
+Document id:
+n_3.23.3_i2_s_0

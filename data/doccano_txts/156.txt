@@ -1,0 +1,8 @@
+Sentence:
+ a height adjustable wash hand basin
+
+Object identified:
+a height adjustable
+
+Document id:
+n_3.12.13_i9_#1_s_0

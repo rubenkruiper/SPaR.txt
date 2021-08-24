@@ -1,4 +1,4 @@
-import json, os, random
+import json, os, random, glob
 from collections import Counter
 from allennlp.data.tokenizers import PretrainedTransformerTokenizer
 
@@ -7,8 +7,9 @@ random.seed(14)
 
 class ObjectAndContextSelector():
     def __init__(self,
+                 all_gold_doc_ids,
                  bert_model_name: str = "bert-base-cased"):
-        self.predictions_input = ''
+        self.gold_doc_ids = [x.rsplit('/',1)[1] for x in all_gold_doc_ids]
 
         if bert_model_name is not None:
             self.tokenizer = PretrainedTransformerTokenizer(bert_model_name)
@@ -83,12 +84,12 @@ class ObjectAndContextSelector():
                 text += " " + w
 
         text = text[1:]
-        if text.startswith('the ') or text.startswith('The '):
-            text = text[4:]
-        elif text.startswith('a ') or text.startswith('A '):
-            text = text[2:]
-        elif text.startswith('an ') or text.startswith('An '):
-            text = text[3:]
+        # if text.startswith('the ') or text.startswith('The '):
+        #     text = text[4:]
+        # elif text.startswith('a ') or text.startswith('A '):
+        #     text = text[2:]
+        # elif text.startswith('an ') or text.startswith('An '):
+        #     text = text[3:]
         return text
 
     def grab_definitions(self, file_paths):
@@ -145,6 +146,14 @@ class ObjectAndContextSelector():
             token_list = prediction['words']
             doc_id = prediction['doc_id']
 
+            if doc_id in self.gold_doc_ids:
+                # ignore any doc_ids that have been annotated (used in train/dev/test)
+                continue
+
+            if prediction["sentence"].startswith("all_figures"):
+                # ignore figure references
+                continue
+
             self.sentences[doc_id] = prediction["sentence"]
 
             # not sure if this is necessary; doesn't seem to be
@@ -162,28 +171,27 @@ class ObjectAndContextSelector():
                     self.object_spans[object_span] = [doc_id]
 
     def select_and_write_predictions(self, k=165):
-        # ToDo select objects
+        # Select random objects
         random_objects = random.choices(list(self.object_spans.keys()), k=k)
-        # Todo select doc_id for this object
+        # Select random doc_id where this object occurs
         random_doc_ids = []
         for object in random_objects:
              random_doc_ids.append(random.choice(self.object_spans[object]))
-        # ToDo grab the sentence, and then write with doc_id as filename
-        doc_id_counter = Counter(random_doc_ids)
-        duplicate_doc_ids = [doc_id for doc_id, c in doc_id_counter.items() if c > 1]
-        dup_idx = 0
+
+        # Grab the sentence, and then write with doc_id and object
+        file_idx = 0
         for doc_id, obj in zip(random_doc_ids, random_objects):
             lines_to_write = [
                 "Sentence:\n",
                 self.sentences[doc_id],
                 "\n\nObject identified:\n",
-                obj
+                obj,
+                "\n\nDocument id:\n",
+                doc_id
             ]
-            if doc_id in duplicate_doc_ids:
-                doc_id += '_duplicate' + str(dup_idx)
-                dup_idx+= 1
+            file_idx += 1
 
-            with open("data/doccano_txts/{}.txt".format(doc_id), 'w') as f:
+            with open("data/doccano_txts/{}.txt".format(str(file_idx)), 'w') as f:
                 f.writelines(lines_to_write)
                 f.close()
 
@@ -193,8 +201,9 @@ if __name__ == "__main__":
     file_paths = ['../i-ReC/data/scottish/domestic_standards.json',
                   '../i-ReC/data/scottish/non-domestic_standards.json']
     predictions_file = 'predictions/all_sentence_predictions.json'
+    all_gold_doc_ids = glob.glob('data/all_gold/*.txt')
     num_to_select = 165
 
-    object_selector = ObjectAndContextSelector()
+    object_selector = ObjectAndContextSelector(all_gold_doc_ids)
     object_selector.read_predictions(predictions_file, file_paths)
     object_selector.select_and_write_predictions(num_to_select)

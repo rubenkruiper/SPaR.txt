@@ -1,5 +1,0 @@
-Sentence:
-all_figures_dict_key_5
-
-Object identified:
-all _ figures _ dict _ key _ 5

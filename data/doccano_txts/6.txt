@@ -1,0 +1,8 @@
+Sentence:
+a smouldering fire), the smoke might not escape so readily when subject to adverse wind or stack effects.
+
+Object identified:
+a smouldering fire
+
+Document id:
+d_2.9.15_i3_s_4

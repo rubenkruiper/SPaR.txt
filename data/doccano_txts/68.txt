@@ -1,0 +1,8 @@
+Sentence:
+Instructions on taking readings from the automatic monitoring and targeting systems (AM&T), when present, should be provided to ensure the benefits of the installation are realised.
+
+Object identified:
+realised
+
+Document id:
+n_6.8.0_i3_s_0

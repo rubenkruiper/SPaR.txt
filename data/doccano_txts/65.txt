@@ -1,0 +1,8 @@
+Sentence:
+Field drains, where provided, should be laid in accordance with the recommendations in clause 10 of BS 8301: 1985.
+
+Object identified:
+clause 10
+
+Document id:
+d_3.3.1_i4_s_1

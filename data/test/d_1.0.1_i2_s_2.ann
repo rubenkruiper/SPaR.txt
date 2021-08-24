@@ -1,4 +1,4 @@
-T1	Object_span 0 13	The collation
+T1	Object_span 0 3;4 13	The collation
 T2	Discourse_span 14 17	and
 T3	Object_span 0 3;18 31	The dissemination
 T4	Discourse_span 32 34	of

@@ -11,7 +11,7 @@ T11	Discourse_span 91 92	)
 T12	Object_span 93 109	emissions target
 T13	Discourse_span 110 116	within
 T14	Object_span 117 120;132 170	the Gold level of Sustainability labelling
-T15	Object_span 117 127;132 170	the Silver Gold level of Sustainability labelling
+T15	Object_span 117 127;137 170	the Silver level of Sustainability labelling
 T16	Discourse_span 128 131	and
 T18	Object_span 186 210	the CO2 emissions target
 T19	Action_span 211 221	introduced
@@ -26,3 +26,5 @@ A1	Confidence T23
 T17	Object_span 174 182	relation
 T25	Discourse_span 171 173	in
 T26	Discourse_span 183 185	to
+A2	Confidence T15
+#2	AnnotatorNotes T15	Annotation issue here w.r.t. number of fragments that can be part of a discontiguous span I think'/?

@@ -19,7 +19,7 @@ T18	Object_span 132 135;144 151	the U-value
 T19	Action_span 152 162	calculated
 T20	Discourse_span 163 166	for
 T21	Functional_span 167 170	all
-T22	Object_span 171 182	the windows
+T22	Object_span 171 174;175 182	the windows
 T23	Discourse_span 182 183	,
 T24	Object_span 171 174;184 189	the doors
 T25	Discourse_span 190 193	and

@@ -1,4 +1,4 @@
-T1	Object_span 0 6	A wall
+T1	Object_span 0 1;2 6	A wall
 T2	Discourse_span 6 7	,
 T3	Object_span 0 1;8 17	A partition
 T4	Discourse_span 18 20	or

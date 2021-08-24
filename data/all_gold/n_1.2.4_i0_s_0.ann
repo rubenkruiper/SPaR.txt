@@ -7,7 +7,7 @@ T6	Functional_span 62 72	additional
 T7	Action_span 82 91	including
 T8	Object_span 116 120;92 102	ties horizontal
 T9	Discourse_span 103 106	and
-T10	Object_span 107 120	vertical ties
+T10	Object_span 107 115;116 120	vertical ties
 T11	Discourse_span 121 126	where
 T12	Object_span 127 138	appropriate
 T13	Discourse_span 139 142	and

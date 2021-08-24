@@ -1,5 +1,0 @@
-Sentence:
-In general, openings and service penetrations in elements of structure need not be protected from fire unless there is the possibility of structural failure.
-
-Object identified:
-structural failure

@@ -1,0 +1,8 @@
+Sentence:
+containing only fixed plant or machinery, the only normal visits to which are intermittent, for inspection or maintenance purposes, or
+
+Object identified:
+plant
+
+Document id:
+n_4.2.1_i3_#0_s_0

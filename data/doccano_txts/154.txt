@@ -1,0 +1,8 @@
+Sentence:
+Taps serving wash or hand rinse basins should have a flow rate of not more than 6 litres per minute.
+
+Object identified:
+Taps serving wash
+
+Document id:
+d_3.27.2_i2_s_0

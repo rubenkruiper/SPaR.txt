@@ -23,7 +23,7 @@ T19	Discourse_span 148 150	to
 T20	Object_span 151 163	Standard 2.1
 T21	Action_span 164 177	could be used
 T22	Discourse_span 178 181	for
-T23	Object_span 182 202	the structural frame
+T23	Object_span 182 185;186 202	the structural frame
 T24	Discourse_span 202 203	,
 T25	Object_span 182 185;204 211	the columns
 T26	Discourse_span 212 215	and

@@ -1,5 +1,0 @@
-Sentence:
-Any enclosure for the storage of waste should be so designed as to prevent access by vermin unless the waste is to be stored in secure containers with close fitting lids, such as wheeled bins.
-
-Object identified:
-lids

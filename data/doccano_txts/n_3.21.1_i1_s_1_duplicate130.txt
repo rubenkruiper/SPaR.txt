@@ -1,5 +1,0 @@
-Sentence:
-Discomfort from draughts can be avoided by placing vents close to appliances e.g.
-
-Object identified:
-Discomfort

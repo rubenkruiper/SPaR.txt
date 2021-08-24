@@ -1,0 +1,8 @@
+Sentence:
+This is because fire and smoke can penetrate weaknesses at junctions which could compromise the means of escape.
+
+Object identified:
+weaknesses
+
+Document id:
+n_2.9.28_i0_s_1

@@ -9,6 +9,6 @@ T8	Discourse_span 76 78	on
 T9	Discourse_span 79 83	what
 T10	Object_span 105 115;84 91	substances harmful
 T11	Discourse_span 92 94	or
-T12	Object_span 95 115	dangerous substances
+T12	Object_span 105 115;95 104	substances dangerous
 T13	Action_span 116 130	may consist of
 T14	Discourse_span 130 131	.

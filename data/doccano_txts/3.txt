@@ -1,0 +1,8 @@
+Sentence:
+Non-domestic use within dwellings - some new dwellings may incorporate surgeries, consulting rooms, offices or other accommodation of a floor area not exceeding 50m#SUP#2#SUP# in aggregate, used by an occupant of the dwelling in a professional or business capacity.
+
+Object identified:
+Non - domestic use
+
+Document id:
+d_6.1.1_i3_s_0

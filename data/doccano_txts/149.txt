@@ -1,0 +1,8 @@
+Sentence:
+radiators as emitters).
+
+Object identified:
+emitters
+
+Document id:
+d_6.1.2_i7_#6_s_1

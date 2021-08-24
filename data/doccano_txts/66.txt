@@ -1,0 +1,8 @@
+Sentence:
+To align with the advice above, guidance to this standard is amended, recommending that Category 3 Metal Composite Material (MCM) cladding should not be used in any situation.
+
+Object identified:
+MCM
+
+Document id:
+d_2.6.0_i4_s_0

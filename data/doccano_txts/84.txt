@@ -1,0 +1,8 @@
+Sentence:
+To reduce the water flow rates at taps for wash or hand rinse basins (WHBs) options include the installation of flow restrictors, or aerators.
+
+Object identified:
+flow restrictors
+
+Document id:
+d_3.27.1_i5_s_0

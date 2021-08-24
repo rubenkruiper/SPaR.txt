@@ -12,6 +12,6 @@ T11	Functional_span 115 128	predominantly
 T12	Action_span 129 135	reduce
 T13	Object_span 136 139;149 177	mid frequency sound transmission
 T14	Discourse_span 140 143	and
-T15	Object_span 144 158	high frequency
+T15	Object_span 144 148;149 177	high frequency sound transmission
 A1	Confidence T6
 #1	AnnotatorNotes T6	low frequency sound... sound transmission... not sure if breaking up makes sense

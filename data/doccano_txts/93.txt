@@ -1,0 +1,8 @@
+Sentence:
+There is a common perception that `tight' construction promotes indoor air pollution.
+
+Object identified:
+indoor air pollution
+
+Document id:
+d_3.14.0_i5_s_5

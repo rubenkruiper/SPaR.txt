@@ -1,0 +1,8 @@
+Sentence:
+For example, a vent cowl could be installed on the top of the smoke shaft to help draw the smoke out of the shaft for all wind directions.
+
+Object identified:
+a vent cowl
+
+Document id:
+d_2.9.15_i3_s_6

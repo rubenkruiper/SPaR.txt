@@ -1,0 +1,8 @@
+Sentence:
+a decorative fuel-effect gas appliance with 20% efficiency as secondary heating.
+
+Object identified:
+20 % efficiency as secondary heating
+
+Document id:
+d_6.1.3_i2_#3_s_1

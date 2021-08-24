@@ -1,5 +1,0 @@
-Sentence:
-This will allow fire-fighters flexibility in their operations.
-
-Object identified:
-operations

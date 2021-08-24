@@ -1,5 +1,0 @@
-Sentence:
-However, protected lobbies need not be provided to shared residential accommodation.
-
-Object identified:
-protected

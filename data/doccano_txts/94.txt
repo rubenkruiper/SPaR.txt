@@ -1,0 +1,8 @@
+Sentence:
+ See guidance to Standard 2.14 for explanation of 7.5m and 18m trigger heights and additional fire-fighting facilities.
+
+Object identified:
+7 . 5m trigger heights
+
+Document id:
+d_2.9.2_i3_#3_s_0

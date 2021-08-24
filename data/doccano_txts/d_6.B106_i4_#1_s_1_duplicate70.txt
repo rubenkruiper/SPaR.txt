@@ -1,5 +1,0 @@
-Sentence:
-The percentage area of windows/doors/rooflight area as proposed may also be greater or less than 25%.
-
-Object identified:
-windows /

@@ -1,0 +1,8 @@
+Sentence:
+In a slower developing fire, the early warning system should provide the occupants with sufficient time to escape and in those cases where the fire develops quickly, the suppression system should control the fire giving the occupants the opportunity to escape.
+
+Object identified:
+the fire develops
+
+Document id:
+d_2.9.7_i1_s_1

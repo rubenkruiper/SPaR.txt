@@ -1,0 +1,8 @@
+Sentence:
+ where it can be obstructed (for example by furniture)
+
+Object identified:
+obstructed
+
+Document id:
+n_3.20.20_i13_#1_s_0

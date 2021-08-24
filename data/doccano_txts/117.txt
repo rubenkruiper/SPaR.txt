@@ -1,0 +1,8 @@
+Sentence:
+In small single-storey buildings where the occupant number is not more than 10 and the floor area is such that everyone can see each other, a shouted warning "FIRE" by the person discovering the fire could be all that is needed.
+
+Object identified:
+each other
+
+Document id:
+n_2.11.14_i0_s_0

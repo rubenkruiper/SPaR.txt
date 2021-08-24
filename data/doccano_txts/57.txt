@@ -1,0 +1,8 @@
+Sentence:
+Heavy materials should not be stored over drains or sewers.
+
+Object identified:
+Heavy materials
+
+Document id:
+d_3.5.3_i2_s_2

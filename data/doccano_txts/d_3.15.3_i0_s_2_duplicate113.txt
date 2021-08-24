@@ -1,5 +1,0 @@
-Sentence:
-However cold, level-deck roofs, should be avoided because interstitial condensation is likely and its effect on the structure and insulation can be severe and many instances of failure in such systems have been recorded.
-
-Object identified:
-cold

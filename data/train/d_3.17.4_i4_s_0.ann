@@ -3,7 +3,7 @@ T2	Action_span 58 60	is
 T3	Object_span 61 88	an independent organisation
 T4	Discourse_span 89 92	for
 T5	Action_span 93 100	setting
-T6	Object_span 101 120	standards of safety
+T6	Object_span 101 113;114 120	standards of safety
 T7	Discourse_span 120 121	,
 T8	Object_span 101 113;122 132	standards of efficiency
 T9	Discourse_span 133 136	and

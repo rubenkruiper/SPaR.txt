@@ -10,7 +10,7 @@ T9	Discourse_span 51 52	,
 T10	Discourse_span 53 57	both
 T11	Discourse_span 58 60	to
 T12	Action_span 61 72	accommodate
-T13	Object_span 73 79	a pram
+T13	Object_span 73 74;75 79	a pram
 T14	Discourse_span 80 82	or
 T15	Object_span 73 74;83 88	a buggy
 T16	Discourse_span 89 92	and

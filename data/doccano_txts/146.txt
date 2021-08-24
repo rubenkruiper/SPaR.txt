@@ -1,0 +1,8 @@
+Sentence:
+Note: for DER, this element of calculation must use Htb calculated from length of junctions and individual psi values (see clause 6.2.3).
+
+Object identified:
+clause 6 . 2 . 3
+
+Document id:
+d_6.1.2_i7_#5_s_1

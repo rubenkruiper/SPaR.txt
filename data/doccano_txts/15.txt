@@ -1,0 +1,8 @@
+Sentence:
+The clear opening width may reduce to 800mm where a door is approached head-on.
+
+Object identified:
+head - on
+
+Document id:
+n_4.2.5_i5_#1_s_0

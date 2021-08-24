@@ -1,0 +1,8 @@
+Sentence:
+There is a risk of vertical fire spread from specified attachments to an external wall including balconies, solar panels and solar shading.
+
+Object identified:
+vertical fire spread
+
+Document id:
+d_2.7.2_i0_s_0

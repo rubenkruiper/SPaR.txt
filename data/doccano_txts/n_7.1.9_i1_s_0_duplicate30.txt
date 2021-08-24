@@ -1,5 +1,0 @@
-Sentence:
-Aspect Gold level 1: Carbon dioxide emissions - This aspect applies to all non-domestic buildings.
-
-Object identified:
-Aspect Gold level 1 : Carbon dioxide emissions -

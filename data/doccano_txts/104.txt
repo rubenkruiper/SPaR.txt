@@ -1,0 +1,8 @@
+Sentence:
+The infiltration field provides secondary treatment and is often critical for protecting the environment from pollution.
+
+Object identified:
+pollution
+
+Document id:
+d_3.8.0_i0_s_3

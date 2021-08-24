@@ -1,0 +1,8 @@
+Sentence:
+when designing a lighting system consideration should be given to the advances in lighting technology, particularly with light emitting diodes technology (LED), and
+
+Object identified:
+the advances
+
+Document id:
+n_6.5.0_i2_#0_s_0

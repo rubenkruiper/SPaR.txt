@@ -1,0 +1,8 @@
+Sentence:
+A flight consisting wholly of tapered treads, forming a helix or spiral, should be constructed to give safe passage.
+
+Object identified:
+a helix spiral
+
+Document id:
+d_4.3.10_i1_s_0

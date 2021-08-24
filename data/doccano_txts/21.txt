@@ -1,0 +1,8 @@
+Sentence:
+Circulation routes within common areas should allow safe and convenient passage and provide space for manoeuvring at junctions and when passing through doorways.
+
+Object identified:
+Circulation routes
+
+Document id:
+d_4.2.1_i3_s_0

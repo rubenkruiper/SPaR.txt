@@ -1,0 +1,8 @@
+Sentence:
+The design and construction of a building should ensure that, by taking into account the factors set out above, the building does not fail in normal use (serviceability limit state).
+
+Object identified:
+serviceability limit state
+
+Document id:
+n_1.1.0_i3_s_2

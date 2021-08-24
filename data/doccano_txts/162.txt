@@ -1,0 +1,8 @@
+Sentence:
+ of sales area, or part thereof
+
+Object identified:
+of
+
+Document id:
+n_3.12.4_i1_#2_s_0

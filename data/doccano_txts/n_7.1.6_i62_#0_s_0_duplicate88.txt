@@ -1,5 +1,0 @@
-Sentence:
-pupil active travel facilities: 1 secure active travel locker per pupil, with a minimum size of 300mm wide, 450mm deep 1200mm high to accommodate active travel equipment i.e.
-
-Object identified:
-travel equipment

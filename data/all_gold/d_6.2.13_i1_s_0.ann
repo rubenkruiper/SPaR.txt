@@ -9,7 +9,7 @@ T6	Discourse_span 60 61	,
 T7	Object_span 62 79	the fabric values
 T8	Action_span 80 90	identified
 T9	Discourse_span 91 93	in
-T10	Object_span 94 105	columns (b)
+T10	Object_span 102 105;94 101	(b) columns
 T11	Object_span 110 113;94 101	(c) columns
 T12	Discourse_span 106 109	and
 T13	Discourse_span 114 116	of

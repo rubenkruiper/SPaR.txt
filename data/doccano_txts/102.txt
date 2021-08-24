@@ -1,0 +1,8 @@
+Sentence:
+The discharge point of such pipework should be provided in accordance with the guidance given for termination in clause 4.9.3.
+
+Object identified:
+clause 4 . 9 . 3
+
+Document id:
+d_4.9.4_i1_s_0

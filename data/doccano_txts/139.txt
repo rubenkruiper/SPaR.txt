@@ -1,0 +1,8 @@
+Sentence:
+Where a building has a basement storey at a depth of more than 10m, every basement storey should form a separate compartment.
+
+Object identified:
+10m
+
+Document id:
+n_2.1.7_i1_s_0

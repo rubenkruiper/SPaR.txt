@@ -14,7 +14,7 @@ T13	Discourse_span 105 107	in
 T14	Discourse_span 108 113	their
 T15	Object_span 114 126;139 147	professional capacity
 T16	Discourse_span 127 129	or
-T17	Object_span 130 147	business capacity
+T17	Object_span 130 138;139 147	business capacity
 T18	Action_span 148 168	should be considered
 T19	Discourse_span 169 171	as
 T20	Functional_span 172 181	a part of

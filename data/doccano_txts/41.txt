@@ -1,0 +1,8 @@
+Sentence:
+Continuous mechanical ventilation - for smaller, domestic sized developments, a mechanical ventilation system complying with BRE Digest 398, `Continuous mechanical ventilation in dwellings: design, installation and operation' may be appropriate.
+
+Object identified:
+BRE Digest 398 mechanical ventilation
+
+Document id:
+n_3.14.5_i6_s_0

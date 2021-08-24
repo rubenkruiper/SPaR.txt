@@ -1,0 +1,8 @@
+Sentence:
+This should raise occupant awareness of CO#SUB#2#SUB# levels (and therefore other pollutants) present in their homes and of the need for them to take proactive measures to increase the ventilation.
+
+Object identified:
+CO # SUB # 2 # SUB # levels
+
+Document id:
+d_3.14.2_i1_s_1

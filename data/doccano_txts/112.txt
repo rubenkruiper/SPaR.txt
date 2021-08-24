@@ -1,0 +1,8 @@
+Sentence:
+Opposing shop frontages are those which make an angle of less than 80#SUP#o#SUP# with each other.
+
+Object identified:
+80 # SUP # o # SUP #
+
+Document id:
+n_2.C176_i0_s_3

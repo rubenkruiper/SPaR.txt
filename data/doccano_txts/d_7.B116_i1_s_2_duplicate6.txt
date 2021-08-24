@@ -1,5 +1,0 @@
-Sentence:
-The focus should be on maintaining internal comfort in an efficient manner.
-
-Object identified:
-efficient manner

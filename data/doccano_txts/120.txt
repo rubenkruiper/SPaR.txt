@@ -1,0 +1,8 @@
+Sentence:
+A reduction in sound transmission and increase in sound insulation are expected with increasing mass, as the heavier the wall or floor, the less it vibrates in response to sound waves and hence the less sound energy is radiated.
+
+Object identified:
+v
+
+Document id:
+d_5.0.5_i3_#0_s_1

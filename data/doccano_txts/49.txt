@@ -1,0 +1,8 @@
+Sentence:
+The employer or other responsible person should make the necessary arrangements for the safe evacuation of all occupants from the temporary waiting spaces.
+
+Object identified:
+the temporary waiting spaces
+
+Document id:
+n_2.9.30_i1_s_2

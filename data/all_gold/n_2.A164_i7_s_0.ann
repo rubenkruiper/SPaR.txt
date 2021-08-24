@@ -4,7 +4,7 @@ T3	Action_span 26 37	is measured
 T4	Discourse_span 38 40	to
 T5	Object_span 41 57	a protected door
 T6	Discourse_span 58 60	in
-T7	Object_span 61 79	a compartment wall
+T7	Object_span 61 62;63 79	a compartment wall
 T8	Discourse_span 80 82	or
 T9	Object_span 61 62;83 103	a sub-compartment wall
 T10	Discourse_span 104 106	in

@@ -1,0 +1,8 @@
+Sentence:
+on the landing of each level served, tactile call buttons and visual and tactile indication of the storey level, and
+
+Object identified:
+tactile indication
+
+Document id:
+d_4.2.5_i7_#7_s_0

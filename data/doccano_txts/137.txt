@@ -1,0 +1,8 @@
+Sentence:
+The main cause of these fires was inadequate maintenance of the chimneys, including routine cleaning of flues.
+
+Object identified:
+The main cause
+
+Document id:
+n_3.20.0_i0_s_2

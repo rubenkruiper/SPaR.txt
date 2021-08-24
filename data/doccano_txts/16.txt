@@ -1,0 +1,8 @@
+Sentence:
+Energy savings from building `tighter' could make significant savings on energy bills.
+
+Object identified:
+Energy savings
+
+Document id:
+n_3.14.0_i4_s_4

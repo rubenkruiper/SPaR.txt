@@ -1,0 +1,8 @@
+Sentence:
+The type of system and performance sought should be considered at an early stage in the design process.
+
+Object identified:
+stage
+
+Document id:
+n_4.7.0_i1_s_1

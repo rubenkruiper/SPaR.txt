@@ -2,7 +2,7 @@ T1	Discourse_span 0 4	When
 T2	Object_span 5 14	reference
 T3	Action_span 15 22	is made
 T4	Discourse_span 23 25	to
-T5	Object_span 26 52	European Classification A2
+T5	Object_span 26 49;50 52	European Classification A2
 T6	Discourse_span 52 53	,
 T7	Discourse_span 55 56	,
 T8	Object_span 26 49;54 55	European Classification B

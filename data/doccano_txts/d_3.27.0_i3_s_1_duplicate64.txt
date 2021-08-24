@@ -1,5 +1,0 @@
-Sentence:
-They cover the design, installation and maintenance of plumbing systems, water fittings and water-using appliances.
-
-Object identified:
-water fittings

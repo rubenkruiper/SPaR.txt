@@ -17,7 +17,7 @@ T14	Discourse_span 113 115	in
 T15	Object_span 116 126	column (A)
 T16	Discourse_span 127 129	of
 T17	Object_span 130 148	the table overleaf
-T18	Action_span 149 165	should be sealed
+T18	Action_span 149 158;159 165	should be sealed
 T19	Discourse_span 166 168	or
 T20	Action_span 149 158;169 176	should be trapped
 T21	Discourse_span 177 179	to

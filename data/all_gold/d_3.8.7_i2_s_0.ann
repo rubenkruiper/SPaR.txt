@@ -8,3 +8,5 @@ T7	Discourse_span 48 50	or
 T8	Discourse_span 77 79	or
 T9	Object_span 80 98	the water stopcock
 T10	Discourse_span 98 99	.
+A1	Confidence T5
+#1	AnnotatorNotes T5	Issue here with current annotation scheme?

@@ -11,7 +11,7 @@ T10	Action_span 93 96	are
 T11	Discourse_span 97 99	in
 T12	Object_span 100 112	the building
 T13	Discourse_span 113 115	or
-T14	Object_span 116 119	not
+T14	Functional_span 116 119	not
 T15	Discourse_span 119 120	.
 T16	Discourse_span 15 16	`
 T17	Discourse_span 39 40	'

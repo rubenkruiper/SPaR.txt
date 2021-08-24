@@ -1,0 +1,8 @@
+Sentence:
+When a classification includes ``s3, d2'' this means that there is no limit set for smoke production and/or flaming droplets/particles.
+
+Object identified:
+s3
+
+Document id:
+n_2.E190_i3_s_1

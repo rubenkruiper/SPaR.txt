@@ -1,0 +1,8 @@
+Sentence:
+Any installation should enable cylinders to stand upright, secured by straps or chains against a wall outside the building.
+
+Object identified:
+upright
+
+Document id:
+n_4.11.3_i2_s_0

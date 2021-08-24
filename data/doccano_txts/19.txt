@@ -1,0 +1,8 @@
+Sentence:
+At night, any noise made when generally there is little background noise, is often perceived as excessive.
+
+Object identified:
+background noise
+
+Document id:
+d_5.2.0_i0_s_3

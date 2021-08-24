@@ -1,0 +1,8 @@
+Sentence:
+Replacement hot water storage vessels should be insulated as for new systems.
+
+Object identified:
+Replacement
+
+Document id:
+n_6.4.2_i0_s_2

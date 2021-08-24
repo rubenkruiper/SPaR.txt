@@ -1,0 +1,8 @@
+Sentence:
+Fixed oil storage tanks between 90 and 2500 litres and the fuel feed system connecting them to a combustion appliance should be strong enough to resist physical damage and corrosion so that the risk of oil spillage is minimised.
+
+Object identified:
+90
+
+Document id:
+n_3.24.1_i0_s_0

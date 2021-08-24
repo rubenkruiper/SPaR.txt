@@ -1,0 +1,8 @@
+Sentence:
+size and shape, internal layout and dimensions (see clause 6.0.12)
+
+Object identified:
+size
+
+Document id:
+n_6.1.5_i1_#0_s_0

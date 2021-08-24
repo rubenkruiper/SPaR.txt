@@ -1,0 +1,8 @@
+Sentence:
+Therefore dependant on assessment at design stage a category M, L1, L2, L3, L4, or L5 should be installed.
+
+Object identified:
+design stage
+
+Document id:
+n_2.11.11_i2_s_0

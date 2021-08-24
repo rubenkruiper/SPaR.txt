@@ -1,5 +1,0 @@
-Sentence:
-A ramp landing should:
-
-Object identified:
-ramp landing

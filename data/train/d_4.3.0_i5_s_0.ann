@@ -10,7 +10,7 @@ T9	Object_span 61 69	parallel
 T10	Discourse_span 70 72	to
 T11	Object_span 73 83	the nosing
 T12	Discourse_span 84 86	of
-T13	Object_span 87 96	the tread
+T13	Object_span 87 90;91 96	the tread
 T14	Discourse_span 97 99	or
 T15	Object_span 100 107;87 90	landing the
 T16	Functional_span 108 118	next above

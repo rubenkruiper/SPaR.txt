@@ -1,0 +1,8 @@
+Sentence:
+Medium fire resistance duration is sufficient for a fire door in the enclosing structure of a fire-fighting shaft.
+
+Object identified:
+Medium
+
+Document id:
+d_2.A40_i30_#4_s_0

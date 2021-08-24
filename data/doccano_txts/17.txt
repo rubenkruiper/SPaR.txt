@@ -1,0 +1,8 @@
+Sentence:
+Even if the room does not contain an ignition source, the potential for a fire to be set accidentally or deliberately should be assessed.
+
+Object identified:
+deliberately
+
+Document id:
+d_2.9.18_i3_s_0

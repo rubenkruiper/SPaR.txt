@@ -1,5 +1,0 @@
-Sentence:
-For the definition of DnT,w and L'nT,w see clause 5.0.4.
-
-Object identified:
-definition

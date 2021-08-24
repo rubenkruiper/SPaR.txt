@@ -1,0 +1,8 @@
+Sentence:
+However where the balcony provides 2 directions of escape, the travel distance can be unlimited.
+
+Object identified:
+the balcony
+
+Document id:
+d_2.9.23_i1_s_1

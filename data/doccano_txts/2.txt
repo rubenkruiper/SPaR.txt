@@ -1,0 +1,8 @@
+Sentence:
+The first additional step is calculating the total rate of heat loss for the more challenging column (a) notional extension, using the same process outlined in clause 6.B.2.
+
+Object identified:
+the total rate
+
+Document id:
+d_6.B108_i1_s_0

@@ -1,0 +1,8 @@
+Sentence:
+To minimise the risk of condensation on any inner surface, cold bridging at a floor, wall, roof or other building element should be avoided.
+
+Object identified:
+a floor wall
+
+Document id:
+n_3.15.4_i1_s_0

@@ -5,7 +5,7 @@ T4	Object_span 47 60	the elevation
 T5	Discourse_span 61 67	or/and
 T6	Object_span 68 85	rescue elevations
 T7	Discourse_span 86 91	where
-T8	Object_span 92 114	the principal entrance
+T8	Object_span 106 114;92 105	entrance the principal
 T9	Discourse_span 114 115	,
 T10	Discourse_span 116 118	or
 T11	Object_span 119 128;92 105	entrances the principal

@@ -1,0 +1,8 @@
+Sentence:
+using the relevant formulae within SAP 2012
+
+Object identified:
+SAP
+
+Document id:
+d_6.0.7_i1_#1_s_0

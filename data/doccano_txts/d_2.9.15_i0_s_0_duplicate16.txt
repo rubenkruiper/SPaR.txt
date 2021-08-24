@@ -1,5 +1,0 @@
-Sentence:
-Natural ventilation uses external openings in the roof or walls of the building to remove smoke using its own buoyancy.
-
-Object identified:
-Natural

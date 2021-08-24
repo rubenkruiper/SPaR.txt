@@ -1,0 +1,8 @@
+Sentence:
+This guidance has been prepared mainly with domestic sized installations in mind, such as those comprising space and water heating or cooking facilities, including their flues.
+
+Object identified:
+domestic sized installations
+
+Document id:
+n_3.17.1_i0_s_0

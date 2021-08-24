@@ -1,0 +1,8 @@
+Sentence:
+The stability of existing buildings may be affected by a new building located in their vicinity.
+
+Object identified:
+vicinity
+
+Document id:
+d_1.1.5_i0_s_0

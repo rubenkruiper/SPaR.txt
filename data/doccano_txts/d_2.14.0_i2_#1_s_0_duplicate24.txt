@@ -1,5 +1,0 @@
-Sentence:
- protecting life and property in the event of fires in its area.''
-
-Object identified:
-fires

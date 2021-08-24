@@ -1,0 +1,8 @@
+Sentence:
+There are buildings designed and constructed for specialist activities, controlled environments or factory processes that normally involve high humidity levels.
+
+Object identified:
+high humidity levels
+
+Document id:
+d_3.15.0_i3_s_0

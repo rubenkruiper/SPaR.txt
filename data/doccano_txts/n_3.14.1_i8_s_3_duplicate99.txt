@@ -1,5 +1,0 @@
-Sentence:
-Any volume more than 3m above any floor level in that space may be disregarded.
-
-Object identified:
-volume

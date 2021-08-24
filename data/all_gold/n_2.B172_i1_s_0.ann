@@ -1,5 +1,5 @@
 T1	Object_span 0 35	The automatic fire detection system
-T2	Action_span 36 54	should be designed
+T2	Action_span 36 45;46 54	should be designed
 T3	Discourse_span 55 58	and
 T4	Action_span 36 45;59 68	should be installed
 T8	Object_span 88 100	the guidance

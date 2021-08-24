@@ -1,4 +1,4 @@
-T1	Object_span 0 9	A chimney
+T1	Object_span 0 1;2 9	A chimney
 T2	Discourse_span 10 12	or
 T3	Object_span 0 1;13 22	A flue-pipe
 T4	Action_span 23 30	serving

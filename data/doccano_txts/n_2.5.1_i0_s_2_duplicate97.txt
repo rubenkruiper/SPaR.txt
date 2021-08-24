@@ -1,5 +1,0 @@
-Sentence:
-For this reason, multiple layers are not recommended when carrying out refurbishment work involving the re-decoration of wall and ceiling surfaces.
-
-Object identified:
-multiple

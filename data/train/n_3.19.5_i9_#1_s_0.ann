@@ -11,7 +11,7 @@ T10	Object_span 71 89	a fireplace recess
 T11	Discourse_span 89 90	,
 T12	Functional_span 91 94	nor
 T13	Discourse_span 95 100	where
-T14	Object_span 101 109	the back
+T14	Object_span 101 104;105 109	the back
 T15	Discourse_span 110 112	or
 T16	Object_span 101 104;113 118	the sides
 T17	Discourse_span 119 121	of

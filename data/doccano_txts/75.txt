@@ -1,0 +1,8 @@
+Sentence:
+A logbook should be provided and contain information about all aspects of energy system operation and maintenance to enable the building user to optimise the use of fuel.
+
+Object identified:
+A logbook
+
+Document id:
+n_6.8.1_i0_s_0

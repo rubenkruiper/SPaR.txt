@@ -1,0 +1,8 @@
+Sentence:
+ b. using a traditional piped drainage system as in clause 3.6.8.
+
+Object identified:
+a piped drainage system
+
+Document id:
+d_3.6.2_i2_s_0

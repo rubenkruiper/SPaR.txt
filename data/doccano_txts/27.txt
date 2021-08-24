@@ -1,0 +1,8 @@
+Sentence:
+The Standing Committee on Structural Safety (SCOSS) is an independent body supported by the Institution of Civil Engineers, the Institution of Structural Engineers and the Health and Safety Executive to maintain a continuing review of building and civil engineering matters affecting the safety of structures.
+
+Object identified:
+civil engineering matters
+
+Document id:
+n_1.0.1_i2_s_0

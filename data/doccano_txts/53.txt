@@ -1,0 +1,8 @@
+Sentence:
+It must only include items that residents should be undertaking without tools or specialist knowledge.
+
+Object identified:
+specialist knowledge
+
+Document id:
+d_7.B120_i22_s_1

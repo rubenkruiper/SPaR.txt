@@ -1,5 +1,0 @@
-Sentence:
-The pipe termination should be in a visible location and installed so that discharge will not endanger anyone inside or outside the building.
-
-Object identified:
-pipe termination

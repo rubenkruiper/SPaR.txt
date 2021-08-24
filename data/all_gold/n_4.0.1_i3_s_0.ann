@@ -6,7 +6,7 @@ T5	Discourse_span 45 47	to
 T6	Action_span 48 55	address
 T7	Object_span 56 62	safety
 T8	Discourse_span 63 66	and
-T9	Object_span 67 78	the welfare
+T9	Object_span 67 70;71 78	the welfare
 T10	Discourse_span 79 82	and
 T11	Object_span 67 70;83 94	the convenience
 T12	Discourse_span 95 97	of

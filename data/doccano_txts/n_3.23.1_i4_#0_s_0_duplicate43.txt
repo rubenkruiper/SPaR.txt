@@ -1,5 +1,0 @@
-Sentence:
-no protection required
-
-Object identified:
-protection required

@@ -16,3 +16,5 @@ T14	Object_span 113 123	insulation
 T15	Action_span 124 130	can be
 T16	Functional_span 131 137	severe
 T17	Discourse_span 137 138	.
+A1	Confidence T7
+A2	Confidence T16

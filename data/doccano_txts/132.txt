@@ -1,0 +1,8 @@
+Sentence:
+Being online is not only a useful communication tool, it is also becoming increasingly important to individuals in their day to day lives.
+
+Object identified:
+Being online
+
+Document id:
+d_4.14.0_i0_s_0

@@ -1,5 +1,0 @@
-Sentence:
-Additional fire safety measures including automatic fire suppression may be required in those premises where highly vulnerable occupants cannot self-evacuate the building, for example, where the occupant is bed-ridden or has limited mental capacity and may not respond to the fire alarm.
-
-Object identified:
-mental capacity

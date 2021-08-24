@@ -1,0 +1,8 @@
+Sentence:
+The Certification of Design (Building Structures) scheme has been approved by Scottish Ministers to confirm compliance with Standards 1.1 and 1.2.
+
+Object identified:
+Standards 1 . 1 1 . 2
+
+Document id:
+d_1.0.7_i1_s_0

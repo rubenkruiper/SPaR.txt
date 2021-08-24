@@ -1,0 +1,8 @@
+Sentence:
+wall, door, window) should have U-values equal or better than the corresponding exposed elements in the rest of the dwelling.
+
+Object identified:
+window
+
+Document id:
+d_6.2.12_i2_s_2

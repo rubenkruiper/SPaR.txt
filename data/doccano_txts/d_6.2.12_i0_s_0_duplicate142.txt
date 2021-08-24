@@ -1,5 +1,0 @@
-Sentence:
-Conservatories are a common addition to many dwellings.
-
-Object identified:
-Conservatories addition

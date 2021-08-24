@@ -1,0 +1,8 @@
+Sentence:
+In such cases, a default value of 10m#SUP#3#SUP#/h.m#SUP#2#SUP# @ 50 Pa can be assumed or testing of the extension carried out as identified in clause 6.2.5.
+
+Object identified:
+10m # SUP # 3 # SUP # / h . m # SUP # 2 # SUP # @ 50 Pa
+
+Document id:
+d_6.2.10_i2_s_1

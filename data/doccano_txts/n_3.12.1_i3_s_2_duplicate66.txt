@@ -1,5 +1,0 @@
-Sentence:
-Separate hand washing facilities for such staff should always be provided.
-
-Object identified:
-hand washing facilities

@@ -3,7 +3,7 @@ T2	Object_span 0 1;8 15	A chimney
 T3	Functional_span 23 26	not
 T4	Action_span 16 22;27 31	should pass
 T5	Discourse_span 32 39	through
-T6	Object_span 40 58	a compartment wall
+T6	Object_span 40 41;42 58	a compartment wall
 T7	Discourse_span 58 59	,
 T8	Object_span 40 41;60 77	a compartment floor
 T9	Discourse_span 77 78	,

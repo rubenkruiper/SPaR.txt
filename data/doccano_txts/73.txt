@@ -1,0 +1,8 @@
+Sentence:
+It identifies those standards where it is not expected to be reasonably practicable to have existing buildings fully comply.
+
+Object identified:
+expected
+
+Document id:
+d_0.4.1_i8_s_2

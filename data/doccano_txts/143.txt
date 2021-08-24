@@ -1,0 +1,8 @@
+Sentence:
+This places an obligation on local authorities within their development plans to avoid a specified and rising proportion of greenhouse gases by use of low and zero carbon generating technologies.
+
+Object identified:
+a proportion
+
+Document id:
+n_7.0.6_i0_s_1

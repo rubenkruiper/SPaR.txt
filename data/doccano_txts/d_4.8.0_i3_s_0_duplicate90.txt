@@ -1,5 +1,0 @@
-Sentence:
-Natural ventilation in dwellings is provided by openable windows or rooflights.
-
-Object identified:
-openable windows

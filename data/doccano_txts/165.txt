@@ -1,0 +1,8 @@
+Sentence:
+The trickle ventilation rates recommended relate to the infiltration rate of the building fabric which can be used in SBEM calculations (see Section 6 Energy).
+
+Object identified:
+SBEM calculations
+
+Document id:
+n_3.14.5_i5_#0_s_0
