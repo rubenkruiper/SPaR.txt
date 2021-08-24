@@ -1,8 +1,8 @@
 Sentence:
-The Certification of Design (Building Structures) scheme has been approved by Scottish Ministers to confirm compliance with Standards 1.1 and 1.2.
+The design and construction of buildings should take into account all contributing factors such as loadings, climatic conditions, partial safety factors for materials and loadings, and design methodology to ensure that there is an acceptable probability that the building will not collapse (ultimate limit state) during its design lifetime.
 
 Object identified:
-Standards 1 . 1 1 . 2
+climatic conditions safety factors
 
 Document id:
-d_1.0.7_i1_s_0
+d_1.1.0_i2_s_1

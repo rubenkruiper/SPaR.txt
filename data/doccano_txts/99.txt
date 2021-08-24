@@ -1,8 +1,8 @@
 Sentence:
-CIBSE Guide A: 1999, Design data, section A4, Air infiltration and natural ventilation, or
+Long duct runs, flexible ducting and bends can seriously reduce fan performance and should be carefully considered during design to ensure recommended air flows are achieved.
 
 Object identified:
-section A4
+air flows
 
 Document id:
-n_3.14.2_i3_#1_s_0
+n_3.14.5_i5_#2_s_0

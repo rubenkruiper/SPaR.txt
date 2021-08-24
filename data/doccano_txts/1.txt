@@ -1,8 +1,8 @@
 Sentence:
-A building which is susceptible to disproportionate collapse is one where the effects of accidents and, in particular, situations where damage to small areas of a structure or failure of single elements could lead to collapse of major parts of the structure.
+The structural form and concept and any protective measures should then be chosen and the detailed design of the structure and its elements undertaken in accordance with the recommendations in the codes and standards in clause 1.2.4.
 
 Object identified:
-a structure failure
+clause 1 . 2 . 4
 
 Document id:
-d_1.2.1_i0_s_0
+d_1.2.3_i10_s_0

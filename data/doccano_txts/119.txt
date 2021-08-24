@@ -1,8 +1,8 @@
 Sentence:
-Guidance to the Water Byelaws recommends that, to prevent the development of Legionella or similar pathogens, hot water within a storage vessel should be stored at a temperature of not less than 60 degrees C and distributed at a temperature of not less than 55 degrees C. Detailed guidance on the control of Legionella may be found in HSE Approved Code of Practice L8 - `Legionnaires' Disease - Control of Legionella Bacteria in Water Systems'.
+resilience is often required for separating floors in residential buildings where there is direct vibration impact such as footfall noise.
 
 Object identified:
-Water Systems
+direct vibration impact
 
 Document id:
-n_4.9.5_i0_s_0
+n_5.0.5_i3_#2_s_0

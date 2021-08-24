@@ -1,8 +1,8 @@
 Sentence:
-Where a building has a basement storey at a depth of more than 10m, every basement storey should form a separate compartment.
+ the ceiling may contain an access hatch which, when closed, will maintain the fire resistance duration of the ceiling.
 
 Object identified:
-10m
+an access hatch
 
 Document id:
-n_2.1.7_i1_s_0
+d_2.4.3_i1_#3_s_0

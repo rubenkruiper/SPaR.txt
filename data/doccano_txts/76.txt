@@ -1,8 +1,8 @@
 Sentence:
-Radon risk report - the atlas presented in the report contains simplified maps that are indicative rather that definitive with each 1km grid square coloured according to the highest radon potential found within it.
+The flue of a natural draught appliance, such as a traditional solid fuel appliance, should offer the least resistance to the passage of combustion gases.
 
 Object identified:
-radon potential
+combustion gases
 
 Document id:
-d_3.2.1_i2_s_0
+n_3.20.11_i3_s_0

@@ -1,8 +1,8 @@
 Sentence:
-The discharge point of such pipework should be provided in accordance with the guidance given for termination in clause 4.9.3.
+education centres, schools (nursery, primary, secondary, special)
 
 Object identified:
-clause 4 . 9 . 3
+primary
 
 Document id:
-d_4.9.4_i1_s_0
+n_6.9.3_i4_#5_s_0

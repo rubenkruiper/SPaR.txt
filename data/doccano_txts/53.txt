@@ -1,8 +1,8 @@
 Sentence:
-It must only include items that residents should be undertaking without tools or specialist knowledge.
+Avoid engineering heating system schematics as many people find these hard to understand.
 
 Object identified:
-specialist knowledge
+Avoid engineering
 
 Document id:
-d_7.B120_i22_s_1
+d_7.B120_i8_s_3

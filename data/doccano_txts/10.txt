@@ -1,8 +1,8 @@
 Sentence:
- then the `likelihood of high internal temperature in hot weather' should be assessed using Appendix P of SAP 2012.
+an industrial estate) and only export surplus electricity to the National Grid will also need to have user and maintenance instructions, unless exempt in terms of schedule 1, regulation 3.
 
 Object identified:
-the internal temperature
+the National Grid
 
 Document id:
-d_6.6.1_i6_#1_s_0
+n_6.8.0_i2_s_1

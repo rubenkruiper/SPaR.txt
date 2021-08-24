@@ -1,8 +1,8 @@
 Sentence:
-For example, a vent cowl could be installed on the top of the smoke shaft to help draw the smoke out of the shaft for all wind directions.
+Where a smoke ventilation depressurisation system is used, replacement air should be provided for the system to operate effectively.
 
 Object identified:
-a vent cowl
+a smoke ventilation depressurisation system
 
 Document id:
-d_2.9.15_i3_s_6
+n_2.9.13_i10_s_2

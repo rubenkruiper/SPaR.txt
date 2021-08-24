@@ -1,8 +1,8 @@
 Sentence:
- to allow fire-fighters to set up a forward control point at least 1 floor below the fire floor where fire-fighters and fire-fighting equipment can safely be assembled before commitment to fire-fighting and rescue operations
+Ventilation should be provided to every escape stair, fire-fighting stair, fire-fighting lobby and to every protected lobby or protected corridor where appropriate (see table to clause 2.14.2).
 
 Object identified:
-fire - fighting equipment
+protected corridor
 
 Document id:
-n_2.14.5_i1_#0_s_0
+d_2.14.6_i0_s_1

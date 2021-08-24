@@ -1,8 +1,8 @@
 Sentence:
-There is, however no need to provide for the safe cleaning of any glazed element that is opaque and does not allow the passage of light.
+General guidance on the safe use of ladders may be found in HSE information sheet MISC613 'Safety in window cleaning using portable ladders'.
 
 Object identified:
-opaque
+window cleaning
 
 Document id:
-d_4.8.3_i1_s_0
+d_4.8.3_i5_s_2

@@ -1,8 +1,8 @@
 Sentence:
-The trickle ventilation rates recommended relate to the infiltration rate of the building fabric which can be used in SBEM calculations (see Section 6 Energy).
+a mechanical system capable of at least 3 air changes per hour.
 
 Object identified:
-SBEM calculations
+a mechanical system
 
 Document id:
-n_3.14.5_i5_#0_s_0
+n_3.14.9_i1_#1_s_0

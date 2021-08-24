@@ -1,8 +1,8 @@
 Sentence:
-These conditions may be imposed to ensure that the development proposed for the land will not expose future users or occupiers, or any building or services, to hazards associated with the contaminants.
+Resistance to fire is expressed in terms of fire resistance duration and reference throughout this document to a short, medium or long fire resistance duration, are explained in annex 2.D.
 
 Object identified:
-hazards associated
+Resistance
 
 Document id:
-d_3.1.4_i0_s_1
+n_2.0.9_i6_s_0

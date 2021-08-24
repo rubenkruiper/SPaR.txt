@@ -1,8 +1,8 @@
 Sentence:
- A basement level(s) should be designated as Floor -1 or Basement 1, etc., as appropriate.
+The letter height of all text, and the height of the dwelling numbers, should be between one half and two thirds of the height of the words and numerals of the associated storey identification signs respectively.
 
 Object identified:
-Floor - 1 .
+text height
 
 Document id:
-d_2.14.9_i3_#3_s_0
+d_2.14.9_i7_s_2

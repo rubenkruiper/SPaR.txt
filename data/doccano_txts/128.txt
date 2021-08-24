@@ -1,8 +1,8 @@
 Sentence:
-Additional advice - a piece of advice that is worthwhile including is that a conservatory (where one is installed) is only an energy efficiency benefit to the dwelling if it remains unheated and is not mechanically cooled.
+It may not however be reasonably practicable for a dwelling, which is in a habitable condition, to have its internal space significantly reduced in area or height in order to accommodate insulation; or for excessive enabling alterations to be caused by the fitting of external thermal insulation, unless the owner/occupier of the dwelling intends that these changes are to be made.
 
 Object identified:
-a piece
+a habitable condition
 
 Document id:
-d_6.9.2_i6_s_0
+d_6.94_i14_s_1

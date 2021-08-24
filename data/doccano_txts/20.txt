@@ -1,8 +1,8 @@
 Sentence:
-The benefit of early warning of a fire will increase the probability of the safe evacuation of the building and will assist owners and occupiers of buildings in formulating their fire safety policy and emergency fire action plan.
+Common systems - in a building containing flats or maisonettes, a common fire alarm and detection system that interlinks all dwellings and common spaces is not recommended due to the risk of unwanted false alarms.
 
 Object identified:
-early warning
+a common fire alarm and detection system
 
 Document id:
-n_2.11.0_i0_s_2
+d_2.11.1_i8_s_0

@@ -1,8 +1,8 @@
 Sentence:
-Opposing shop frontages are those which make an angle of less than 80#SUP#o#SUP# with each other.
+A shop of more than 1300m#SUP#2#SUP# in area at mall level, where the means of escape has been designed independently of the mall, need not be included in this calculation.
 
 Object identified:
-80 # SUP # o # SUP #
+1300m # SUP # 2 # SUP # in area
 
 Document id:
-n_2.C176_i0_s_3
+n_2.C177_i5_s_0

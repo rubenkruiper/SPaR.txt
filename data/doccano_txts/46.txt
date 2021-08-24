@@ -1,8 +1,8 @@
 Sentence:
-Where a fire resisting ceiling is provided as an alternative to cavity barriers as in clauses 2.4.2b, 2.4.2c, 2.4.3 and 2.4.4, the ceiling should have at least short fire resistance duration and be constructed in accordance with the guidance in clause 2.1.16.
+ the Enclosing Rectangle (Geometric) Method as set out in clause 2.6.3, or
 
 Object identified:
-clauses 2 . 4 . 2b 2 . 4 . 4
+Geometric
 
 Document id:
-n_2.4.5_i0_s_0
+n_2.6.2_i6_#0_s_0

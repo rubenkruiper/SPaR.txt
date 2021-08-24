@@ -1,8 +1,8 @@
 Sentence:
-For buildings with air conditioning systems, applicants should be aware of the need for inspection of systems over 12kW under regulation 17 of the Building (Scotland) Regulations 2004 and, where applicable, should consider instructing such an inspection where such systems are present.
+Definitions in application of this standard 'energy performance certificate' has the same meaning as given in The Energy Performance of Buildings (Scotland) Regulations 2008 (http://www.legislation.gov.uk/ssi/2008/309/contents/made).
 
 Object identified:
-regulation 17
+standard energy performance certificate
 
 Document id:
-n_6.D263_i4_s_0
+n_6.9.0_i3_s_0

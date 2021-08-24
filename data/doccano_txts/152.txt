@@ -1,8 +1,8 @@
 Sentence:
-of components having a minimum thickness shown in the table below:
+Liners should be placed with the sockets or rebate ends uppermost to contain moisture and other condensates in the flue.
 
 Object identified:
-a thickness
+the sockets
 
 Document id:
-n_3.19.9_i2_#3_s_0
+n_3.18.6_i11_s_3

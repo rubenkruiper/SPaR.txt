@@ -1,8 +1,8 @@
 Sentence:
-The first additional step is calculating the total rate of heat loss for the more challenging column (a) notional extension, using the same process outlined in clause 6.B.2.
+That analysis of alternative systems may be carried out for individual buildings or for groups of similar buildings or for common typologies of buildings in the same area.
 
 Object identified:
-the total rate
+groups
 
 Document id:
-d_6.B108_i1_s_0
+d_6.C109_i2_#2_s_0

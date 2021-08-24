@@ -1,8 +1,8 @@
 Sentence:
-The employer or other responsible person should make the necessary arrangements for the safe evacuation of all occupants from the temporary waiting spaces.
+Tall buildings take longer to evacuate and where the building is at a height of more than 25m it is beyond the reach capability at which Fire and Rescue service can effect external rescue.
 
 Object identified:
-the temporary waiting spaces
+Fire and Rescue service
 
 Document id:
-n_2.9.30_i1_s_2
+n_2.9.31_i14_s_2

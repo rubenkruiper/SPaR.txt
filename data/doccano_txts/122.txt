@@ -1,8 +1,8 @@
 Sentence:
-Where works are to alter, extend or convert a building, the elements involved in the building work should follow the guidance given in clauses 6.2.5 and 6.2.6 on limiting heat loss from thermal bridging and air infiltration and reference should be made to the principles set out in the BSD document `Accredited Construction Details (Scotland) 2015' http://www.gov.scot/Topics/Built-Environment/Building/Building-standards/techbooks/techhandbooks.
+In addition the recommendations within the Building Research Establishment (BRE) report 262 'Thermal Insulation, avoiding risks' 2002 edition, can be followed (http://www.brebookshop.com/).
 
 Object identified:
-clauses 6 . 2 . 5 6 . 2 . 6
+report 262
 
 Document id:
-n_6.2.12_i0_s_0
+n_6.2.12_i1_s_0

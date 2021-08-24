@@ -1,8 +1,8 @@
 Sentence:
-Energy savings from building `tighter' could make significant savings on energy bills.
+Positive input systems - mechanical input air ventilation systems have been successfully installed in existing dwellings with the objective of overcoming problems of surface condensation and mould growth.
 
 Object identified:
-Energy savings
+mechanical input air ventilation systems
 
 Document id:
-n_3.14.0_i4_s_4
+d_3.14.11_i4_s_0

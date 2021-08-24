@@ -1,8 +1,8 @@
 Sentence:
-For example, elements such as photovoltaic (PV) panels and (in the electricity fuel package) an air to water heat pump is used in the specification to set the Target Emissions Rate for new homes.
+ Applicant - name, address and contact details
 
 Object identified:
-the Target Emissions Rate
+address details
 
 Document id:
-d_6.C110_i2_s_1
+n_6.E271_i4_#0_s_0

@@ -1,8 +1,8 @@
 Sentence:
-However there is no need to provide a protective barrier in a location which would block an intended access route or be incompatible with the normal use of an area, such as to the edge of a loading bay or theatre stage.
+Power supply cables may comprise cables of standard, or enhanced, fire resistance.
 
 Object identified:
-a location
+Power supply cables
 
 Document id:
-n_4.4.1_i4_s_0
+d_2.14.8_i7_s_1

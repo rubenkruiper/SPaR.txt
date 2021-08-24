@@ -1,8 +1,8 @@
 Sentence:
-Access routes to buildings for fire and rescue service vehicles or personnel should not be assessed in isolation and the proposed vehicle access routes will in effect, be dictated by need for water hydrants and fire mains (see clause 2.14.7).
+Where any dead-end route is more than 20m long, turning facilities should be provided.
 
 Object identified:
-water hydrants
+turning facilities
 
 Document id:
-n_2.12.2_i0_s_0
+n_2.12.2_i1_s_1

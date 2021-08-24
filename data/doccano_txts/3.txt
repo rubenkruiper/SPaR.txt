@@ -1,8 +1,8 @@
 Sentence:
-Non-domestic use within dwellings - some new dwellings may incorporate surgeries, consulting rooms, offices or other accommodation of a floor area not exceeding 50m#SUP#2#SUP# in aggregate, used by an occupant of the dwelling in a professional or business capacity.
+Where a multi-fuel appliance is proposed, assessment of both TER and DER should be based upon the fuel option with the highest carbon factor (e.g.
 
 Object identified:
-Non - domestic use
+a multi - fuel appliance
 
 Document id:
-d_6.1.1_i3_s_0
+d_6.1.2_i7_#0_s_0

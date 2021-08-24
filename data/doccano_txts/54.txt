@@ -1,8 +1,8 @@
 Sentence:
-Third party accreditation - Since the performance of a system, product, component or structure is dependent upon satisfactory site installation, testing and maintenance, independent schemes of certification and accreditation of installers and maintenance firms of such will provide confidence in the appropriate standard of workmanship being provided.
+Domestic use of detergents and disinfectants is not detrimental but excessive use may have a harmful effect on the performance of the sewage treatment works.
 
 Object identified:
-certification accreditation
+Domestic
 
 Document id:
-d_2.0.10_i1_s_0
+d_3.8.1_i3_s_0

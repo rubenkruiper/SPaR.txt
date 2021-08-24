@@ -1,8 +1,8 @@
 Sentence:
-Over 90% of Scottish fire deaths occur in the dwelling of fire origin.
+The main reason for this is that the battery is either faulty or has been removed from the alarm.
 
 Object identified:
-fire deaths
+the alarm
 
 Document id:
-d_2.11.0_i0_s_0
+d_2.11.9_i0_s_1

@@ -1,8 +1,8 @@
 Sentence:
-Field drains, where provided, should be laid in accordance with the recommendations in clause 10 of BS 8301: 1985.
+There may be horizontal `tidemarks' sometimes several feet above the floor; below it the wall is discoloured with general darkening and patchiness.
 
 Object identified:
-clause 10
+tidemarks
 
 Document id:
-d_3.3.1_i4_s_1
+d_3.4.0_i0_s_3

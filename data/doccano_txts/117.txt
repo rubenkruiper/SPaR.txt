@@ -1,8 +1,8 @@
 Sentence:
-In small single-storey buildings where the occupant number is not more than 10 and the floor area is such that everyone can see each other, a shouted warning "FIRE" by the person discovering the fire could be all that is needed.
+Normally the control and indicating equipment operates a fire alarm system and it may perform other signalling or control functions as well.
 
 Object identified:
-each other
+the control equipment
 
 Document id:
-n_2.11.14_i0_s_0
+n_2.11.3_i0_s_2

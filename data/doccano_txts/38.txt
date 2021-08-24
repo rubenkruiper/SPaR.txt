@@ -1,8 +1,8 @@
 Sentence:
-The document replicates guidance published in support of building standards elsewhere in the UK and supports standardisation of the specification and expected performance of fixed building services throughout the UK.
+window or door) should be measured internally from ingo to ingo and from head to sill or threshold.
 
 Object identified:
-standardisation
+window door
 
 Document id:
-n_6.4.1_i1_s_0
+n_6.0.12_i1_#3_s_1

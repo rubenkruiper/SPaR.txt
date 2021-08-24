@@ -1,8 +1,8 @@
 Sentence:
-Taps serving wash or hand rinse basins should have a flow rate of not more than 6 litres per minute.
+Pressure for land development may mean that development may be given planning approval on land subject to some risk of flooding.
 
 Object identified:
-Taps serving wash
+land subject
 
 Document id:
-d_3.27.2_i2_s_0
+d_3.3.0_i2_s_0

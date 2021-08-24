@@ -1,8 +1,8 @@
 Sentence:
-The level differences obtained from each source position should be arithmetically averaged, D as defined in BS EN ISO 140-4: 1998.
+Professional expertise - testing should be carried out by persons who can demonstrate relevant, recognised expertise in acoustics for sound insulation testing.
 
 Object identified:
-The level differences
+Professional expertise
 
 Document id:
-d_5.1.9_i11_s_2
+d_5.1.9_i14_s_0

@@ -1,8 +1,8 @@
 Sentence:
-The purpose of the standards in Section 5 is to limit the transmission of sound to a level that will not threaten the health of occupants from sound transmission emanating from attached buildings and a differently occupied part of the same building.
+Standard 5.2
 
 Object identified:
-the transmission
+Standard 5 . 2
 
 Document id:
-n_5.0.2_i0_s_0
+d_Man91_i0_#0_s_0

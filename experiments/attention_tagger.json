@@ -1,12 +1,12 @@
 {
     "dataset_reader": {
         "type": "tag_reader",
-        "bert_model_name": "bert-base-cased",
+        "bert_model_name": "SpanBERT/spanbert-base-cased",
         "token_indexers": {
             "tokens": {
                 "type": "pretrained_transformer",
                 "max_length": 512,
-                "model_name": "bert-base-cased"
+                "model_name": "SpanBERT/spanbert-base-cased"
             }
         }
     },
@@ -34,7 +34,7 @@
                 "tokens": {
                     "type": "pretrained_transformer",
                     "max_length": 512,
-                    "model_name": "bert-base-cased",
+                    "model_name": "SpanBERT/spanbert-base-cased",
                     "train_parameters": false
                 }
             }
@@ -49,8 +49,8 @@
                 "batch_size_interval": 1,
                 "distribution_interval": 1,
                 "entity": "rkruiper",
-                "name": "bert0.05_lstm_1_h384_ffnn_1_h60_0.005_16",
-                "notes": "bert0.05_lstm_1_h384_ffnn_1_h60_0.005_16",
+                "name": "spanbert0.05_lstm_1_h384_ffnn_1_h60_0.005_16",
+                "notes": "spanbert0.05_lstm_1_h384_ffnn_1_h60_0.005_16",
                 "project": "MWE-tagger",
                 "should_log_learning_rate": true,
                 "should_log_parameter_statistics": true,

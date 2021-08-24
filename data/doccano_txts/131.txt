@@ -1,8 +1,8 @@
 Sentence:
-Integrally bunded tank - means a tank together with a catchpit manufactured as a self-contained unit.
+Because of the way it spreads, even a small quantity can cause a lot of harm to the aquatic environment.
 
 Object identified:
-a catchpit
+a quantity
 
 Document id:
-d_3.24.0_i6_s_0
+d_3.24.0_i0_s_1

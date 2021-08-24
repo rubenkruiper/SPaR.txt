@@ -1,8 +1,8 @@
 Sentence:
-Medium fire resistance duration is sufficient for a fire door in the enclosing structure of a fire-fighting shaft.
+It is simulated by a single burning item in a corner of the room, creating a heat flux on adjacent surfaces.
 
 Object identified:
-Medium
+a corner
 
 Document id:
-d_2.A40_i30_#4_s_0
+d_2.B42_i1_#1_s_1

@@ -1,8 +1,8 @@
 Sentence:
-Enhanced or additional fittings should be provided as follows: WCs of average flush volume not more than 3.5 litres and fitted with a delayed-action inlet valve wash hand basin taps with flow rates to be not more than 4 l/min fitted with either a timed automatic shut-off or an electronic detection sensor (an automatic shut off or electronic detection sensor does not have to be provided in an accessible or changing places toilet (CPT)) shower heads with maximum flow rate not more than 6 l/m with a timed automatic shut-off (an automatic shut off or does not have to be provided to a shower within an accessible or CPT) water storage container(s) (with a combined minimum capacity of 200 litres) with an overflow discharging to a SUD system, a soakaway, or an outfall to a watercourse, and rainwater harvesting or greywater recycling system designed to provide water for toilet flushing.
+Accessibility of existing facilities - however where activity spaces for existing sanitary facilities come close to meeting either the current recommendations in clause 3.12.3 or the previous guidance for an accessible toilet, they will still offer greater amenity to a wide range of people and should be treated in the same way as accessible sanitary facilities when considering altering or relocating as noted above.
 
 Object identified:
-an accessible
+clause 3 . 12 . 3
 
 Document id:
-n_7.1.9_i8_#0_s_0
+d_3.12.5_i6_s_0

@@ -1,8 +1,8 @@
 Sentence:
-A key element of the design is provision of significant glazing (5.0m#SUP#2#SUP#) to the end wall of the extension to provide views across the large garden and rooflights (2.0m#SUP#2#SUP#) to maximise light into the existing dwelling.
+the most demanding fire resistance duration of the element of structure has been followed (see clause 2.3.1), and
 
 Object identified:
-element
+clause 2 . 3 . 1
 
 Document id:
-d_6.B107_i1_s_3
+n_2.1.4_i1_#1_s_0

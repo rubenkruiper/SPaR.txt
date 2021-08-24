@@ -1,8 +1,8 @@
 Sentence:
-Note: for DER, this element of calculation must use Htb calculated from length of junctions and individual psi values (see clause 6.2.3).
+Common areas - in building consisting of dwellings, common areas which need particular consideration to limit air infiltration include common stair entrances and shafts which extend through most of the floors (e.g.
 
 Object identified:
-clause 6 . 2 . 3
+air infiltration
 
 Document id:
-d_6.1.2_i7_#5_s_1
+d_6.2.4_i10_s_0

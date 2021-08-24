@@ -1,8 +1,8 @@
 Sentence:
-To minimise the risk of condensation on any inner surface, cold bridging at a floor, wall, roof or other building element should be avoided.
+The use of woody biomass, in the form of wood chips, wood pellets and logs may offer a viable alternative to fossil fuels, particularly in areas not served by the gas grid, although the supply and distribution of chips and pellets is, as yet, poorly developed in Scotland.
 
 Object identified:
-a floor wall
+wood pellets
 
 Document id:
-n_3.15.4_i1_s_0
+n_3.23.0_i3_s_0

@@ -1,8 +1,8 @@
 Sentence:
-externally, the surface of the platt should be not more than 10mm below the leading edge of any sill, with any exposed edge chamfered or rounded
+the two forms of liquefied petroleum gases that are generally available in the UK are commercial butane and commercial propane
 
 Object identified:
-the platt
+propane
 
 Document id:
-d_4.1.9_i3_#1_s_0
+d_4.11.0_i4_#0_s_0

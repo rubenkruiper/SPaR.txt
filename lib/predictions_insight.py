@@ -276,6 +276,7 @@ def compare_predictions_against_defined_terms(file_paths, mwe_counter_lists):
 
     defined_not_found = [x for x in defined_not_found if x not in defined_part_of]
     # [x for x in objects_lower if "" in x]
+    [print(dn) for dn in defined_not_found]
 
 if __name__ == "__main__":
     # file_paths to grab the definitions
@@ -292,14 +293,3 @@ if __name__ == "__main__":
     mwe_counter_lists = my_pred_obj.count_mwes(mwe_dict)
     # check which defined terms we find
     compare_predictions_against_defined_terms(file_paths, mwe_counter_lists)
-
-
-    # ToDo - context + span;
-    #  - a dictionary holding all spans and their contexts (sentence, maybe even doc id)
-    #  - remove those spans that coincide with defined terms, then save 165 of them (99% conf level with 10% margin of error)
-
-    print("ToDo stuffs")
-
-
-
-

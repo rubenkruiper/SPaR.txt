@@ -1,8 +1,8 @@
 Sentence:
-Reducing the rate of replacement air can result in the smoke ventilation system becoming less efficient whereas increasing replacement air and extraction at high velocities can produce air pressure conditions which make doors difficult to open.
+a turbulent fire burning above a horizontal pool of vaporising hydrocarbon fuel).
 
 Object identified:
-the smoke ventilation system
+vaporising hydrocarbon fuel )
 
 Document id:
-n_2.9.13_i10_s_4
+d_2.9.18_i4_s_2

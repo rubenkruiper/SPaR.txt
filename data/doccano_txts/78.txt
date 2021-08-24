@@ -1,8 +1,8 @@
 Sentence:
-However a private stair may be constructed with open risers and without contrasting nosings as occupants will be more familiar with the stair through frequent use.
+a door may open on to a bottom landing, if, at any angle of swing, a clear space of at least 400mm deep is maintained across the full width of the landing and the door swing does not encroach within space designated for future installation of a stair lift (see clause 4.2.8).
 
 Object identified:
-contrasting nosings
+angle of swing
 
 Document id:
-d_4.3.5_i4_s_0
+d_4.3.6_i8_#1_s_0

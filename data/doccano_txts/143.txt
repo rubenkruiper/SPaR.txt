@@ -1,8 +1,8 @@
 Sentence:
-This places an obligation on local authorities within their development plans to avoid a specified and rising proportion of greenhouse gases by use of low and zero carbon generating technologies.
+Guidance on this process is given in BR 497, `Conventions For Calculating Linear Thermal Transmittance and Temperature Factors'.
 
 Object identified:
-a proportion
+Conventions For
 
 Document id:
-n_7.0.6_i0_s_1
+d_6.2.3_i4_s_2

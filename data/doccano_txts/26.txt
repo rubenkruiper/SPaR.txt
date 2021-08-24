@@ -1,8 +1,8 @@
 Sentence:
-size and shape, internal layout and dimensions (see clause 6.0.12)
+An activity space need not be provided in front of a hob or microwave oven.
 
 Object identified:
-size
+microwave oven
 
 Document id:
-n_6.1.5_i1_#0_s_0
+d_3.11.3_i5_s_3

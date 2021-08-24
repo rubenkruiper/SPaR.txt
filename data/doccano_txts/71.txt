@@ -1,8 +1,8 @@
 Sentence:
-Article 6 - New buildings
+For example, elements such as photovoltaic (PV) panels and (in the electricity fuel package) an air to water heat pump is used in the specification to set the Target Emissions Rate for new homes.
 
 Object identified:
-Article 6 -
+photovoltaic
 
 Document id:
-d_6.C109_i1_s_0
+d_6.C110_i2_s_1

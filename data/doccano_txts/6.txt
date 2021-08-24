@@ -1,8 +1,8 @@
 Sentence:
-a smouldering fire), the smoke might not escape so readily when subject to adverse wind or stack effects.
+ pressurisation systems, or
 
 Object identified:
-a smouldering fire
+pressurisation systems
 
 Document id:
-d_2.9.15_i3_s_4
+d_2.9.16_i1_#1_s_0

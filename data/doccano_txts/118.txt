@@ -1,8 +1,8 @@
 Sentence:
-where incorporating a WC, space for at least one recognised form of unassisted transfer from a wheelchair to the WC.
+Treatment processes can be biological, chemical or physical and be undertaken either in-situ (contaminants are treated in the ground) or ex-situ (contaminated material is excavated and then treated before being returned).
 
 Object identified:
-form
+biological
 
 Document id:
-d_3.12.3_i5_#5_s_0
+n_3.1.6_i6_s_2

@@ -1,8 +1,8 @@
 Sentence:
-Continuous mechanical ventilation - for smaller, domestic sized developments, a mechanical ventilation system complying with BRE Digest 398, `Continuous mechanical ventilation in dwellings: design, installation and operation' may be appropriate.
+The Official Guide to Approved Solid Fuel Products and Services published by HETAS Ltd http://www.hetas.co.uk/ contains a list of Registered Heating Engineers deemed competent in the various modules listed, e.g.
 
 Object identified:
-BRE Digest 398 mechanical ventilation
+: / / www . hetas . co . uk /
 
 Document id:
-n_3.14.5_i6_s_0
+n_3.17.4_i1_s_2

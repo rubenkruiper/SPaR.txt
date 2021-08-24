@@ -1,8 +1,8 @@
 Sentence:
-The type of system and performance sought should be considered at an early stage in the design process.
+Single burning item test (EN 13823) evaluates the potential contribution of a product to the development of a fire, under a fire situation simulating a single burning item in a room corner near to that product.
 
 Object identified:
-stage
+a fire situation
 
 Document id:
-n_4.7.0_i1_s_1
+d_2.B43_i3_s_0

@@ -1,8 +1,8 @@
 Sentence:
-At night, any noise made when generally there is little background noise, is often perceived as excessive.
+The design performance levels in clause 5.2.1 can be achieved by using the Generic Internal Constructions available on the BSD website http://www.scotland.gov.uk/topics/built-environment/building/building-standards.
 
 Object identified:
-background noise
+The design performance levels
 
 Document id:
-d_5.2.0_i0_s_3
+d_5.2.3_i1_s_0

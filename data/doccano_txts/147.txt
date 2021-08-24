@@ -1,8 +1,8 @@
 Sentence:
-Where the dedicated drying space is not passively heated a heat source should be provided that is independent from the primary heating system and capable of maintaining a temperature of 180C when the outside temperature is -10C and controlled by a time switch.
+So that contaminants do not exceed acceptable levels and thereby endanger the health of the occupants, it is important that dwellings are adequately ventilated.
 
 Object identified:
-the outside temperature
+acceptable levels
 
 Document id:
-n_7.1.6_i56_s_0
+d_3.14.0_i1_s_0

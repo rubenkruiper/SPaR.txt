@@ -1,8 +1,8 @@
 Sentence:
-For advice on best practice relating to fire safety in the home, visit the Scottish Fire and Rescue Service website http://www.firescotland.gov.uk/ or contact the community fire safety team at your local fire station.
+a means of two way communication, operable by a person with a hearing impairment, that allows contact with the lift if an alarm is activated, together with visual indicators that alarm has been sounded and received.
 
 Object identified:
-the community fire safety team fire station
+alarm
 
 Document id:
-d_2.0.1_i2_s_1
+n_4.2.7_i5_#5_s_0

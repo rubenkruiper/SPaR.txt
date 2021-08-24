@@ -1,8 +1,8 @@
 Sentence:
- See guidance to Standard 2.14 for explanation of 7.5m and 18m trigger heights and additional fire-fighting facilities.
+False alarms - around 97% of all automatic calls received by the fire and rescue service result in unnecessary attendance due to false alarms.
 
 Object identified:
-7 . 5m trigger heights
+attendance
 
 Document id:
-d_2.9.2_i3_#3_s_0
+n_2.11.0_i2_s_0

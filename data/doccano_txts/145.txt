@@ -1,8 +1,8 @@
 Sentence:
-using the relevant formulae within SAP 2012
+Standards 6.2 to 6.6 and 6.10, in the main, recommend benchmark and backstop levels to be achieved for individual elements or systems.
 
 Object identified:
-SAP
+the main
 
 Document id:
-d_6.0.7_i1_#1_s_0
+n_6.1.0_i1_s_1

@@ -1,8 +1,8 @@
 Sentence:
-This is because fire and smoke can penetrate weaknesses at junctions which could compromise the means of escape.
+The depth of the smoke channel or down-stand should be at least 300mm below the soffit of the balcony.
 
 Object identified:
-weaknesses
+down - stand
 
 Document id:
-n_2.9.28_i0_s_1
+d_2.9.23_i4_s_3

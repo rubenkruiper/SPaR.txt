@@ -1,8 +1,8 @@
 Sentence:
-External areas - a roof, an external balcony or an enclosed courtyard open to the external air, where the area is more than 8m2 and to which there is access for a purpose other than maintenance, should be regarded as a room.
+The objectives of any fire safety strategy should be established first and designers and verifiers should be aware of the importance of the design assumptions.
 
 Object identified:
-an external balcony
+fire safety strategy
 
 Document id:
-d_2.0.6_i2_s_0
+d_2.0.7_i11_s_0

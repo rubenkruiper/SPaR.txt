@@ -1,8 +1,8 @@
 Sentence:
-Any installation should enable cylinders to stand upright, secured by straps or chains against a wall outside the building.
+Further information on estimation of equivalent static forces for a given characteristic mass and displacement can be obtained in Annex A to BS 6180: 2011.
 
 Object identified:
-upright
+a mass
 
 Document id:
-n_4.11.3_i2_s_0
+n_4.12.1_i1_s_3

@@ -1,8 +1,8 @@
 Sentence:
-When a classification includes ``s3, d2'' this means that there is no limit set for smoke production and/or flaming droplets/particles.
+Escape route lighting utilises the artificial lighting within the building, but should be supplied by a fire protected circuit.
 
 Object identified:
-s3
+a fire protected circuit
 
 Document id:
-n_2.E190_i3_s_1
+d_2.10.1_i0_s_0

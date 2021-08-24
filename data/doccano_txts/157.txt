@@ -1,8 +1,8 @@
 Sentence:
-For example, a self contained smoke alarm, manufactured in accordance with the Electro Magnetic Compatibility Directive should be accepted as satisfying requirements only insofar as they relate to prevention of electromagnetic disturbances by, and prevention against disturbances to, such smoke alarms.
+UKAS - United Kingdom Accreditation Service is the sole national accreditation body recognised by the UK Government to assess against internationally agreed standards, organisations that provide certification, testing, inspection and calibration services.
 
 Object identified:
-disturbances
+the national accreditation body
 
 Document id:
-d_0.8.1_i5_s_1
+d_0.8.2_i10_s_0

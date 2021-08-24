@@ -1,8 +1,8 @@
 Sentence:
-The floor area of a sub-surface drainage trench required to disperse effluent from treatment plants or septic tanks may be calculated from the following formula:
+at least 50m from any spring, well or borehole used as a drinking water supply, and
 
 Object identified:
-the formula
+well
 
 Document id:
-n_3.9.1_i8_s_0
+n_3.9.4_i1_#0_s_0

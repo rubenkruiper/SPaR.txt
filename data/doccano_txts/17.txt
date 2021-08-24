@@ -1,8 +1,8 @@
 Sentence:
-Even if the room does not contain an ignition source, the potential for a fire to be set accidentally or deliberately should be assessed.
+This is to give occupants and staff the earliest possible warning of an outbreak of fire and allow time for assisting occupants in an emergency to evacuate the building or for horizontal progressive evacuation initially to an adjacent sub-compartment which leads to a compartmentexit.
 
 Object identified:
-deliberately
+the warning
 
 Document id:
-d_2.9.18_i3_s_0
+n_2.11.5_i0_s_1

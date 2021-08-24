@@ -1,8 +1,8 @@
 Sentence:
-Where a kitchen is within the same room as an apartment, the area of the kitchen should be defined by a rectangle enclosing any floor-standing units, appliances and worktops.
+a floor space in the dwelling on which to set out a clothes horse.
 
 Object identified:
-a rectangle
+a clothes horse
 
 Document id:
-d_3.11.3_i4_s_0
+d_3.11.6_i4_#2_s_0

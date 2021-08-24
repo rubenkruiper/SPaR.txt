@@ -1,8 +1,8 @@
 Sentence:
- a minimum cross-sectional area 1.5m2 (minimum dimension 0.85m in any direction), opening at roof level at least 0.5m above any surrounding structures within a horizontal distance of 2.0m, and
+A pressurisation system is based on the principle of forcing air into the escape route which helps to keep smoke out.
 
 Object identified:
-dimension 0 . 85m
+A pressurisation system
 
 Document id:
-d_2.9.15_i5_#0_s_0
+n_2.9.13_i11_s_0

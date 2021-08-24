@@ -1,8 +1,8 @@
 Sentence:
-There is an increased risk of carbon monoxide poisoning in bathrooms, shower rooms or rooms intended for use as sleeping accommodation, such as bed-sitters.
+They have also been developed from constructions that are in general use in the UK, and that are known to reduce the range of sound frequencies that can generate complaints.
 
 Object identified:
-an carbon monoxide poisoning
+the range
 
 Document id:
-d_3.20.5_i0_s_0
+n_5.1.3_i0_s_1

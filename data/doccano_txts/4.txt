@@ -1,8 +1,8 @@
 Sentence:
-when designing a lighting system consideration should be given to the advances in lighting technology, particularly with light emitting diodes technology (LED), and
+Artificial and display lighting can account for a substantial proportion of the electricity used within a building.
 
 Object identified:
-the advances
+display lighting
 
 Document id:
-n_6.5.0_i2_#0_s_0
+n_6.5.0_i0_s_0

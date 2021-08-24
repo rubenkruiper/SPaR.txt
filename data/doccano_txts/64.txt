@@ -1,8 +1,8 @@
 Sentence:
-Conversions - in the case of conversions, as specified in regulation 4, the building as converted shall meet the requirements of this standard in so far as is reasonably practicable, and in no case be worse than before the conversion (regulation 12, schedule 6).
+Fixings - the SCOSS committee has expressed concern that safety critical fixings do not always receive the attention that they deserve.
 
 Object identified:
-Conversions
+concern
 
 Document id:
-n_4.8.0_i5_s_0
+d_1.1.1_i3_s_0

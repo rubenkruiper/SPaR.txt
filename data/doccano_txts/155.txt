@@ -1,8 +1,8 @@
 Sentence:
-There is no maximum U-value for display windows (refer clause 6.2.2).
+Where the insulation envelope of a building is extended, the new opening areas should be designed in accordance with the table below:
 
 Object identified:
-clause 6 . 2 . 2
+the opening areas
 
 Document id:
-n_6.2.11_i5_#2_s_0
+n_6.2.11_i6_s_0

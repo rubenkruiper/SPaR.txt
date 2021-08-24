@@ -1,8 +1,8 @@
 Sentence:
-Instructions on taking readings from the automatic monitoring and targeting systems (AM&T), when present, should be provided to ensure the benefits of the installation are realised.
+Where an extension is formed and/or alterations are made to the building fabric at the same time as the conversion, the guidance given in clauses 6.2.11 to 6.2.13 should be also followed.
 
 Object identified:
-realised
+clauses 6 . 2 . 11
 
 Document id:
-n_6.8.0_i3_s_0
+n_6.2.9_i1_s_0

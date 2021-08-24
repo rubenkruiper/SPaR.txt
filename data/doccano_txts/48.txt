@@ -1,8 +1,8 @@
 Sentence:
-The British Standard provides guidance on, and recommendations for, the investigation of land that may be contaminated or land with naturally enhanced concentrations of potentially harmful materials, to determine or manage the ensuing risk.
+changes in groundwater level
 
 Object identified:
-land
+groundwater level
 
 Document id:
-d_3.1.8_i0_s_1
+d_1.1.5_i2_#3_s_0

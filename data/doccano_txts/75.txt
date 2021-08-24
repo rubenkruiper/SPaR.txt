@@ -1,8 +1,8 @@
 Sentence:
-A logbook should be provided and contain information about all aspects of energy system operation and maintenance to enable the building user to optimise the use of fuel.
+One way that can be considered as following the guidance would be by confirming that the leakage testing has achieved the equivalent leakage performance standards specified in BES DW/143 - `Guide to good practice ductwork air leakage testing' .
 
 Object identified:
-A logbook
+the leakage testing
 
 Document id:
-n_6.8.1_i0_s_0
+n_6.7.2_i0_s_0

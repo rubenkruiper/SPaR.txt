@@ -1,8 +1,8 @@
 Sentence:
-Guidance includes information on stone and mortar selection, soiling of facades and design details for structures and moisture control http://www.scotland.gov.uk/Topics/Built-Environment/Building/Building-standards.
+for earth retaining structures, BS EN 1997-1:2004 (Eurocode 7)
 
 Object identified:
-soiling
+earth retaining structures
 
 Document id:
-n_1.1.1_i4_s_1
+n_1.1.2_i2_#3_s_0

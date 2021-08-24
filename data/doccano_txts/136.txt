@@ -1,8 +1,8 @@
 Sentence:
- where it can be obstructed (for example by furniture)
+Although this is the minimum recommended area, a greater area can provide more comfortable conditions particularly in sunny weather.
 
 Object identified:
-obstructed
+comfortable conditions
 
 Document id:
-n_3.20.20_i13_#1_s_0
+d_3.14.4_i0_s_3

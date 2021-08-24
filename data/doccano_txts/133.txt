@@ -1,8 +1,8 @@
 Sentence:
-There are buildings designed and constructed for specialist activities, controlled environments or factory processes that normally involve high humidity levels.
+These `bridges' commonly occur around openings such as lintels, jambs and sills and at wall/roof junctions, wall/floor junctions and where internal walls penetrate the outer fabric.
 
 Object identified:
-high humidity levels
+wall / roof junctions
 
 Document id:
-d_3.15.0_i3_s_0
+d_3.15.4_i0_s_1

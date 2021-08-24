@@ -1,8 +1,8 @@
 Sentence:
-The sound source should now be moved to the next position in the source room and the above procedure repeated to determine another level difference.
+the buildings or work are so separated that the regulations are largely inappropriate, and are likely in any case to be supervised by specialists including civil engineers (types 9 - 12)
 
 Object identified:
-another
+civil engineers
 
 Document id:
-d_5.1.9_i11_s_0
+n_0.3.1_i1_#3_s_0

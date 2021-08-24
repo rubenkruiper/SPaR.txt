@@ -1,8 +1,8 @@
 Sentence:
-Where cycling to school does not form part of an Active Travel Plan a minimum of 2 spaces for visitors not more than 50m from the principal entrance should still be provided.
+rural locations where the population is dispersed and routes to the school are not suitable for walking or cycling.
 
 Object identified:
-an Active Travel Plan
+the population
 
 Document id:
-n_7.1.6_i52_s_3
+n_7.1.6_i52_s_2

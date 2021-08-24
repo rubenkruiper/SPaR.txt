@@ -1,8 +1,8 @@
 Sentence:
-a decorative fuel-effect gas appliance with 20% efficiency as secondary heating.
+ensuring that the glazing does not exceed 25% of the total communal floor area of the building; and the U-values, thermal bridging, air infiltration values equal or better than those given for the gas 'notional dwellings' (package 1 in the table to clause 6.1.2).
 
 Object identified:
-20 % efficiency as secondary heating
+the total communal floor area
 
 Document id:
-d_6.1.3_i2_#3_s_1
+d_6.1.5_i1_#1_s_0

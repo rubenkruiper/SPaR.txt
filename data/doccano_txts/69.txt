@@ -1,8 +1,8 @@
 Sentence:
-backfilling for excavations in connection with building work.
+NANDO - New Approach Notified and Designated Organisations is an information system produced by the European Commission.
 
 Object identified:
-backfilling
+Designated Organisations
 
 Document id:
-n_0.8.3_i3_#2_s_0
+d_0.8.2_i9_s_0

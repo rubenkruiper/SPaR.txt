@@ -1,8 +1,8 @@
 Sentence:
-In particular, references to building classes should be risk groups and the building types and occupancy should be interpreted as the building types set out in the table to clause 1.2.2.
+However where practicable, it is good practice for sanitary facilities for staff involved in the preparation or serving of food or drink to be reserved for their sole use, with a separate provision made for customers.
 
 Object identified:
-clause 1 . 2 . 2
+good practice
 
 Document id:
-n_1.2.5_i2_s_1
+n_3.12.1_i3_s_1

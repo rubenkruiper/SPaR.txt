@@ -1,8 +1,8 @@
 Sentence:
-Guidance on protection from spillage is provided to Standard 3.24.
+The outlet from a flue should be located externally at a safe distance from any opening, obstruction or flammable or vulnerable materials.
 
 Object identified:
-spillage
+flammable
 
 Document id:
-n_3.23.3_i2_s_0
+n_3.20.17_i0_s_0

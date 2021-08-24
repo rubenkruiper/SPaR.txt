@@ -1,8 +1,8 @@
 Sentence:
-Being online is not only a useful communication tool, it is also becoming increasingly important to individuals in their day to day lives.
+The remainder of the Directive, which covers the wider network, has been transposed at UK level under The Communications (Access to Infrastructure) Regulations 2016.
 
 Object identified:
-Being online
+Access to
 
 Document id:
-d_4.14.0_i0_s_0
+d_4.14.0_i2_s_0

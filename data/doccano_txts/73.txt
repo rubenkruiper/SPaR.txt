@@ -1,8 +1,8 @@
 Sentence:
-It identifies those standards where it is not expected to be reasonably practicable to have existing buildings fully comply.
+Rooms intended for sleeping should be separated by a door that will act as a sound barrier and reduce noise transference.
 
 Object identified:
-expected
+sleeping
 
 Document id:
-d_0.4.1_i8_s_2
+n_5.2.5_i1_s_0

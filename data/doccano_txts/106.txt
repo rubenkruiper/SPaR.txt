@@ -1,8 +1,8 @@
 Sentence:
-wall, door, window) should have U-values equal or better than the corresponding exposed elements in the rest of the dwelling.
+Notwithstanding the recommended opening height of 1.75m for ventilators, high level or roof vents are best placed to minimise the effects of heat build-up and reduce stratification.
 
 Object identified:
-window
+the opening height
 
 Document id:
-d_6.2.12_i2_s_2
+d_3.14.4_i0_s_4

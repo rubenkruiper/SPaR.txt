@@ -1,8 +1,8 @@
 Sentence:
-radiators as emitters).
+average overshading for glazing may be assumed if not known.
 
 Object identified:
-emitters
+average overshading
 
 Document id:
-d_6.1.2_i7_#6_s_1
+d_6.1.3_i2_#1_s_0

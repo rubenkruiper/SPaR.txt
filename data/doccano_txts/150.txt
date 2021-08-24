@@ -1,8 +1,8 @@
 Sentence:
-on the landing of each level served, tactile call buttons and visual and tactile indication of the storey level, and
+This may mean that the upper levels of a dwelling are not accessible to some occupants.
 
 Object identified:
-tactile indication
+the upper levels
 
 Document id:
-d_4.2.5_i7_#7_s_0
+d_4.2.8_i0_s_1

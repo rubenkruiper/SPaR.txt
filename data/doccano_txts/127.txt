@@ -1,8 +1,8 @@
 Sentence:
-Therefore dependant on assessment at design stage a category M, L1, L2, L3, L4, or L5 should be installed.
+Whilst fire statistics also show that fire spread beyond the dwelling of origin is a rare occurrence, fire dynamics suggest that any outbreak of fire through an external window or door opening is more likely to spread vertically than horizontally.
 
 Object identified:
-design stage
+Whilst
 
 Document id:
-n_2.11.11_i2_s_0
+d_2.15.3_i0_s_1

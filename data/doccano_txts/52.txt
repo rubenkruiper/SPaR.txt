@@ -1,8 +1,8 @@
 Sentence:
-containing only fixed plant or machinery, the only normal visits to which are intermittent, for inspection or maintenance purposes, or
+This regulation implements the terms of Articles 15 & 16 of Directive 2010/31/EU on the Energy Performance of Buildings (EPBD).
 
 Object identified:
-plant
+Articles 15 & 16
 
 Document id:
-n_4.2.1_i3_#0_s_0
+n_0.17.1_i0_s_1

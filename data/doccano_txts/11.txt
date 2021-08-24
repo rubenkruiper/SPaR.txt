@@ -1,8 +1,8 @@
 Sentence:
-In buildings where it is intended to install open-flued combustion appliances and extract fans, the combustion appliances should be able to operate safely whether or not the fans are running.
+Advice on fire safety signs is given in the HSE publication, `Safety signs and signals: Guidance on Regulations - The Health and Safety (Safety Signs and Signals) Regulations 1996'.
 
 Object identified:
-the fans
+Advice
 
 Document id:
-n_3.17.8_i1_s_0
+n_2.0.8_i9_s_2

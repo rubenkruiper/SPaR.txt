@@ -1,8 +1,8 @@
 Sentence:
-Generally the system should have sufficient zone, time and temperature controls to ensure that the heating system only provides the desired temperature when the building is occupied.
+Good control of space heating is essential for conservation of energy in buildings, as without it, the potential of energy efficient heating plant cannot be realised.
 
 Object identified:
-zone temperature controls
+energy efficient heating plant
 
 Document id:
-n_6.3.0_i1_s_1
+n_6.3.0_i1_s_0

@@ -1,8 +1,8 @@
 Sentence:
-The stability of existing buildings may be affected by a new building located in their vicinity.
+in the case of a reinforced concrete wall, the distance between lateral supports subject to a length not more than 2.25 x storey height
 
 Object identified:
-vicinity
+a reinforced concrete wall
 
 Document id:
-d_1.1.5_i0_s_0
+n_1.2.0_i2_#0_s_0

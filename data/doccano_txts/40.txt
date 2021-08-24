@@ -1,8 +1,8 @@
 Sentence:
-The design and construction of a building should ensure that, by taking into account the factors set out above, the building does not fail in normal use (serviceability limit state).
+Specialist advice from approved certifiers of design, chartered engineers or other appropriately qualified persons should be sought if the designer is in any doubt about the loads acting on a building or how these loads can be accommodated by the structure and safely transmitted to the ground.
 
 Object identified:
-serviceability limit state
+the loads
 
 Document id:
-n_1.1.0_i3_s_2
+d_1.1.1_i2_s_0

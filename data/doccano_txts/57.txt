@@ -1,8 +1,8 @@
 Sentence:
-Heavy materials should not be stored over drains or sewers.
+Controlled activities - the discharge of surface water is a controlled activity under The Water Environment (Controlled Activities) (Scotland) Regulations 2005.
 
 Object identified:
-Heavy materials
+the discharge
 
 Document id:
-d_3.5.3_i2_s_2
+n_3.6.0_i3_s_0
