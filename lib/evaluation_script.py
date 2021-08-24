@@ -12,7 +12,7 @@ class SimpleEvaluator():
     def __init__(self,
                  predictions_fp,
                  gold_fp,
-                 bert_model_name: str = "SpanBERT/spanbert-base-cased"):
+                 bert_model_name: str = "bert-base-cased"):
         self.predictions_input = predictions_fp
         self.gold_input = gold_fp
 
