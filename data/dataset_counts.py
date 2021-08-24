@@ -39,6 +39,13 @@ class DatasetCount:
             with open(text_file, "r") as tf:
                 original_sentence = tf.read()
 
+            if original_sentence.startswith("all_figures"):
+                # ignore figure references
+                continue
+            if len(original_sentence) < 2:
+                # ignore single numbers in tables/lists
+                continue
+
             # Spans with BRAT character indices
             span_buffer = annotations_as_dict(ann_file, original_sentence)
             ordered_spans = order_annotations_for_file(span_buffer)

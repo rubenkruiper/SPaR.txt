@@ -248,7 +248,7 @@ def compare_predictions_against_defined_terms(file_paths, mwe_counter_lists):
     for counter in mwe_counter_lists:
         print("Top 20 counts: \n{}".format(counter.most_common(20)))
 
-    objects_lower = [x.lower() for x in mwe_counter_lists[0]]
+    objects_lower = [x.lower().strip() for x in mwe_counter_lists[0]]
     actions_lower = [x.lower() for x in mwe_counter_lists[1]]
     defined_not_found = [d for d in definitions if d.lower().strip() not in objects_lower]
 
