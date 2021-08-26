@@ -1,4 +1,4 @@
-import glob
+import glob, json
 import numpy as np
 import pandas as pd
 from collections import Counter
@@ -31,6 +31,8 @@ class DatasetCount:
         text_files = sorted(glob.glob(self.file_path + "*.txt"))
         ann_files = sorted(glob.glob(self.file_path + "*.ann"))
 
+        # dataset_as_json = {}
+
         for text_file, ann_file in zip(text_files, ann_files):
             # Grab the document name, which indicates where the sentence comes from in the original text
             doc_name = text_file.rsplit('/', 1)[1].rsplit('.', 1)[0]
@@ -41,18 +43,22 @@ class DatasetCount:
 
             if original_sentence.startswith("all_figures"):
                 # ignore figure references
-                continue
-            if len(original_sentence) < 2:
-                # ignore single numbers in tables/lists
+                print('dataset has a sentence that is a figure reference, that should not happen!!')
                 continue
 
-            # Spans with BRAT character indices
+            # Tokenize and compute tags for tokens
+            token_list = self.tokenizer.tokenize(original_sentence)
+            if len(token_list) < 2:
+                # ignore single numbers in tables/lists
+                print('dataset has a sentence consisting of a single token, that should not happen!!')
+                continue
+
+            # Count spans with BRAT character indices
             span_buffer = annotations_as_dict(ann_file, original_sentence)
             ordered_spans = order_annotations_for_file(span_buffer)
             self.span_dicts.append(ordered_spans)
 
-            # Tokenize and compute tags for tokens
-            token_list = self.tokenizer.tokenize(original_sentence)
+            # Count tags etc
             bert_indexed_spans = brat_to_PretainedTransformerTokenizer(token_list, ordered_spans)
             tag_list = compute_tags_for_spans(bert_indexed_spans, token_list)
             # ignoring default_tokens [CLS] and [SEP], could simply use tag_list[1:-1]
@@ -61,6 +67,11 @@ class DatasetCount:
 
             # Sentence lengths
             self.sentence_lengths[len(tag_list)] += 1
+
+        #     dataset_as_json[doc_name] = span_buffer
+        #
+        # with open('dataset_as_json.json', 'w') as f:
+        #     json.dump(dataset_as_json, f, indent=2)
 
     def print_counts(self):
         """

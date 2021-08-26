@@ -56,13 +56,16 @@ class PredictionInsight():
         tag_counter = Counter(self.tag_count)
         print("Tag counts: {}".format(tag_counter.most_common()))
 
+        print("Found {} discontiguous spans of type 'object'".format(self.discontiguous_obj_count))
+        print("Found {} discontiguous spans of type 'action'".format(self.discontiguous_act_count))
+
     def count_doc_id(self, doc_id):
         if doc_id.startswith('d'):
             self.document_sent_count['domestic'] += 1
         else:
             self.document_sent_count['non-domestic'] += 1
 
-    def count_tokens(self, token_list):
+    def count_sent_length_in_tokens(self, token_list):
         # Don't count CLS and SEP
         self.sent_tokenlen_list.append(len(token_list[1:-1]))
 
@@ -86,10 +89,18 @@ class PredictionInsight():
             mask = prediction['mask']
             tag_list = prediction['tags']
             token_list = prediction['words']
-            # sentence = prediction["sentence"]
+            sentence = prediction["sentence"]
+
+            # if sentence.startswith("all_figures"):
+            #     # ignore figure references
+            #     continue
+
+            # if len(token_list) < 2:
+            #     # ignore single numbers in tables/lists
+            #     continue
 
             self.count_doc_id(prediction["doc_id"])
-            self.count_tokens(token_list)
+            self.count_sent_length_in_tokens(token_list)
             self.count_tag_types(tag_list)
 
             # not sure if this is necessary; doesn't seem to be
@@ -135,9 +146,6 @@ class PredictionInsight():
                 pickle.dump(counters, f, protocol=pickle.HIGHEST_PROTOCOL)
 
         self.print_stats(count_spans)
-
-        print("Found {} discontiguous spans of type 'object'".format(self.discontiguous_obj_count))
-        print("Found {} discontiguous spans of type 'action'".format(self.discontiguous_act_count))
 
         return self.all_spans
 
