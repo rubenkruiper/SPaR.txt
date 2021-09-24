@@ -22,7 +22,7 @@ if __name__ == "__main__":
     if args.predict:
 
         sys.argv = [
-            "allennlp",  # command name, not used by main
+            "allennlp",
             "predict",
             serialization_dir,
             args.input_file_path,
@@ -31,15 +31,18 @@ if __name__ == "__main__":
             "--use-dataset-reader",
             "--batch-size", str(args.batchsize)
         ]
+
         # Add output-file if specified
         if predictions_output != "":
             sys.argv += ["--output-file", predictions_output]
-        # Actually run prediction
+
         main()
 
     elif args.evaluate:
-        # ToDo - need to implement a pipeline: 1st) predict 2nd) evaluate predicted output
-        #  issue: can't figure out how to use/set the pretrained transformer tokenizer, thus running into vocab issues
+        # ToDo - Implemented a workaround: 1st) predict 2nd) evaluate predicted output
+        #  issue: can't figure out how to use/set the pretrained transformer tokenizer using
+        #  AllenNLP, thus running into vocab issues, and have no time rn to sort this out
+
         if predictions_output == "":
             predictions_output = 'predictions/debug_output.json'
 
@@ -67,6 +70,7 @@ if __name__ == "__main__":
 
 
     else:
+        # TRAIN
         # Training will fail if the serialization directory already
         # has stuff in it. To re-use the same directory for debugging
         # we clear the contents in advance.
@@ -81,11 +85,10 @@ if __name__ == "__main__":
             "--include-package", "lib"
         ]
 
-        # Use overrides to train on CPU.
+        # Simple overrides to train on CPU if no GPU available, with a possibly smaller batch_size
         if not torch.cuda.is_available():
-            overrides = json.dumps({"trainer": {"cuda_device": -1},
-                                    "data_loader": {"batch_sampler": {"batch_size": 16}}})
+            overrides = json.dumps({"trainer": {"cuda_device": -1}})    # ,
+                                    # "data_loader": {"batch_sampler": {"batch_size": 16}}})
             sys.argv += ["-o", overrides]
 
-        # actually run the training
         main()

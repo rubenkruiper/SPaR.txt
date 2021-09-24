@@ -7,7 +7,10 @@ from sklearn import metrics
 
 
 class SimpleEvaluator():
-    """ Ugly temporary solution to evaluate a model; compares the predicted output against the gold input """
+    """
+    Ugly temporary solution to evaluate a model; compares the predicted output against the gold input
+    Reason was that evaluation of the tagger is not very flexible/adaptable in AllenNLP (if I remember correctly).
+    """
 
     def __init__(self,
                  predictions_fp,
@@ -39,8 +42,6 @@ class SimpleEvaluator():
 
 
     def evaluate(self):
-        # vocab = Vocabulary.from_files("data/vocab_discontiguous_tags/")
-        # measure = SimpleF1Measure()
 
         # read gold data from 'predictions_input'
         gold_instances = self.read_gold()
@@ -75,91 +76,6 @@ class SimpleEvaluator():
         # print("sklearn P: {}".format(metrics.precision_score(y_true, y_pred, average='macro')))
         # print("sklearn R: {}".format(metrics.recall_score(y_true, y_pred, average='macro')))
         # print("sklearn F1: {}".format(metrics.f1_score(y_true, y_pred, average='macro')))
-
-
-# class SimpleF1Measure():
-#     def __init__(self) -> None:
-#         self.span_type_acc = F1Scorer(F1Scorer.span_type_accuracy)
-#
-#     def __call__(self,  # type: ignore
-#                  predicted_labels: List[str],
-#                  gold_labels: List[str]):
-#         """
-#         """
-#
-#         self.span_type_acc.batch_gold_labels = len([x for x in gold_labels if x != "PD-pad"])
-#         self.span_type_acc.update(gold_labels, predicted_labels)
-#
-#     def get_metric(self, reset: bool = False) -> Tuple[float, float, float]:
-#         span_f1 = self.span_type_acc.get_prf()
-#         if reset:
-#             self.reset()
-#         return span_f1
-#
-#     def reset(self):
-#         self.span_type_acc = F1Scorer(F1Scorer.span_type_accuracy)
-#
-# #### F1 scorer
-# class F1Scorer:
-#     def __init__(self, metric):
-#         ### initialise the object with 0 scores
-#         self.precision_numerator = 0
-#         self.precision_denominator = 0
-#         self.recall_numerator = 0
-#         self.recall_denominator = 0
-#         self.metric = metric
-#         self.batch_gold_labels = 0
-#
-#     def update(self, gold_batch, predicted_batch):
-#         p_num, p_den, r_num, r_den = self.metric(self, gold_batch, predicted_batch)
-#
-#         self.precision_numerator += p_num
-#         self.precision_denominator += p_den
-#         self.recall_numerator += r_num
-#         self.recall_denominator += r_den
-#
-#     def get_f1(self):
-#         precision = 0 if self.precision_denominator == 0 else \
-#             self.precision_numerator / float(self.precision_denominator)
-#         recall = 0 if self.recall_denominator == 0 else \
-#             self.recall_numerator / float(self.recall_denominator)
-#         return 0 if precision + recall == 0 else 2 * precision * recall / (precision + recall)
-#
-#     def get_recall(self):
-#         if self.recall_numerator == 0:
-#             return 0
-#         else:
-#             return self.recall_numerator / float(self.recall_denominator)
-#
-#     def get_precision(self):
-#         if self.precision_numerator == 0:
-#             return 0
-#         else:
-#             return self.precision_numerator / float(self.precision_denominator)
-#
-#     def get_prf(self):
-#         return self.get_precision(), self.get_recall(), self.get_f1()
-#
-#     def span_type_accuracy(self, gold_labels, pred_labels):
-#         """
-#         Accuracy based on correctly predicting correct values of a mask, including only partial mask matches.
-#         ◮ Precision: (# labels correctly assigned ~ p_num) TP / (# labels assigned ~ p_den) TP+FP
-#         ◮ Recall: (# labels correctly assigned ~ r_num) TP / (total # of labels ~ r_den) TP+FN
-#         """
-#         p_num, p_den, r_num = 0, 0, 0
-#         # every gold_span that should be 1 (TP + FN)
-#         r_den = self.batch_gold_labels
-#
-#         for li, label_value in enumerate(pred_labels[1:-1]):
-#             # ignore [CLS] and [SEP]
-#             # if label_value != "PD-pad":  # ignore padding
-#             p_den += 1              # all predicted mask labels, both true and false (TP+FP)
-#             if label_value == gold_labels[li + 1]:
-#                 p_num += 1          # TP
-#                 r_num += 1          # TP
-#
-#         return p_num, p_den, r_num, r_den
-
 
 if __name__ == "__main__":
     evaluator = SimpleEvaluator("../predictions/test_predictions.json",

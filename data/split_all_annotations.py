@@ -4,7 +4,7 @@ from shutil import copyfile
 
 random.seed(14)
 # simple script
-path_to_all_gold = "./all_gold/"
+path_to_all_gold = "all_annotated/"
 all_txt = glob.glob(path_to_all_gold + "*.txt")
 
 random.shuffle(all_txt)

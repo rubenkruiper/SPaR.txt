@@ -7,8 +7,10 @@ import torch.nn.functional as F
 
 class RelativeGlobalAttention(nn.Module):
     """
-    Implementation of [Huang et al 2018][1] from: https://jaketae.github.io/study/relative-positional-encoding/
-    Similar implementation; https://github.com/chathasphere/pno-ai
+    Implementation of [Huang et al 2018][1].
+
+    Specifically, using Jake Tae's (check out his cool blog!)
+    implementation: https://jaketae.github.io/study/relative-positional-encoding/
 
     1) https://arxiv.org/pdf/1809.04281.pdf
     2) https://arxiv.org/pdf/1803.02155.pdf

@@ -21,8 +21,7 @@ TAGS_TO_SPANS_FUNCTION_TYPE = Callable[[List[str], Optional[List[str]]], List[Ty
 @Metric.register("my_span_f1")
 class SpanBasedF1Measure(Metric):
     """
-    ToDo - describe
-    I think the only thing I changed is add 'DiscontiguousTest' as label_encoding, allowing me
+    I think the only thing I changed is to add 'DiscontiguousTest' as label_encoding, allowing me
     to run my_read_utils.discontiguous_tags_to_spans as "tags_to_spans_function"
     """
 

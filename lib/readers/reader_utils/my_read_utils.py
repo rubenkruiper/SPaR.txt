@@ -341,7 +341,7 @@ def discontiguous_tags_to_spans(tag_sequence: List[str], types_to_ignore: List[s
 
 
 # def brat_to_spacy_tokens(doc, span_buffer):
-#     # CONVERT SPAN INDICES TO SPACY TOKEN INDICES - not using spacy
+#     # CONVERT SPAN INDICES TO SPACY TOKEN INDICES - not using spacy right anymore
 #     for token in doc:
 #         for span in span_buffer:
 #             span_start_idx = int(span_buffer[span]['span_start'])

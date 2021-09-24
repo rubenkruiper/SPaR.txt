@@ -191,7 +191,7 @@ class ObjectAndContextSelector():
             ]
             file_idx += 1
 
-            with open("data/doccano_txts/{}.txt".format(str(file_idx)), 'w') as f:
+            with open("data/posthoc_judgement/{}.txt".format(str(file_idx)), 'w') as f:
                 f.writelines(lines_to_write)
                 f.close()
 
@@ -201,7 +201,7 @@ if __name__ == "__main__":
     file_paths = ['../i-ReC/data/scottish/domestic_standards.json',
                   '../i-ReC/data/scottish/non-domestic_standards.json']
     predictions_file = 'predictions/all_sentence_predictions.json'
-    all_gold_doc_ids = glob.glob('data/all_gold/*.txt')
+    all_gold_doc_ids = glob.glob('data/all_annotated/*.txt')
     num_to_select = 165
 
     object_selector = ObjectAndContextSelector(all_gold_doc_ids)

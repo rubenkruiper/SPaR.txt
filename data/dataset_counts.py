@@ -8,7 +8,7 @@ from allennlp.data.tokenizers import PretrainedTransformerTokenizer
 
 class DatasetCount:
 
-    def __init__(self, file_path, bert_model_name: str = "SpanBERT/spanbert-base-cased"):
+    def __init__(self, file_path, bert_model_name: str = "BERT/bert-base-cased"):
         # directory with .txt and .ann files
         self.file_path = file_path
 
@@ -27,7 +27,7 @@ class DatasetCount:
                                                             tokenizer_kwargs={"do_lower_case": False})
 
     def grab_files_from_dir(self):
-        """ largely follow dataset reader """
+        """ largely follows dataset reader """
         text_files = sorted(glob.glob(self.file_path + "*.txt"))
         ann_files = sorted(glob.glob(self.file_path + "*.ann"))
 
@@ -121,9 +121,9 @@ class DatasetCount:
 
 if __name__ == "__main__":
 
-    file_paths = ["all_gold/", "train/", "val/", "test/"]
+    file_paths = ["all_annotated/", "train/", "val/", "test/"]
 
-    # grab annotated files from all_gold, train, val and test
+    # grab annotated files from all_annotated, train, val and test
     for f in file_paths:
         counter = DatasetCount(f)
         print("Counts for {}".format(f))

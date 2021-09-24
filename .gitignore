@@ -5,7 +5,7 @@ __pycache__/
 
 ######
 
-# data/iReC/
+# data/all_non_annotated_sents/
 trained_models/
 resources/
 predictions/*.json

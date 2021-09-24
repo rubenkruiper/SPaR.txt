@@ -81,6 +81,7 @@ class PredictionInsight():
                 self.span_df.loc[len(self.span_df.index)] = [span_type, length]
 
     def read_and_count(self, predictions_fp):
+        """  """
         # read predictions from output file
         with open(predictions_fp, 'r') as f:
             predictions_list = [json.loads(jsonline) for jsonline in f.readlines()]
@@ -257,7 +258,7 @@ def compare_predictions_against_defined_terms(file_paths, mwe_counter_lists):
         print("Top 20 counts: \n{}".format(counter.most_common(20)))
 
     objects_lower = [x.lower().strip() for x in mwe_counter_lists[0]]
-    actions_lower = [x.lower() for x in mwe_counter_lists[1]]
+    # actions_lower = [x.lower() for x in mwe_counter_lists[1]]
     defined_not_found = [d for d in definitions if d.lower().strip() not in objects_lower]
 
     for idx, d in enumerate(defined_not_found):
@@ -283,7 +284,7 @@ def compare_predictions_against_defined_terms(file_paths, mwe_counter_lists):
                     break
 
     defined_not_found = [x for x in defined_not_found if x not in defined_part_of]
-    # [x for x in objects_lower if "" in x]
+    # Lazy solution right now is to add a break-point here to inspect the identified objects
     [print(dn) for dn in defined_not_found]
 
 if __name__ == "__main__":
@@ -291,7 +292,7 @@ if __name__ == "__main__":
     file_paths = ['../i-ReC/data/scottish/domestic_standards.json',
                   '../i-ReC/data/scottish/non-domestic_standards.json']
 
-    #
+    # Counters are stored in count_pickle
     my_pred_obj = PredictionInsight()
     mwe_dict = my_pred_obj.grab_counts('predictions/all_sentence_predictions.json',
                                        count_pickle='predictions/counts.pkl',
@@ -299,5 +300,6 @@ if __name__ == "__main__":
 
     # mwe_dict = my_pred_obj.collect_mwes('predictions/debug_output.json')
     mwe_counter_lists = my_pred_obj.count_mwes(mwe_dict)
+
     # check which defined terms we find
     compare_predictions_against_defined_terms(file_paths, mwe_counter_lists)

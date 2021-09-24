@@ -108,7 +108,7 @@ class AdaptedCrfTagger(Model):
         else:
             self.dropout = None
 
-        # Attention
+        # Attention # ToDo - be a good boy and pass arguments through experimental setup json file
         self._attention = RelativeGlobalAttention(self.encoder.get_output_dim(),
                                                   12)
 
