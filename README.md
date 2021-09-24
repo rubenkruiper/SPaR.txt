@@ -1,5 +1,5 @@
 # SPaR.txt - a cheap Shallow Parsing approach for Regulatory texts
-_This work was published in the EMNLP 2021 workshop on [Natural Legal Language Processing](http://nllpw.org/)   
+_This work was published in the EMNLP 2021 workshop on [Natural Legal Language Processing](http://nllpw.org/)_    
 
 **Abstract**: Automated Compliance Checking (ACC) systems aim to semantically parse building regulations to a set of rules. 
 However, semantic parsing is known to be hard and requires large amounts of training data. 
