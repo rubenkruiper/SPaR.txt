@@ -19,6 +19,9 @@ This repository contains:
 * 200 randomly selected sentences annotated using [BRAT](https://brat.nlplab.org/), see [the SpaR.txt paper]() for annotation details
 * Code to train a biLSTM+CRF tagger, in support of learning a lexicon (including MWE discovery/identification)
 
+
+---
+
 **Using SPaR.txt**
 Clone the repository and enter the directory from terminal/console.
 1.  Create a new conda environment, e.g.:
@@ -47,8 +50,13 @@ Clone the repository and enter the directory from terminal/console.
       python run_tagger.py --predict -m "trained_models/debugger_train/" -i "data/all_non_annotated_sents/" -o "predictions/all_sentence_predictions.json" --batchsize 8
       ```
 
+---
+
 **To Do**: 
 * Need to update the details on our paper once published
+
+
+---
 
 If you use code or data from SPaR.txt in your research, please consider citing the following papers:
 ```
