@@ -8,7 +8,7 @@ from allennlp.data.tokenizers import PretrainedTransformerTokenizer
 
 class DatasetCount:
 
-    def __init__(self, file_path, bert_model_name: str = "BERT/bert-base-cased"):
+    def __init__(self, file_path, bert_model_name: str = "bert-base-cased"):
         # directory with .txt and .ann files
         self.file_path = file_path
 

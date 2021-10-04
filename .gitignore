@@ -9,6 +9,7 @@ __pycache__/
 trained_models/
 resources/
 predictions/*.json
+predictions/*.pkl
 notebooks/*.pkl
 notebooks/*.json
 

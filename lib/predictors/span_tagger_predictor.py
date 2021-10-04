@@ -20,7 +20,7 @@ class SpanTaggerPredictor(Predictor):
     --> Only changed the tokenizer in __init__
     """
     def __init__(self, model: Model, dataset_reader: DatasetReader,
-                 bert_model_name: str = "BERT/bert-base-cased"):
+                 bert_model_name: str = "bert-base-cased"):
         super().__init__(model, dataset_reader)
         self._tokenizer = PretrainedTransformerTokenizer(bert_model_name)
 

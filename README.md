@@ -15,13 +15,40 @@ reasonable accuracy (70,3\%).
 This repository contains:
 * ScotReg - a json corpus of the [domestic](https://www.gov.scot/publications/building-standards-technical-handbook-2020-domestic/) and [non-domestic](https://www.gov.scot/publications/building-standards-technical-handbook-2020-non-domestic/) Scottish Building Regulations 
    * scraped 14th of June 2021 
-   * please also see[crown copyright](https://www.gov.scot/crown-copyright/) and the [Open Government License](https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/)
+   * please also see [crown copyright](https://www.gov.scot/crown-copyright/) and the [Open Government License](https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/)
 * 200 randomly selected sentences annotated using [BRAT](https://brat.nlplab.org/), see [the SpaR.txt paper]() for annotation details
 * Code to train a biLSTM+CRF tagger, in support of learning a lexicon (including MWE discovery/identification)
 
+**Using SPaR.txt**
+Clone the repository and enter the directory from terminal/console.
+1.  Create a new conda environment, e.g.:
+    ```
+    conda create -n spar python=3.8
+    ```
+2.  Activate your new environment
+    ```
+    conda activate spar
+    ```
+3.  Install the dependencies (make sure you are inside the directory)
+    ```
+    pip install -r requirements.txt
+    ```
+4.  Train a model
+    ```
+    python run_tagger.py
+    ```
+5.  Use the trained model to:
+  * Evaluate the model on the test set
+      ```
+      python run_tagger.py --evaluate -i "data/test/" --batchsize 8
+      ```
+  * Predict tags for all the sentences found in ScotReg
+      ```
+      python run_tagger.py --predict -m "trained_models/debugger_train/" -i "data/all_non_annotated_sents/" -o "predictions/all_sentence_predictions.json" --batchsize 8
+      ```
+
 **To Do**: 
-* I aim to provide some details on how to train, predict, and evaluate here
-* I'll update the details on our paper
+* Need to update the details on our paper once published
 
 If you use code or data from SPaR.txt in your research, please consider citing the following papers:
 ```
