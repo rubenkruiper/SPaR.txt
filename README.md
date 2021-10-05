@@ -16,7 +16,7 @@ This repository contains:
 * ScotReg - a json corpus of the [domestic](https://www.gov.scot/publications/building-standards-technical-handbook-2020-domestic/) and [non-domestic](https://www.gov.scot/publications/building-standards-technical-handbook-2020-non-domestic/) Scottish Building Regulations 
    * scraped 14th of June 2021 
    * please also see [crown copyright](https://www.gov.scot/crown-copyright/) and the [Open Government License](https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/)
-* 200 randomly selected sentences annotated using [BRAT](https://brat.nlplab.org/), see [the SpaR.txt paper]() for annotation details
+* 200 randomly selected sentences annotated using [BRAT](https://brat.nlplab.org/), see [the SpaR.txt paper](https://arxiv.org/abs/2110.01295) for annotation details
 * Code to train a biLSTM+CRF tagger, in support of learning a lexicon (including MWE discovery/identification)
 
 
@@ -58,7 +58,7 @@ Clone the repository and enter the directory from terminal/console.
 
 ---
 
-If you use code or data from SPaR.txt in your research, please consider citing the following papers:
+If you use code or data from SPaR.txt in your research, please consider citing the following paper:
 ```
 @inproceedings{Kruiper2021_SPaRtxt,
   author =      "Kruiper, Ruben
@@ -69,7 +69,7 @@ If you use code or data from SPaR.txt in your research, please consider citing t
                 and Kumar, Bimal",
   title =       "SPaR.txt, a cheap Shallow Parsing approach for Regulatory texts"
   year =        "2021",
-  url =         "https://github.com/rubenkruiper/SPaR.txt",
+  url =         "https://arxiv.org/abs/2110.01295",
 }
 ```
 The code and BRAT annotations in this repository are licensed under a Creative Commons Attribution 4.0 License.
