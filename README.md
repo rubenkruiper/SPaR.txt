@@ -1,5 +1,5 @@
 # SPaR.txt - a cheap Shallow Parsing approach for Regulatory texts
-_This work was published in the EMNLP 2021 workshop on [Natural Legal Language Processing](http://nllpw.org/)_    
+_[This work was published](https://aclanthology.org/2021.nllp-1.14) in the EMNLP 2021 workshop on [Natural Legal Language Processing](http://nllpw.org/)_    
 
 > **Abstract**: Automated Compliance Checking (ACC) systems aim to semantically parse building regulations to a set of rules. 
 However, semantic parsing is known to be hard and requires large amounts of training data. 
@@ -16,7 +16,7 @@ This repository contains:
 * ScotReg - a json corpus of the [domestic](https://www.gov.scot/publications/building-standards-technical-handbook-2020-domestic/) and [non-domestic](https://www.gov.scot/publications/building-standards-technical-handbook-2020-non-domestic/) Scottish Building Regulations 
    * scraped 14th of June 2021 
    * please also see [crown copyright](https://www.gov.scot/crown-copyright/) and the [Open Government License](https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/)
-* 200 randomly selected sentences annotated using [BRAT](https://brat.nlplab.org/), see [the SpaR.txt paper](https://aclanthology.org/2021.nllp-1.14.pdf) for annotation details ([arXiv link](https://arxiv.org/abs/2110.01295))
+* 200 randomly selected sentences annotated using [BRAT](https://brat.nlplab.org/), see [the SpaR.txt paper](https://aclanthology.org/2021.nllp-1.14) for annotation details ([arXiv link](https://arxiv.org/abs/2110.01295))
 * Code to train a biLSTM+CRF tagger, in support of learning a lexicon (including MWE discovery/identification)
 
 
