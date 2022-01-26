@@ -24,23 +24,23 @@ This repository contains:
 
 **Using SPaR.txt**
 Clone the repository and enter the directory from terminal/console.
-1.  Create a new conda environment, e.g.:
+1. Create a new conda environment, e.g.:
     ```
     conda create -n spar python=3.8
     ```
-2.  Activate your new environment
+2. Activate your new environment
     ```
     conda activate spar
     ```
-3.  Install the dependencies (make sure you are inside the directory)
+3. Install the dependencies (make sure you are inside the directory)
     ```
     pip install -r requirements.txt
     ```
-4.  Train a model
+4. Train a model
     ```
     python run_tagger.py
     ```
-5.  Use the trained model to:
+5. Use the trained model to:
   * Evaluate the model on the test set
       ```
       python run_tagger.py --evaluate -i "data/test/" --batchsize 8
@@ -49,6 +49,12 @@ Clone the repository and enter the directory from terminal/console.
       ```
       python run_tagger.py --predict -m "trained_models/debugger_train/" -i "data/all_non_annotated_sents/" -o "predictions/all_sentence_predictions.json" --batchsize 8
       ```
+  * Try parsing your own sentences from the terminal (see example below)
+      ```
+      python serve_spar.py
+      ```
+    
+![Example of input and output from terminal](https://github.com/rubenkruiper/SPaR.txt/ExampleServingSpar.jpg?raw=true)
 
 ---
 
