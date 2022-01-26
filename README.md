@@ -54,7 +54,7 @@ Clone the repository and enter the directory from terminal/console.
       python serve_spar.py
       ```
     
-![Example of input and output from terminal](https://github.com/rubenkruiper/SPaR.txt/ExampleServingSpar.jpg?raw=true)
+![Example of input and output from terminal](https://github.com/rubenkruiper/SPaR.txt/main/ExampleServingSpar.jpg?raw=true)
 
 ---
 
