@@ -9,11 +9,23 @@ from allennlp.common.util import import_module_and_submodules
 from allennlp.commands import main
 
 
+cwd = os.getcwd()
+sys.path.insert(0, cwd + "/SPaR.txt")
 import_module_and_submodules("lib")
 
-
 class SparPredictor:
-    def __init__(self, default_path="/trained_models/debugger_train/model.tar.gz"):
+    """
+    Because of our dumb project name that contains a '.', import as follows:
+    ```
+    import imp
+    with open('SPaR.txt/spar_predictor.py', 'rb') as fp:
+        spar_predictor = imp.load_module(
+            'spar_predictor', fp, 'SPaR.txt.spar_predictor.py',
+            ('.py', 'rb', imp.PY_SOURCE)
+        )
+    ```
+    """
+    def __init__(self, default_path="./SPaR.txt/trained_models/debugger_train/model.tar.gz"):
 
         if not os.path.exists(default_path):
             # todo if the model doesn't exist, train the default model.
@@ -21,7 +33,7 @@ class SparPredictor:
                   "\nIf a GPU is available, this will take several minutes. "
                   "If no GPU is available, this will take 20+ minutes.")
 
-            default_config_file = "/data/spar_data/experiments/attention_tagger.json"
+            default_config_file = "./SPaR.txt/experiments/attention_tagger.json"
             serialization_dir = default_path
             # Assemble the command into sys.argv
             sys.argv = [
@@ -42,6 +54,4 @@ class SparPredictor:
 
         default_archive = load_archive(default_path) # , overrides=model_overrides
         self.predictor = AllenNLPPredictor.from_archive(default_archive, predictor_name="span_tagger")
-
-
 
