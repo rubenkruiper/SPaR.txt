@@ -33,7 +33,7 @@ class SparPredictor:
                   "\nIf a GPU is available, this will take several minutes. "
                   "If no GPU is available, this will take 20+ minutes.")
 
-            default_config_file = "./SPaR.txt/experiments/phrase_bert_tagger.json"
+            default_config_file = "./SPaR.txt/experiments/span_predictor_tagger.json"
             serialization_dir = default_path
             # Assemble the command into sys.argv
             sys.argv = [
