@@ -7,6 +7,7 @@ from allennlp.predictors.predictor import Predictor as AllenNLPPredictor
 from allennlp.models.archival import load_archive
 from allennlp.common.util import import_module_and_submodules
 from allennlp.commands import main
+from spar_serving_utils import *
 
 
 cwd = os.getcwd()
@@ -55,3 +56,9 @@ class SparPredictor:
         default_archive = load_archive(default_path) # , overrides=model_overrides
         self.predictor = AllenNLPPredictor.from_archive(default_archive, predictor_name="span_tagger")
 
+    def parse_output(self, prediction, span_types=['obj', 'act', 'func', 'dis']):
+        """
+        SPaR.txt outputs are formatted following the default AllenNLP json structure. This function grabs
+        the spans from the output in text format.
+        """
+        return parse_spar_output(prediction, span_types)
