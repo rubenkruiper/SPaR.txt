@@ -7,12 +7,13 @@ from allennlp.predictors.predictor import Predictor as AllenNLPPredictor
 from allennlp.models.archival import load_archive
 from allennlp.common.util import import_module_and_submodules
 from allennlp.commands import main
-from spar_serving_utils import *
 
 
 cwd = os.getcwd()
 sys.path.insert(0, cwd + "/SPaR.txt")
 import_module_and_submodules("lib")
+import_module_and_submodules("spar_serving_utils")
+
 
 class SparPredictor:
     """
