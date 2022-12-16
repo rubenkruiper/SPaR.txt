@@ -12,7 +12,7 @@ from allennlp.commands import main
 cwd = os.getcwd()
 sys.path.insert(0, cwd + "/SPaR.txt")
 import_module_and_submodules("lib")
-import_module_and_submodules("spar_serving_utils")
+import spar_serving_utils
 
 
 class SparPredictor:
@@ -62,4 +62,4 @@ class SparPredictor:
         SPaR.txt outputs are formatted following the default AllenNLP json structure. This function grabs
         the spans from the output in text format.
         """
-        return parse_spar_output(prediction, span_types)
+        return spar_serving_utils.parse_spar_output(prediction, span_types)
