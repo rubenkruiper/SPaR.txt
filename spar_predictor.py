@@ -11,7 +11,7 @@ from allennlp.commands import main
 
 
 cwd = Path.cwd()
-sys.path.insert(0, str(cwd.joinpath("SPaR.txt")))
+sys.path.insert(0, str(cwd.joinpath("SPaR.txt/")))
 import_module_and_submodules("lib")
 import spar_serving_utils
 

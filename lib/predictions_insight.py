@@ -126,7 +126,7 @@ class PredictionInsight():
 
     def grab_counts(self,
                     predictions_fp: Path,
-                    count_pickle=Path.cwd().join('predictions', 'counts.pkl'),
+                    count_pickle=Path.cwd().joinpath('predictions', 'counts.pkl'),
                     count_spans=False):
         """
         Count and print the number of different span types and lengths.
