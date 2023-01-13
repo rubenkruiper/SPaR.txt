@@ -2,6 +2,7 @@
 Several classes and methods to parse of the SPaR.txt output for further processing.
 """
 
+
 class Indices(object):
     def __init__(self,
                  contiguous_start=-1,

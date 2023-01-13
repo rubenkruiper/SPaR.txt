@@ -1,4 +1,5 @@
 import json, glob
+from pathlib import Path
 from typing import List, Dict, Any
 from allennlp.data.tokenizers import PretrainedTransformerTokenizer
 
@@ -13,8 +14,8 @@ class SimpleEvaluator():
     """
 
     def __init__(self,
-                 predictions_fp,
-                 gold_fp,
+                 predictions_fp: Path,
+                 gold_fp: Path,
                  bert_model_name: str = "bert-base-cased"):
         self.predictions_input = predictions_fp
         self.gold_input = gold_fp
@@ -24,12 +25,12 @@ class SimpleEvaluator():
             self.lowercase_input = "uncased" in bert_model_name
 
     def read_gold(self):
-        text_files = sorted(glob.glob(self.gold_input + "*.txt"))
-        ann_files = sorted(glob.glob(self.gold_input + "*.ann"))
+        text_files = sorted(self.gold_input.glob("*.txt"))
+        ann_files = sorted(self.gold_input.glob("*.ann"))
 
         gold_annotations = []
         for text_file, ann_file in zip(text_files, ann_files):
-            doc_name = text_file.rsplit('/', 1)[1].rsplit('.', 1)[0]
+            doc_name = text_file.stem
 
             with open(text_file, "r") as tf:
                 original_sentence = tf.read()
@@ -39,7 +40,6 @@ class SimpleEvaluator():
             gold_annotations.append({"sent_id": doc_name, "sentence": original_sentence,
                                      "token_list": [t.text for t in token_list], "tag_list": tag_list})
         return gold_annotations
-
 
     def evaluate(self):
 
@@ -77,9 +77,10 @@ class SimpleEvaluator():
         # print("sklearn R: {}".format(metrics.recall_score(y_true, y_pred, average='macro')))
         # print("sklearn F1: {}".format(metrics.f1_score(y_true, y_pred, average='macro')))
 
+
 if __name__ == "__main__":
-    evaluator = SimpleEvaluator("../predictions/test_predictions.json",
-                                "../data/test/",
+    evaluator = SimpleEvaluator(Path("../predictions/test_predictions.json"),
+                                Path("../data/test/"),
                                 "bert-base-cased")
     evaluator.evaluate()
 

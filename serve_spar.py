@@ -1,12 +1,16 @@
 import time
+from pathlib import Path
+
 from allennlp.predictors.predictor import Predictor as AllenNLPPredictor
 from allennlp.models.archival import load_archive
 from allennlp.common.util import import_module_and_submodules
+
 import spar_serving_utils as su
 
 
 import_module_and_submodules("lib")
-default_path = "trained_models/debugger_train/model.tar.gz"
+# todo; add option to change the path using argparse
+default_path = Path.cwd().joinpath("trained_models", "debugger_train", "model.tar.gz")
 
 default_archive = load_archive(default_path)
 predictor = AllenNLPPredictor.from_archive(default_archive)

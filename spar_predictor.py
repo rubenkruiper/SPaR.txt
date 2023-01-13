@@ -2,6 +2,7 @@ import os
 import sys
 import torch
 import json
+from pathlib import Path
 
 from allennlp.predictors.predictor import Predictor as AllenNLPPredictor
 from allennlp.models.archival import load_archive
@@ -10,9 +11,10 @@ from allennlp.commands import main
 from spar_serving_utils import *
 
 
-cwd = os.getcwd()
-sys.path.insert(0, cwd + "/SPaR.txt")
+cwd = Path.cwd()
+sys.path.insert(0, cwd.joinpath("SPaR.txt"))
 import_module_and_submodules("lib")
+
 
 class SparPredictor:
     """
@@ -26,22 +28,24 @@ class SparPredictor:
         )
     ```
     """
-    def __init__(self, default_path="./SPaR.txt/trained_models/debugger_train/model.tar.gz"):
+    def __init__(self,
+                 default_serialization_dir: Path = Path.cwd().joinpath("SPaR.txt", "trained_models", "debugger_train"),
+                 default_config_file: Path = Path.cwd().joinpath("SPaR.txt", "experiments", "span_predictor_tagger.json")):
 
-        if not os.path.exists(default_path):
-            # todo if the model doesn't exist, train the default model.
-            print("No trained model found, creating one at{}.".format(default_path),
+        if not default_serialization_dir.joinpath("model.tar.gz").exists():
+            # If the model doesn't exist, train a model and save it to the specified directory.
+            print("No trained model found, creating one at {}.".format(default_serialization_dir),
                   "\nIf a GPU is available, this will take several minutes. "
                   "If no GPU is available, this will take 20+ minutes.")
 
-            default_config_file = "./SPaR.txt/experiments/span_predictor_tagger.json"
-            serialization_dir = default_path
+            if not default_config_file.exists():
+                print(f"Make sure a configuration file exists at the location you specified: {default_config_file}")
+
             # Assemble the command into sys.argv
             sys.argv = [
                 "allennlp",  # command name, not used by main
-                "train",
-                default_config_file,
-                "-s", serialization_dir,
+                "train", default_config_file,
+                "-s", default_serialization_dir,
                 "--include-package", "lib"
             ]
 
@@ -53,8 +57,8 @@ class SparPredictor:
 
             main()
 
-        default_archive = load_archive(default_path) # , overrides=model_overrides
-        self.predictor = AllenNLPPredictor.from_archive(default_archive, predictor_name="span_tagger")
+        spartxt_archive = load_archive(default_serialization_dir.joinpath("model.tar.gz"))  # ,overrides=model_overrides
+        self.predictor = AllenNLPPredictor.from_archive(spartxt_archive, predictor_name="span_tagger")
 
     def parse_output(self, prediction, span_types=['obj', 'act', 'func', 'dis']):
         """

@@ -62,12 +62,12 @@ class TagReader(DatasetReader):
     @overrides
     def _read(self, file_path: PathOrStr) -> Iterable[Instance]:
 
-        text_files = sorted(glob.glob(file_path + "*.txt"))
-        ann_files = sorted(glob.glob(file_path + "*.ann"))
+        text_files = [t for t in file_path.glob("*.txt")]
+        ann_files = [a for a in file_path.glob("*.ann")]
 
-        if ann_files != []:
+        if ann_files:
             for text_file, ann_file in zip(text_files, ann_files):
-                doc_name = text_file.rsplit('/', 1)[1].rsplit('.', 1)[0]
+                doc_name = text_file.stem
 
                 with open(text_file, "r") as tf:
                     original_sentence = tf.read()
@@ -78,7 +78,7 @@ class TagReader(DatasetReader):
         else:
             # .txt files as input without annotations
             for text_file in text_files:
-                doc_name = text_file.rsplit('/', 1)[1].rsplit('.', 1)[0]
+                doc_name = text_file.stem
                 with open(text_file, "r") as tf:
                     original_sentence = tf.read()
                 token_list = self.tokenizer.tokenize(original_sentence)

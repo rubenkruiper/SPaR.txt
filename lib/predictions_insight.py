@@ -1,6 +1,7 @@
 import json, pickle, os
 import numpy as np
 import pandas as pd
+from pathlib import Path
 from collections import Counter
 from allennlp.data.tokenizers import PretrainedTransformerTokenizer
 
@@ -48,7 +49,7 @@ class PredictionInsight():
 
         if count_spans:
             type_counts = self.span_df.value_counts('span_type')
-            total_length_per_type =  self.span_df.groupby('span_type').agg('sum')
+            total_length_per_type = self.span_df.groupby('span_type').agg('sum')
             print("Span type counts: \n{}".format(type_counts))
             print("Span type avg lengths: \n{}".format((total_length_per_type.div(type_counts, axis=0))))
 
@@ -59,7 +60,7 @@ class PredictionInsight():
         print("Found {} discontiguous spans of type 'object'".format(self.discontiguous_obj_count))
         print("Found {} discontiguous spans of type 'action'".format(self.discontiguous_act_count))
 
-    def count_doc_id(self, doc_id):
+    def count_doc_id(self, doc_id: str):
         if doc_id.startswith('d'):
             self.document_sent_count['domestic'] += 1
         else:
@@ -80,7 +81,7 @@ class PredictionInsight():
                 length = sum([len(token) for token in span])
                 self.span_df.loc[len(self.span_df.index)] = [span_type, length]
 
-    def read_and_count(self, predictions_fp):
+    def read_and_count(self, predictions_fp: Path):
         """  """
         # read predictions from output file
         with open(predictions_fp, 'r') as f:
@@ -123,7 +124,10 @@ class PredictionInsight():
         self.document_sent_count, self.sent_tokenlen_list, self.span_df, self.tag_count, \
                 self.all_spans, self.discontiguous_obj_count, self.discontiguous_act_count = cnts
 
-    def grab_counts(self, predictions_fp, count_pickle='predictions/counts.pkl', count_spans=False):
+    def grab_counts(self,
+                    predictions_fp: Path,
+                    count_pickle=Path.cwd().join('predictions', 'counts.pkl'),
+                    count_spans=False):
         """
         Count and print the number of different span types and lengths.
         """
@@ -165,11 +169,11 @@ class PredictionInsight():
             t_head, t_type = t.split('-')
             if t_type != mwe_type:
                 # We're only interested in collecting a specific type of MWE for now, e.g., objects / actions
-                if current_mwe != []:
+                if current_mwe:
                     # store mwe
                     mwes.append(current_mwe)
                     # ToDo - I do not always want to store current_mwe into previous head
-                    if just_removed == []:
+                    if not just_removed:
                         # als we net een BD hebben gehad, dan moet previous_head niet veranderen...
                         previous_head = current_mwe
                 current_mwe = []
@@ -178,7 +182,7 @@ class PredictionInsight():
             if t_head == 'BH':
                 just_removed = []
 
-                if current_mwe == []:
+                if not current_mwe:
                     # Start collecting a new mwe
                     current_mwe.append(word_list[idx])
                 else:
@@ -232,10 +236,10 @@ class PredictionInsight():
         return counter_list
 
 
-def grab_definitions(file_paths):
+def grab_definitions(file_paths: List[Path]):
     data = {}
     for fp in file_paths:
-        f_name = fp.rsplit('/', 1)[1].rsplit('.', 1)[0]
+        f_name = fp.stem
         with open(fp) as f:
             data[f_name] = json.load(f)
 
@@ -251,13 +255,13 @@ def grab_definitions(file_paths):
     return definitions
 
 
-def compare_predictions_against_defined_terms(file_paths, mwe_counter_lists):
-    definitions = grab_definitions(file_paths)
+def compare_predictions_against_defined_terms(file_path_list: List[Path], mwe_counter_list: List[Counter]):
+    definitions = grab_definitions(file_path_list)
 
-    for counter in mwe_counter_lists:
+    for counter in mwe_counter_list:
         print("Top 20 counts: \n{}".format(counter.most_common(20)))
 
-    objects_lower = [x.lower().strip() for x in mwe_counter_lists[0]]
+    objects_lower = [x.lower().strip() for x in mwe_counter_list[0]]
     # actions_lower = [x.lower() for x in mwe_counter_lists[1]]
     defined_not_found = [d for d in definitions if d.lower().strip() not in objects_lower]
 
@@ -266,7 +270,7 @@ def compare_predictions_against_defined_terms(file_paths, mwe_counter_lists):
             defined_not_found[idx] = d[1:-1]
 
     defined_part_of = []
-    defined_actions = []
+    # defined_actions = [] # not checking for now
     for d in defined_not_found:
         overlapping_objects = [x for x in objects_lower if d.lower() in x]
         if len(overlapping_objects) > 0:
@@ -284,18 +288,19 @@ def compare_predictions_against_defined_terms(file_paths, mwe_counter_lists):
                     break
 
     defined_not_found = [x for x in defined_not_found if x not in defined_part_of]
-    # Lazy solution right now is to add a break-point here to inspect the identified objects
+    # Lazy solution right now is to add an IDE break-point here to inspect the identified objects
     [print(dn) for dn in defined_not_found]
+
 
 if __name__ == "__main__":
     # file_paths to grab the definitions
-    file_paths = ['../i-ReC/data/scottish/domestic_standards.json',
-                  '../i-ReC/data/scottish/non-domestic_standards.json']
+    file_paths = [Path('../i-ReC/data/scottish/domestic_standards.json'),
+                  Path('../i-ReC/data/scottish/non-domestic_standards.json')]
 
     # Counters are stored in count_pickle
     my_pred_obj = PredictionInsight()
-    mwe_dict = my_pred_obj.grab_counts('predictions/all_sentence_predictions.json',
-                                       count_pickle='predictions/counts.pkl',
+    mwe_dict = my_pred_obj.grab_counts(Path('predictions/all_sentence_predictions.json'),
+                                       count_pickle=Path('predictions/counts.pkl'),
                                        count_spans=True)
 
     # mwe_dict = my_pred_obj.collect_mwes('predictions/debug_output.json')
