@@ -65,8 +65,8 @@ class TagReader(DatasetReader):
         if type(file_path) == str:
             file_path = Path(file_path)
 
-        text_files = [t for t in file_path.glob("*.txt")]
-        ann_files = [a for a in file_path.glob("*.ann")]
+        text_files = sorted([t for t in file_path.glob("*.txt")])
+        ann_files = sorted([a for a in file_path.glob("*.ann")])
 
         if ann_files:
             for text_file, ann_file in zip(text_files, ann_files):
