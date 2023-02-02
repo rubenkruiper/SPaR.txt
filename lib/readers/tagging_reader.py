@@ -50,7 +50,7 @@ class TagReader(DatasetReader):
         if "uncased" in bert_model_name:
             self.tokenizer = PretrainedTransformerTokenizer(bert_model_name)
         else:
-            # Force cased tokenization for SpanBERT
+            # Need to force cased tokenization when using SpanBERT
             self.tokenizer = PretrainedTransformerTokenizer(bert_model_name,
                                                             tokenizer_kwargs={"do_lower_case": False})
 

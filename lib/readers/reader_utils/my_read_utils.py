@@ -76,7 +76,7 @@ def brat_indices_to_token_indices(brat_start, brat_end, token_list):
         if t.idx_end == brat_end:
             bert_ee = list_idx
     if bert_ss == -1 or bert_ee == -1:
-        print("brat_idx and token indices mismatch? Something wrong!")
+        raise ValueError("brat_idx and token indices mismatch? Something wrong, probably passing different tokenizers!")
     return bert_ss, bert_ee
 
 
