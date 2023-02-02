@@ -3,6 +3,7 @@ from lib.readers.reader_utils.my_read_utils import *
 
 from typing import Dict, List, Optional, Sequence, Iterable, Any
 import logging
+from pathlib import Path
 from overrides import overrides
 
 from allennlp.common.checks import ConfigurationError
@@ -61,6 +62,8 @@ class TagReader(DatasetReader):
 
     @overrides
     def _read(self, file_path: PathOrStr) -> Iterable[Instance]:
+        if type(file_path) == str:
+            file_path = Path(file_path)
 
         text_files = [t for t in file_path.glob("*.txt")]
         ann_files = [a for a in file_path.glob("*.ann")]
