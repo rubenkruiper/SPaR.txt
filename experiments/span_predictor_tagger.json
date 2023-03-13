@@ -6,7 +6,8 @@
             "tokens": {
                 "type": "pretrained_transformer",
                 "max_length": 512,
-                "model_name": "bert-base-cased"
+                "model_name": "bert-base-cased",
+                "tokenizer_kwargs": {"use_fast": false}
             }
         }
     },
@@ -35,6 +36,7 @@
                     "type": "pretrained_transformer",
                     "max_length": 512,
                     "model_name": "bert-base-cased",
+                    "tokenizer_kwargs": {"use_fast": false},
                     "train_parameters": false
                 }
             }
