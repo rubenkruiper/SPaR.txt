@@ -11,7 +11,7 @@ from allennlp.commands import main
 
 
 cwd = Path.cwd()
-sys.path.insert(0, str(cwd.joinpath("SPaR.txt")))
+sys.path.insert(0, str(cwd.joinpath("SPaRtxt")))
 import_module_and_submodules("lib")
 import spar_serving_utils
 
@@ -21,16 +21,16 @@ class SparPredictor:
     Because of our dumb project name that contains a '.', import as follows:
     ```
     import imp
-    with open('SPaR.txt/spar_predictor.py', 'rb') as fp:
+    with open('SPaRtxt/spar_predictor.py', 'rb') as fp:
         spar_predictor = imp.load_module(
-            'spar_predictor', fp, 'SPaR.txt.spar_predictor.py',
+            'spar_predictor', fp, 'SPaRtxt.spar_predictor.py',
             ('.py', 'rb', imp.PY_SOURCE)
         )
     ```
     """
     def __init__(self,
-                 serialization_dir: Path = Path.cwd().joinpath("SPaR.txt", "trained_models", "debugger_train"),
-                 config_fp: Path = Path.cwd().joinpath("SPaR.txt", "experiments", "span_predictor_tagger.json")):
+                 serialization_dir: Path = Path.cwd().joinpath("SPaRtxt", "trained_models", "debugger_train"),
+                 config_fp: Path = Path.cwd().joinpath("SPaRtxt", "experiments", "span_predictor_tagger.json")):
 
         if not serialization_dir.joinpath("model.tar.gz").exists():
             # If the model doesn't exist, train a model and save it to the specified directory.
@@ -62,7 +62,7 @@ class SparPredictor:
 
     def parse_output(self, prediction, span_types=['obj', 'act', 'func', 'dis']):
         """
-        SPaR.txt outputs are formatted following the default AllenNLP json structure. This function grabs
+        SPaRtxt outputs are formatted following the default AllenNLP json structure. This function grabs
         the spans from the output in text format.
         """
         return spar_serving_utils.parse_spar_output(prediction, span_types)

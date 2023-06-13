@@ -1,5 +1,5 @@
 """
-Several classes and methods to parse of the SPaR.txt output for further processing.
+Several classes and methods to parse of the SPaRtxt output for further processing.
 """
 
 
@@ -217,7 +217,7 @@ def get_spans(word_list, tag_list, mwe_type):
 
 def parse_spar_output(prediction, span_types=['obj', 'act', 'func', 'dis']):
     """
-    SPaR.txt outputs are formatted following the default AllenNLP json structure. This function grabs
+    SPaRtxt outputs are formatted following the default AllenNLP json structure. This function grabs
     the spans from the output in text format.
     """
     # read predictions from file
