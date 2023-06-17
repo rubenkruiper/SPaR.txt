@@ -22,8 +22,7 @@ class SpanTaggerPredictor(Predictor):
     def __init__(self, model: Model, dataset_reader: DatasetReader,
                  bert_model_name: str = "bert-base-cased"):
         super().__init__(model, dataset_reader)
-        self._tokenizer = PretrainedTransformerTokenizer(bert_model_name,
-                                                         tokenizer_kwargs={'use_fast': False})
+        self._tokenizer = PretrainedTransformerTokenizer(bert_model_name)
 
     def predict(self, sentence: str) -> JsonDict:
         return self.predict_json({"sentence": sentence})
