@@ -12,9 +12,9 @@ from allennlp.nn import InitializerApplicator
 import allennlp.nn.util as util
 from allennlp.training.metrics import CategoricalAccuracy
 
-from lib.modules.adapted_crf import allowed_transitions
-from lib.modules.adapted_crf import ConditionalRandomField
-from lib.metrics.crf_f1_measure import SpanBasedF1Measure
+from spar_lib.modules.adapted_crf import allowed_transitions
+from spar_lib.modules.adapted_crf import ConditionalRandomField
+from spar_lib.metrics.crf_f1_measure import SpanBasedF1Measure
 
 
 @Model.register("my_tagger")

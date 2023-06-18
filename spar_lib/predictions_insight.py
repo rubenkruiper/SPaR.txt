@@ -5,7 +5,7 @@ from pathlib import Path
 from collections import Counter
 from allennlp.data.tokenizers import PretrainedTransformerTokenizer
 
-from lib.readers.reader_utils.my_read_utils import *
+from spar_lib.readers.reader_utils.my_read_utils import *
 
 
 class PredictionInsight():

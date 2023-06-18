@@ -1,14 +1,20 @@
+from typing import List
+
 """
-Several classes and methods to parse of the SPaRtxt output for further processing.
+Several classes and methods to keep track of SPaRtxt outputs for further processing.
 """
 
 
+# ----------------------- Classes  -----------------------#
 class Indices(object):
+    """
+    A container for the indices of a span
+    """
     def __init__(self,
-                 contiguous_start=-1,
-                 contiguous_end=-1,
-                 discontiguous_start=-1,
-                 discontiguous_end=-1):
+                 contiguous_start: int = -1,
+                 contiguous_end: int = -1,
+                 discontiguous_start: int = -1,
+                 discontiguous_end: int = -1):
         self.ss = contiguous_start
         self.se = contiguous_end
         self.es = discontiguous_start
@@ -20,16 +26,16 @@ class Indices(object):
     def to_string(self):
         return str([self.ss, self.se, self.es, self.ee])
 
-    def set_ss(self, idx):
+    def set_ss(self, idx: int):
         self.ss = idx
 
-    def set_se(self, idx):
+    def set_se(self, idx: int):
         self.se = idx
 
-    def set_es(self, idx):
+    def set_es(self, idx: int):
         self.es = idx
 
-    def set_ee(self, idx):
+    def set_ee(self, idx: int):
         self.ee = idx
 
     def is_discontiguous(self):
@@ -40,9 +46,9 @@ class Indices(object):
 
 class SingleSpan(object):
     """
-    Single immutable span object
+    Immutable span object
     """
-    def __init__(self, span, span_type):
+    def __init__(self, span: str, span_type: str):
         # Text covered by span and type
         self.span = span
         self.span_type = span_type
@@ -58,9 +64,9 @@ class SingleSpan(object):
 
 class Sentence(object):
     """
-    Single immutable sentence object
+    Immutable sentence object to hold a single sentence
     """
-    def __init__(self, sentence):
+    def __init__(self, sentence: str):
         self.sentence = sentence
         self.spans = {}
 
@@ -73,36 +79,39 @@ class Sentence(object):
         """ ToDO; might want to change how this object is formatted as a dict """
         return {self.sentence: self.spans}
 
-    def add_span(self, span, indices):
+    def add_span(self, span: str, indices: int):
         self.spans[span] = indices
 
-    def get_indices(self, span):
+    def get_indices(self, span: str):
         if span not in self.spans:
-            raise ValueError("{} not in this sentence".format(span))
+            raise ValueError(f"'{span}' not in this sentence")
         return self.spans[span]
 
 
-def mwe_list_to_string(mwe_list):
-    """ Converts a list of tokens to a single word"""
+# ----------------------- Functions  -----------------------#
+def mwe_list_to_string(mwe_list: List[str]):
+    """
+    Converts a list of tokens to a single word.
+
+    :param mwe_list:    List of tokens.
+    :return text:   String representation reconstructed from the list of tokens.
+    :return mwe_token_length:   Token length of the mwe_list.
+    """
     text = ''
+    mwe_token_length = 0
     for w in mwe_list:
+        mwe_token_length += 1
         if w.startswith('##'):
             text += w[2:]
         else:
             text += " " + w
 
-    # ToDo ; decide if I would want to remove determiners here
-    text = text[1:]
-    # if text.startswith('the ') or text.startswith('The '):
-    #     text = text[4:]
-    # elif text.startswith('a ') or text.startswith('A '):
-    #     text = text[2:]
-    # elif text.startswith('an ') or text.startswith('An '):
-    #     text = text[3:]
-    return text
+    if text:
+        text = text[1:]
+        return text, mwe_token_length
 
 
-def update_indices(indices_obj:Indices):
+def update_indices(indices_obj: Indices):
     if indices_obj.se == -1:
         indices_obj.se = indices_obj.ss
     if indices_obj.es == -1:
@@ -111,18 +120,24 @@ def update_indices(indices_obj:Indices):
         indices_obj.ee = indices_obj.es
 
 
-def get_spans(word_list, tag_list, mwe_type):
+def get_spans(token_list: List[str], tag_list: List[str], mwe_type: str) -> (List[str], List[Indices], List[int]):
     """
-    Collects the MWE spans found by a trained tagger, handles discontiguous spans.
+    Helper function to collect the MWE spans found by a trained SPaR.txt tagger, handles discontiguous spans.
+
+    :param token_list:   List of tokens for some input sentence.
+    :param tag_list:   List of predicted tags for the given token_list.
+    :param mwe_type:    Types of spans that we're isolating from the text.
+    :return mwe_strings:    List of spans as strings, reconstructed from the tokens.
+    :return indices:    List of character-level indices for each span (potentially discontiguous), indicating where
+                        in the source text the span was found.
+    :return mwe_lengths:    List of numbers of token for each span.
     """
 
     mwes = []
     indices = []
-    types = []
 
     current_mwe = []
     current_indices = Indices()
-    current_type = []
 
     previous_head = []
     previous_indices = Indices()
@@ -153,7 +168,7 @@ def get_spans(word_list, tag_list, mwe_type):
 
             if not current_mwe:
                 # Start collecting a new mwe
-                current_mwe = [word_list[idx]]
+                current_mwe = [token_list[idx]]
                 current_indices = Indices(idx)
             else:
                 # Store old mwe and start collecting a new mwe
@@ -161,12 +176,12 @@ def get_spans(word_list, tag_list, mwe_type):
                 indices.append(current_indices)
                 previous_head = current_mwe
                 previous_indices = current_indices
-                current_mwe = [word_list[idx]]
+                current_mwe = [token_list[idx]]
                 current_indices = Indices(idx)
         elif t_head == 'IH':
             # Continue collecting the same object, each time updating the head's end index
             # Due to tagging inaccuracy, this may continue from a BH or a BD
-            current_mwe.append(word_list[idx])
+            current_mwe.append(token_list[idx])
             if current_indices.es == -1:
                 current_indices.set_se(idx)
             else:
@@ -183,7 +198,7 @@ def get_spans(word_list, tag_list, mwe_type):
                 indices.reverse()
                 just_removed = previous_head
                 #  and prepend it to the current_mwe, also setting the current indices to previous with new .es
-                current_mwe = just_removed + [word_list[idx]]
+                current_mwe = just_removed + [token_list[idx]]
                 current_indices = previous_indices
                 current_indices.set_es(idx)
                 # reset previous head, considering that it has been used definitely now.
@@ -198,27 +213,33 @@ def get_spans(word_list, tag_list, mwe_type):
                     previous_head = current_mwe
                     previous_indices = current_indices
                 # start new mwe
-                current_mwe = [word_list[idx]]
+                current_mwe = [token_list[idx]]
                 current_indices = Indices(idx)
         elif t_head == 'ID':
             # Continue collecting discontiguous, each time updating the end's end index
-            current_mwe.append(word_list[idx])
+            current_mwe.append(token_list[idx])
             current_indices.set_ee(idx)
 
-    # if current_mwe:
-    #     # store last mwe
-    #     mwes.append(current_mwe)
-    #     indices.append(current_indices)
+    if mwes:
+        mwe_strings, mwe_lengths = zip(*[mwe_list_to_string(mwe) for mwe in mwes if mwe])
+        [update_indices(i) for i in indices]
+    else:
+        mwe_strings, mwe_lengths = [''], [0]
 
-    mwe_strings = [mwe_list_to_string(mwe) for mwe in mwes if mwe]
-    [update_indices(i) for i in indices]
-    return mwe_strings, indices
+    return mwe_strings, indices, mwe_lengths
 
 
-def parse_spar_output(prediction, span_types=['obj', 'act', 'func', 'dis']):
+def parse_spar_output(prediction: dict, span_types: List[str] = ['obj', 'act', 'func', 'dis']) -> (dict, int):
     """
-    SPaRtxt outputs are formatted following the default AllenNLP json structure. This function grabs
-    the spans from the output in text format.
+    SPaR.txt outputs are formatted following the default AllenNLP json structure. That is, a list of tokens and
+    a list of the corresponding SPaR.txt tags that were predicted. This function reconstructs the text that belongs
+    to each of the predicted spans.
+
+    :param prediction:  Dictionary loaded from SPaR.txt output.
+    :params span_types: The types of spans that we'd like to keep. SPaR.txt predicts objects `'obj'`, actions`'act'`,
+                        functions `'func'`, and discourse `'dis'` spans.
+    :return NER:    Dictionary holding lists of spans per type `{ 'obj': [], 'dis': [], 'func': [], 'act': [], }`.
+    :return total_number_of_tokens_in_selected_spans:   A count of the token-lengths of all retained spans.
     """
     # read predictions from file
     sentence = prediction["sentence"]
@@ -230,9 +251,11 @@ def parse_spar_output(prediction, span_types=['obj', 'act', 'func', 'dis']):
     tag_list = prediction['tags']
     token_list = prediction['words']
 
+    total_number_of_tokens_in_selected_spans = 0
     predicted_tags = [t for m, t in zip(mask, tag_list) if m]
     for mwe_type in span_types:
-        list_of_spans, list_of_indices_lists = get_spans(token_list, predicted_tags, mwe_type)
+        list_of_spans, list_of_indices_lists, list_of_token_lengths = get_spans(token_list, predicted_tags, mwe_type)
+        total_number_of_tokens_in_selected_spans += sum(list_of_token_lengths)
         for span, indices in zip(list_of_spans, list_of_indices_lists):
             current_span = SingleSpan(span, mwe_type)
             # store by indices, because spans may contain the same text
@@ -256,4 +279,4 @@ def parse_spar_output(prediction, span_types=['obj', 'act', 'func', 'dis']):
         span, span_type = span_tuple
         NER[span_type].append(span)
 
-    return NER
+    return NER, total_number_of_tokens_in_selected_spans

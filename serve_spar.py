@@ -8,7 +8,7 @@ from allennlp.common.util import import_module_and_submodules
 import spar_serving_utils as su
 
 
-import_module_and_submodules("lib")
+import_module_and_submodules("spar_lib")
 # todo; add option to change the path using argparse
 default_path = Path.cwd().joinpath("trained_models", "debugger_train", "model.tar.gz")
 

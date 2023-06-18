@@ -21,9 +21,27 @@ This repository contains:
 
 
 ---
+**Option 1: Run API in docker container**
+On cloning this repository you could build a SPaR.txt docker container. Inside the container you will train a model that will allow you to make predictions over inputs through an API.
+1. Enter the directory from terminal/console, and build docker container: 
+    ```
+    docker build -t spar . 
+    ```
+    * Rebuild code only: `docker build --build-arg ONLY_CODE=$(date + %s) spar`
+2. Run the docker container:
+    ```
+    docker run --name spar_api -p 8501:8501 spar
+    ```
+    * This will download the required pretrained LM files, and train the SPaR.txt tagger (takes some time ~20 minutes on CPU).
+    * Run in background with `docker run -d --name spar_api -p 8501:8501 spar`
+3. The API swagger UI can be accessed at `http://localhost:8501/docs`
+4. If you stop the `spar_api` container, simply start again with `docker start spar_api`
+5. If you want to change the code in the container, access it with `docker exec -it spar_api /bin/bash`
 
-**Using SPaR.txt**
-Clone the repository and enter the directory from terminal/console.
+---
+
+**Option 2: Using SPaR.txt**
+Alternative, after you clone the repository and enter the directory from terminal/console.
 1. Create a new conda environment, e.g.:
     ```
     conda create -n spar python=3.8
