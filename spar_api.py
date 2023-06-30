@@ -1,12 +1,12 @@
 import logging
+from typing import Union, List
+from pathlib import Path
 from fastapi import FastAPI
 from pydantic import BaseModel
-from pathlib import Path
 
-## set up SPaR predictor
+import spar_api_utils as sau
 from spar_predictor import SparPredictor
 from allennlp.common.util import import_module_and_submodules
-import spar_serving_utils as su
 
 
 # set requests and urllib3 logging to Warnings only todo; not sure if this helps if implemented here only
@@ -22,54 +22,45 @@ default_output_path = Path.cwd().joinpath("trained_models", "debugger_train", "m
 spar_predictor = SparPredictor(default_output_path, default_experiment_path)
 predictor = spar_predictor.predictor
 
-
-## Set up the API
+# Set up the API
 SPaR_api = FastAPI()
+term_extractor = sau.TermExtractor(max_num_cpu_threads=1)
 
 
 class ToPredict(BaseModel):
-    sentence: str
+    texts: Union[List[str], str]
 
-# @SPaR_api.get("/tokenize/{input_str}")
-# def tokenize(input_str: Optional[str] = Query(default=Required, max_length=1000)):
-#     return predictor._dataset_reader.tokenizer.tokenize(input_str)
+
+class NumPredictors(BaseModel):
+    num_cpu_threads: int
+
+
+@SPaR_api.post("/set_number_of_predictors/")
+def set_number_of_predictors(num_concurrent: NumPredictors):
+    # Note, this currently re-initializes all predictors
+    SPaR_api.term_extractor = sau.TermExtractor(max_num_cpu_threads=num_concurrent.num_cpu_threads)
 
 
 @SPaR_api.post("/predict_objects/")
 def predict_objects(to_be_predicted: ToPredict):
     """
-    Predict the object in a given string (expecting a single sentence usually).
+    Predict the object in a given string or list of strings.
     """
-    if to_be_predicted.sentence:
-        sentence = to_be_predicted.sentence
-        # SPaR doesn't handle all uppercase sentences well, which the OCR system sometimes outputs
-        if sentence.isupper():
-            sentence = sentence.lower()
-
-        # prepare instance and run model on single instance
-        docid = ''  # ToDo - add doc_id during pre_processing?
-        token_list = spar_predictor.predictor._dataset_reader.tokenizer.tokenize(sentence)
-
-        # truncating the input to SPaR.txt to maximum 512 tokens
-        token_length = len(token_list)
-        if token_length > 512:
-            token_list = token_list[:511] + [token_list[-1]]
-            token_length = 512
-
-        instance = spar_predictor.predictor._dataset_reader.text_to_instance(
-            docid, sentence, token_list, spar_predictor.predictor._dataset_reader._token_indexer
-        )
-        res = predictor.predict_instance(instance)
-        printable_result, spans_token_length = su.parse_spar_output(res, ['obj'])
+    if not to_be_predicted.texts:
+        # No input
         return {
-            "prediction": printable_result,
-            "num_input_tokens": token_length,
-            "num_output_tokens": spans_token_length
-        }
-    # If the input is None, or too long, return an empty list of objects
-    return {
-            "prediction": {'obj': []},
-            "num_input_tokens": 0,
-            "num_output_tokens": 0
+            "texts": [], "sentences": [], "predictions": []
         }
 
+    texts = to_be_predicted.texts
+    # either string or list of strings
+    if type(texts) == str:
+        texts = [texts]
+
+    text_and_predictions = term_extractor.process_texts(texts)
+    sentences, predictions = zip(*text_and_predictions)
+    return {
+        "texts": texts,
+        "sentences": sentences,
+        "predictions": predictions
+    }

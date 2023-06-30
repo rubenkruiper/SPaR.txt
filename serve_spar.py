@@ -9,7 +9,6 @@ import spar_serving_utils as su
 
 
 import_module_and_submodules("spar_lib")
-# todo; add option to change the path using argparse
 default_path = Path.cwd().joinpath("trained_models", "debugger_train", "model.tar.gz")
 
 default_archive = load_archive(default_path)
@@ -18,10 +17,13 @@ predictor = AllenNLPPredictor.from_archive(default_archive)
 user_query = ""
 print("NOTE:\tTo stop running, simply enter 'quit' as input.\n-------------------------------------------------------")
 while user_query != "quit":
+    """
+    This script exists mostly to exemplify the output provided by SPaR.txt
+    """
     user_query = input("Enter text to be parsed: ")
     start_time = time.time()
     # prepare instance and run model on single instance
-    docid = ''                  # ToDo - add doc_id during pre_processing?
+    docid = ''
     token_list = predictor._dataset_reader.tokenizer.tokenize(user_query)
     instance = predictor._dataset_reader.text_to_instance(docid,
                                                           user_query,
