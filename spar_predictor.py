@@ -9,9 +9,6 @@ from allennlp.models.archival import load_archive
 from allennlp.common.util import import_module_and_submodules
 from allennlp.commands import main
 
-
-cwd = Path.cwd()
-sys.path.insert(0, str(cwd.joinpath("SPaR.txt")))
 import_module_and_submodules("spar_lib")
 import spar_serving_utils
 

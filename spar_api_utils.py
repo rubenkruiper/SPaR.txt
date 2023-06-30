@@ -1,11 +1,61 @@
+import sys
+import json
+import torch
 import concurrent.futures
-
 from typing import List, Union
+from pathlib import Path
 from textblob import TextBlob
 from threading import current_thread
-
 import spar_serving_utils as su
-from spar_predictor import SparPredictor
+
+from allennlp.commands import main
+from allennlp.common.util import import_module_and_submodules
+from allennlp.models.archival import load_archive
+from allennlp.predictors.predictor import Predictor as AllenNLPPredictor
+import_module_and_submodules("spar_lib")
+
+
+class SparPredictor:
+    """
+    """
+    def __init__(self,
+                 serialization_dir: Path = Path.cwd().joinpath("trained_models", "debugger_train"),
+                 config_fp: Path = Path.cwd().joinpath("experiments", "docker_conf.json")):
+
+        if not serialization_dir.joinpath("model.tar.gz").exists():
+            # If the model doesn't exist, train a model and save it to the specified directory.
+            print("No trained model found, creating one at {}.".format(serialization_dir),
+                  "\nIf a GPU is available, this will take several minutes. "
+                  "If no GPU is available, this will take 20+ minutes.")
+
+            if not config_fp.exists():
+                print(f"Make sure a configuration file exists at the location you specified: {config_fp}")
+
+            # Assemble the command into sys.argv
+            sys.argv = [
+                "allennlp",  # command name, not used by main
+                "train", str(config_fp),
+                "-s", str(serialization_dir),
+                "--include-package", "spar_lib"
+            ]
+
+            # Simple overrides to train on CPU if no GPU available, with a possibly smaller batch_size
+            if not torch.cuda.is_available():
+                overrides = json.dumps({"trainer": {"cuda_device": -1}})  # ,
+                # "data_loader": {"batch_sampler": {"batch_size": 16}}})
+                sys.argv += ["-o", overrides]
+
+            main()
+
+        spartxt_archive = load_archive(serialization_dir.joinpath("model.tar.gz"))  # ,overrides=model_overrides
+        self.predictor = AllenNLPPredictor.from_archive(spartxt_archive, predictor_name="span_tagger")
+
+    def parse_output(self, prediction, span_types=['obj', 'act', 'func', 'dis']):
+        """
+        SPaR.txt outputs are formatted following the default AllenNLP json structure. This function grabs
+        the spans from the output in text format.
+        """
+        return su.parse_spar_output(prediction, span_types)
 
 
 class SparInstance:
@@ -13,7 +63,10 @@ class SparInstance:
         """
         These should automatically run on your Nvidia GPU if available
         """
-        self.sp = SparPredictor()
+        Path.cwd().joinpath("SPaR.txt", "trained_models", "debugger_train")
+        default_experiment_path = Path.cwd().joinpath("experiments", "docker_conf.json")
+        default_output_path = Path.cwd().joinpath("trained_models", "debugger_train", "model.tar.gz")
+        self.sp = SparPredictor(default_output_path, default_experiment_path)
 
     def prepare_instances(self, sentences: List[str]):
         instances = []
@@ -42,7 +95,7 @@ class SparInstance:
             return [{'obj': [], 'dis': [], 'func': [], 'act': []}]
         else:
             instances = self.prepare_instances(input_str)
-            results = self.sp.predict_batch_instance(instances)
+            results = self.sp.predictor.predict_batch_instance(instances)
 
             predictions_per_sentence_list = []
             for res in results:
@@ -70,8 +123,7 @@ class TermExtractor:
 
         predictor_to_use = int(current_thread().name.rsplit('_', 1)[1])
         spartxt = self.PREDICTORS[predictor_to_use]
-        instances = spartxt.prepare_instances(batch_of_sentences)
-        prediction_per_sentence_list = spartxt.call(instances)
+        prediction_per_sentence_list = spartxt.call(batch_of_sentences)
         return prediction_per_sentence_list
 
     def split_into_sentences(self, to_be_split: Union[str, List[str]]) -> List[str]:
@@ -106,8 +158,12 @@ class TermExtractor:
     def process_texts(self, texts: List[str]):
         """
         """
-        text_and_predictions = []
+        sentences = []
+        predictions = []
         with concurrent.futures.ThreadPoolExecutor(max_workers=self.max_num_cpu_threads) as executor:
             futures = [executor.submit(self.process_text, texts[idx]) for idx in range(len(texts))]
-            text_and_predictions += [sent_pred_tuple for f in futures for sent_pred_tuple in f.result()]
-        return text_and_predictions
+            sent_pred_tuples = [sent_pred_tuple for f in futures for sent_pred_tuple in f.result()]
+            sents, preds = sent_pred_tuples
+            sentences += sents
+            predictions += preds
+        return sentences, predictions

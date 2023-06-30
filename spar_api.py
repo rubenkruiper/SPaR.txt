@@ -1,28 +1,15 @@
 import logging
 from typing import Union, List
-from pathlib import Path
 from fastapi import FastAPI
 from pydantic import BaseModel
 
 import spar_api_utils as sau
-from spar_predictor import SparPredictor
-from allennlp.common.util import import_module_and_submodules
-
 
 # set requests and urllib3 logging to Warnings only todo; not sure if this helps if implemented here only
 logging.getLogger("requests").setLevel(logging.WARNING)
 logging.getLogger("urllib3").setLevel(logging.WARNING)
 
-
-# Set up a SPaR.txt predictor
-import_module_and_submodules("spar_lib")
-Path.cwd().joinpath("SPaR.txt", "trained_models", "debugger_train")
-default_experiment_path = Path.cwd().joinpath("experiments", "docker_conf.json")
-default_output_path = Path.cwd().joinpath("trained_models", "debugger_train", "model.tar.gz")
-spar_predictor = SparPredictor(default_output_path, default_experiment_path)
-predictor = spar_predictor.predictor
-
-# Set up the API
+# Set up the API  and SPaR.txt predictor
 SPaR_api = FastAPI()
 term_extractor = sau.TermExtractor(max_num_cpu_threads=1)
 
@@ -57,8 +44,7 @@ def predict_objects(to_be_predicted: ToPredict):
     if type(texts) == str:
         texts = [texts]
 
-    text_and_predictions = term_extractor.process_texts(texts)
-    sentences, predictions = zip(*text_and_predictions)
+    sentences, predictions = SPaR_api.term_extractor.process_texts(texts)
     return {
         "texts": texts,
         "sentences": sentences,
