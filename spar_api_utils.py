@@ -162,8 +162,9 @@ class TermExtractor:
         predictions = []
         with concurrent.futures.ThreadPoolExecutor(max_workers=self.max_num_cpu_threads) as executor:
             futures = [executor.submit(self.process_text, texts[idx]) for idx in range(len(texts))]
-            sent_pred_tuples = [sent_pred_tuple for f in futures for sent_pred_tuple in f.result()]
-            sents, preds = sent_pred_tuples
-            sentences += sents
-            predictions += preds
+            ordered_sent_pred_list = [sent_pred_tuple for f in futures for sent_pred_tuple in f.result()]
+            sent_pred_tuples = [pair for pair in zip(*[iter(ordered_sent_pred_list)]*2)]
+            sent_list, pred_list = zip(*sent_pred_tuples)
+            sentences += sent_list
+            predictions += pred_list
         return sentences, predictions
