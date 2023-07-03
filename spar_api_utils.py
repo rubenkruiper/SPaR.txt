@@ -157,14 +157,18 @@ class TermExtractor:
 
     def process_texts(self, texts: List[str]):
         """
+        todo; sort out way to run asynchronously rather than using map and waiting for slower batches
         """
+        # futures = [executor.submit(self.process_text, texts[idx]) for idx in range(len(texts))]
+        # unordered_sent_pred_list = [sent_pred_tuple for f in futures for sent_pred_tuple in f.result()]
+        # wrong_order_sent_pred_tuples = [pair for pair in zip(*[iter(unordered_sent_pred_list)]*2)] # need sorted...
         sentences = []
         predictions = []
         with concurrent.futures.ThreadPoolExecutor(max_workers=self.max_num_cpu_threads) as executor:
-            futures = [executor.submit(self.process_text, texts[idx]) for idx in range(len(texts))]
-            ordered_sent_pred_list = [sent_pred_tuple for f in futures for sent_pred_tuple in f.result()]
-            sent_pred_tuples = [pair for pair in zip(*[iter(ordered_sent_pred_list)]*2)]
-            sent_list, pred_list = zip(*sent_pred_tuples)
-            sentences += sent_list
-            predictions += pred_list
+            results = executor.map(self.process_text, texts)
+            for text_pred_tuple in results:
+                sent_list, pred_list = text_pred_tuple
+                sentences.append(sent_list)
+                predictions.append(pred_list)
         return sentences, predictions
+
