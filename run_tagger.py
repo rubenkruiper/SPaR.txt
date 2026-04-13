@@ -21,9 +21,12 @@ import json
 import os
 from pathlib import Path
 
+import random
+
 import torch
-from torch.utils.data import DataLoader
-from transformers import BertTokenizerFast, get_linear_schedule_with_warmup
+from torch.optim.lr_scheduler import LambdaLR
+from torch.utils.data import DataLoader, Sampler
+from transformers import BertTokenizerFast
 
 from spar_lib.models.span_tagger import SparTagger
 from spar_lib.readers.tagging_reader import (
@@ -38,6 +41,75 @@ from spar_lib.readers.tagging_reader import (
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
+
+def _slanted_triangular_lr(
+    step: int,
+    total_steps: int,
+    cut_frac: float = 0.1,
+    ratio: int = 32,
+) -> float:
+    """
+    LambdaLR multiplier implementing the slanted triangular schedule
+    (Howard & Ruder 2018).
+
+    Starting multiplier is ``1/ratio``; rises linearly to ``1.0`` over the
+    first ``cut_frac`` fraction of training steps; then decays linearly back
+    to ``~1/ratio`` by the final step.  With the default ``ratio=32`` and
+    ``lr=0.005`` the effective LR starts at ~0.000156, peaks at 0.005, and
+    returns to ~0.000156.
+    """
+    cut = int(total_steps * cut_frac)
+    if step < cut:
+        p = step / max(1, cut)
+    else:
+        p = 1.0 - (step - cut) / max(1, total_steps - cut)
+    return (1.0 / ratio) + p * (1.0 - 1.0 / ratio)
+
+
+class LengthSortedBatchSampler(Sampler):
+    """
+    Groups samples of similar sequence length into batches, reducing padding
+    waste — equivalent to AllenNLP's ``BucketBatchSampler``.
+
+    When ``shuffle=True`` (training), a small random offset is added to each
+    length before sorting so batches vary between epochs, and the batch order
+    is shuffled after grouping.  When ``shuffle=False`` (validation / test),
+    samples are sorted by exact length and batches are yielded in order.
+
+    Parameters
+    ----------
+    dataset :
+        A ``SparDataset``; each item must have an ``"input_ids"`` tensor.
+    batch_size :
+        Number of samples per batch.
+    shuffle :
+        Whether to add noise and shuffle batch order (use ``True`` for train).
+    """
+
+    def __init__(self, dataset, batch_size: int, shuffle: bool = True) -> None:
+        self.lengths   = [len(s["input_ids"]) for s in dataset]
+        self.batch_size = batch_size
+        self.shuffle   = shuffle
+
+    def __iter__(self):
+        indices = list(range(len(self.lengths)))
+        if self.shuffle:
+            noisy = [l + random.randint(0, 5) for l in self.lengths]
+            indices.sort(key=lambda i: noisy[i])
+        else:
+            indices.sort(key=lambda i: self.lengths[i])
+
+        batches = [
+            indices[i : i + self.batch_size]
+            for i in range(0, len(indices), self.batch_size)
+        ]
+        if self.shuffle:
+            random.shuffle(batches)
+        return iter(batches)
+
+    def __len__(self) -> int:
+        return (len(self.lengths) + self.batch_size - 1) // self.batch_size
+
 
 def _build_optimizer(model: SparTagger, lr: float, weight_decay: float):
     """
@@ -125,11 +197,13 @@ def train(args):
     print(f"Train: {len(train_ds)} samples  |  Val: {len(val_ds)} samples")
 
     train_loader = DataLoader(
-        train_ds, batch_size=args.batch_size, shuffle=True,
+        train_ds,
+        batch_sampler=LengthSortedBatchSampler(train_ds, args.batch_size, shuffle=True),
         collate_fn=collate_fn,
     )
     val_loader = DataLoader(
-        val_ds, batch_size=args.batch_size, shuffle=False,
+        val_ds,
+        batch_sampler=LengthSortedBatchSampler(val_ds, args.batch_size, shuffle=False),
         collate_fn=collate_fn,
     )
 
@@ -146,12 +220,10 @@ def train(args):
 
     optimizer = _build_optimizer(model, lr=args.lr, weight_decay=0.1)
 
-    total_steps   = len(train_loader) * args.epochs
-    warmup_steps  = int(0.1 * total_steps)          # 10 % warmup (slanted-triangular)
-    scheduler = get_linear_schedule_with_warmup(
+    total_steps = len(train_loader) * args.epochs
+    scheduler = LambdaLR(
         optimizer,
-        num_warmup_steps=warmup_steps,
-        num_training_steps=total_steps,
+        lr_lambda=lambda step: _slanted_triangular_lr(step, total_steps),
     )
 
     model_dir = Path(args.model_dir)
