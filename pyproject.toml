@@ -25,6 +25,9 @@ addopts = "--doctest-modules"
 testpaths = [
     "tests",
     "spar_lib/modules/adapted_crf.py",
+    "spar_lib/readers/tagging_reader.py",
+    "spar_lib/metrics/crf_f1_measure.py",
+    "spar_lib/models/span_tagger.py",
 ]
 
 [build-system]

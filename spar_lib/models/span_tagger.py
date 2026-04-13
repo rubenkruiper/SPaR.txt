@@ -1,319 +1,221 @@
-from typing import Dict, Optional, List, Any, cast
+"""
+SPaR.txt sequence tagger — AllenNLP-free rewrite.
 
-from overrides import overrides
+Architecture (attention variant, from the original span_tagger_att.py):
+
+    BERT (frozen)  →  dropout
+    →  biLSTM(hidden=384, bidirectional → 768-dim)
+    →  RelativeGlobalAttention(d_model=768, heads=12)   [Huang et al. 2018]
+    →  concat([biLSTM_out, attn_out])                   → 1536-dim
+    →  dropout
+    →  FFNN(1536 → 60, ReLU, dropout)
+    →  Linear(60 → num_tags)
+    →  CRF  (DiscontiguousTest constraints, no start/end transitions)
+
+Removed from original:
+  - ``Model`` AllenNLP base class → plain ``nn.Module``
+  - ``TextFieldEmbedder`` / ``TokenIndexer`` → ``BertModel`` directly
+  - ``Seq2SeqEncoder`` AllenNLP wrapper → ``nn.LSTM``
+  - ``TimeDistributed`` → ``nn.Linear`` (broadcasts over seq dim natively)
+  - ``FeedForward`` AllenNLP module → ``nn.Sequential``
+  - ``CategoricalAccuracy`` → dropped (F1 is the validation signal)
+  - ``InitializerApplicator`` → PyTorch default init
+  - ``Vocabulary`` → plain ``Dict[int, str]`` label map
+  - ``@overrides`` decorator
+"""
+from __future__ import annotations
+
+from typing import Any, Dict, List, Optional
+
 import torch
-from torch.nn.modules.linear import Linear
+import torch.nn as nn
+from transformers import BertModel
 
-from allennlp.common.checks import check_dimensions_match, ConfigurationError
-from allennlp.data import TextFieldTensors, Vocabulary
-from allennlp.modules import Seq2SeqEncoder, TimeDistributed, TextFieldEmbedder, FeedForward
-from allennlp.models.model import Model
-from allennlp.nn import InitializerApplicator
-import allennlp.nn.util as util
-from allennlp.training.metrics import CategoricalAccuracy
-
-from spar_lib.modules.adapted_crf import allowed_transitions
-from spar_lib.modules.adapted_crf import ConditionalRandomField
 from spar_lib.metrics.crf_f1_measure import SpanBasedF1Measure
+from spar_lib.modules.adapted_crf import ConditionalRandomField, allowed_transitions
+from spar_lib.modules.multi_head_positional_attention import RelativeGlobalAttention
+from spar_lib.readers.tagging_reader import IDX_TO_TAG, TAG_TO_IDX
 
 
-@Model.register("my_tagger")
-class AdaptedCrfTagger(Model):
+class SparTagger(nn.Module):
     """
-    Adapted `CrfTagger` encodes a sequence of text with a `Seq2SeqEncoder`,
-    then uses a Conditional Random Field model to predict a tag for each token in the sequence.
+    Sequence tagger for SPaR.txt shallow parsing.
 
-    # Parameters
-
-    vocab : `Vocabulary`, required
-        A Vocabulary, required in order to compute sizes for input/output projections.
-    text_field_embedder : `TextFieldEmbedder`, required
-        Used to embed the tokens `TextField` we get as input to the model.
-    encoder : `Seq2SeqEncoder`
-        The encoder that we will use in between embedding tokens and predicting output tags.
-    label_namespace : `str`, optional (default=`labels`)
-        This is needed to compute the SpanBasedF1Measure metric.
-        Unless you did something unusual, the default value should be what you want.
-    feedforward : `FeedForward`, optional, (default = `None`).
-        An optional feedforward layer to apply after the encoder.
-    label_encoding : `str`, optional (default=`None`)
-        Label encoding to use when calculating span f1 and constraining
-        the CRF at decoding time . Valid options are "BIO", "BIOUL", "IOB1", "BMES".
-        Required if `calculate_span_f1` or `constrain_crf_decoding` is true.
-    include_start_end_transitions : `bool`, optional (default=`True`)
-        Whether to include start and end transition parameters in the CRF.
-    constrain_crf_decoding : `bool`, optional (default=`None`)
-        If `True`, the CRF is constrained at decoding time to
-        produce valid sequences of tags. If this is `True`, then
-        `label_encoding` is required. If `None` and
-        label_encoding is specified, this is set to `True`.
-        If `None` and label_encoding is not specified, it defaults
-        to `False`.
-    calculate_span_f1 : `bool`, optional (default=`None`)
-        Calculate span-level F1 metrics during training. If this is `True`, then
-        `label_encoding` is required. If `None` and
-        label_encoding is specified, this is set to `True`.
-        If `None` and label_encoding is not specified, it defaults
-        to `False`.
-    dropout:  `float`, optional (default=`None`)
-        Dropout probability.
-    verbose_metrics : `bool`, optional (default = `False`)
-        If true, metrics will be returned per label class in addition
-        to the overall statistics.
-    initializer : `InitializerApplicator`, optional (default=`InitializerApplicator()`)
-        Used to initialize the model parameters.
-    top_k : `int`, optional (default=`1`)
-        If provided, the number of parses to return from the crf in output_dict['top_k_tags'].
-        Top k parses are returned as a list of dicts, where each dictionary is of the form:
-        {"tags": List, "score": float}.
-        The "tags" value for the first dict in the list for each data_item will be the top
-        choice, and will equal the corresponding item in output_dict['tags']
-    ignore_loss_on_o_tags : `bool`, optional (default=`False`)
-        If True, we compute the loss only for actual spans in `tags`, and not on `O` tokens.
-        This is useful for computing gradients of the loss on a _single span_, for
-        interpretation / attacking.
+    Parameters
+    ----------
+    num_tags :
+        Number of output tags.  Defaults to ``len(TAG_TO_IDX)`` (13).
+    label_map :
+        ``{int_id: tag_string}`` reverse vocabulary.  Defaults to
+        ``IDX_TO_TAG`` from :mod:`spar_lib.readers.tagging_reader`.
+    bert_model_name :
+        HuggingFace model identifier for the BERT encoder.
+    lstm_hidden_size :
+        Per-direction hidden size of the biLSTM (output dim is doubled).
+    ffnn_hidden_size :
+        Hidden units in the feed-forward layer between attention and CRF.
+    dropout :
+        Dropout probability applied after BERT and after the attention concat.
+    freeze_bert :
+        Whether to freeze BERT parameters during training.
+    attention_heads :
+        Number of heads for :class:`RelativeGlobalAttention`.
     """
 
     def __init__(
         self,
-        vocab: Vocabulary,
-        text_field_embedder: TextFieldEmbedder,
-        encoder: Seq2SeqEncoder,
-        label_namespace: str = "labels",
-        feedforward: Optional[FeedForward] = None,
-        label_encoding: Optional[str] = None,
-        include_start_end_transitions: bool = True,
-        constrain_crf_decoding: bool = None,
-        calculate_span_f1: bool = None,
-        dropout: Optional[float] = None,
-        verbose_metrics: bool = False,
-        initializer: InitializerApplicator = InitializerApplicator(),
-        top_k: int = 1,
-        ignore_loss_on_o_tags: bool = False,
-        **kwargs,
+        num_tags: int = len(TAG_TO_IDX),
+        label_map: Optional[Dict[int, str]] = None,
+        bert_model_name: str = "bert-base-cased",
+        lstm_hidden_size: int = 384,
+        ffnn_hidden_size: int = 60,
+        dropout: float = 0.05,
+        freeze_bert: bool = True,
+        attention_heads: int = 12,
     ) -> None:
-        super().__init__(vocab, **kwargs)
+        super().__init__()
 
-        self.label_namespace = label_namespace
-        self.text_field_embedder = text_field_embedder
-        self.num_tags = self.vocab.get_vocab_size(label_namespace)
-        self.encoder = encoder
-        self.top_k = top_k
-        self.ignore_loss_on_o_tags = ignore_loss_on_o_tags
-        self._verbose_metrics = verbose_metrics
-        if dropout:
-            self.dropout = torch.nn.Dropout(dropout)
-        else:
-            self.dropout = None
+        self._label_map = label_map if label_map is not None else IDX_TO_TAG
 
-        # An FFNN on top of embeddings, before projecting layer
-        self._feedforward = feedforward
-        if feedforward is not None:
-            output_dim = feedforward.get_output_dim()
-        else:
-            output_dim = self.encoder.get_output_dim()
-            # if self.encoder.is_bidirectional():
-            #     output_dim *= 2
+        # ---- BERT encoder ----------------------------------------
+        self.bert = BertModel.from_pretrained(bert_model_name)
+        if freeze_bert:
+            for param in self.bert.parameters():
+                param.requires_grad = False
+        bert_dim = self.bert.config.hidden_size  # 768
 
-        self.tag_projection_layer = TimeDistributed(Linear(output_dim, self.num_tags))
+        # ---- Sequence encoder ------------------------------------
+        self._dropout = nn.Dropout(dropout)
+        lstm_out_dim = lstm_hidden_size * 2       # bidirectional → 768
+        self.lstm = nn.LSTM(
+            input_size=bert_dim,
+            hidden_size=lstm_hidden_size,
+            num_layers=1,
+            bidirectional=True,
+            batch_first=True,
+        )
 
-        # if  constrain_crf_decoding and calculate_span_f1 are not
-        # provided, (i.e., they're None), set them to True
-        # if label_encoding is provided and False if it isn't.
-        if constrain_crf_decoding is None:
-            constrain_crf_decoding = label_encoding is not None
-        if calculate_span_f1 is None:
-            calculate_span_f1 = label_encoding is not None
+        # ---- Relative global attention ---------------------------
+        # Input/output: (B, L, lstm_out_dim)
+        self.attention = RelativeGlobalAttention(lstm_out_dim, attention_heads)
 
-        self.label_encoding = label_encoding
-        if constrain_crf_decoding:
-            if not label_encoding:
-                raise ConfigurationError(
-                    "constrain_crf_decoding is True, but no label_encoding was specified."
-                )
-            labels = self.vocab.get_index_to_token_vocabulary(label_namespace)
-            constraints = allowed_transitions(label_encoding, labels)
-        else:
-            constraints = None
+        # ---- Feed-forward + projection ---------------------------
+        concat_dim = lstm_out_dim * 2             # concat([lstm, attn]) → 1536
+        self.ffnn = nn.Sequential(
+            nn.Linear(concat_dim, ffnn_hidden_size),
+            nn.ReLU(),
+            nn.Dropout(dropout),
+        )
+        self.tag_projection = nn.Linear(ffnn_hidden_size, num_tags)
 
-        self.include_start_end_transitions = include_start_end_transitions
+        # ---- CRF with DiscontiguousTest constraints ---------------
+        constraints = allowed_transitions("DiscontiguousTest", self._label_map)
         self.crf = ConditionalRandomField(
-            self.num_tags, constraints, include_start_end_transitions=include_start_end_transitions
+            num_tags=num_tags,
+            constraints=constraints,
+            include_start_end_transitions=False,
         )
 
-        self.metrics = {
-            "accuracy": CategoricalAccuracy(),
-            "accuracy3": CategoricalAccuracy(top_k=3),
-        }
-        self.calculate_span_f1 = calculate_span_f1
-        if calculate_span_f1:
-            if not label_encoding:
-                raise ConfigurationError(
-                    "calculate_span_f1 is True, but no label_encoding was specified."
-                )
-            self._f1_metric = SpanBasedF1Measure(
-                vocab, tag_namespace=label_namespace, label_encoding=label_encoding
-            )
+        # ---- F1 metric (accumulates across batches) --------------
+        self._f1_metric = SpanBasedF1Measure(self._label_map)
 
-        check_dimensions_match(
-            text_field_embedder.get_output_dim(),
-            encoder.get_input_dim(),
-            "text field embedding dim",
-            "encoder input dim",
-        )
-        if feedforward is not None:
-            check_dimensions_match(
-                encoder.get_output_dim(),
-                feedforward.get_input_dim(),
-                "encoder output dim",
-                "feedforward input dim",
-            )
-        initializer(self)
+    # ------------------------------------------------------------------
+    # Forward pass
+    # ------------------------------------------------------------------
 
-    @overrides
     def forward(
-        self,  # type: ignore
-        tokens: TextFieldTensors,
-        gold_labels: torch.LongTensor = None,
-        metadata: List[Dict[str, Any]] = None,
-        ignore_loss_on_o_tags: Optional[bool] = None,
-        **kwargs,  # to allow for a more general dataset reader that passes args we don't need
-    ) -> Dict[str, torch.Tensor]:
-
+        self,
+        input_ids: torch.LongTensor,
+        attention_mask: torch.BoolTensor,
+        gold_tags: Optional[torch.LongTensor] = None,
+        words: Optional[List[List[str]]] = None,
+        sentences: Optional[List[str]] = None,
+        doc_ids: Optional[List[str]] = None,
+    ) -> Dict[str, Any]:
         """
-        # Parameters
+        Parameters
+        ----------
+        input_ids :
+            ``(B, L)`` BERT token ids.
+        attention_mask :
+            ``(B, L)`` boolean mask; ``True`` for real tokens.
+        gold_tags :
+            ``(B, L)`` integer tag ids.  When provided, computes CRF loss
+            and updates the F1 metric.
+        words, sentences, doc_ids :
+            Optional metadata forwarded unchanged into the output dict for
+            use by the serving layer (``spar_serving_utils.parse_spar_output``).
 
-        tokens : `TextFieldTensors`, required
-            The output of `TextField.as_array()`, which should typically be passed directly to a
-            `TextFieldEmbedder`. This output is a dictionary mapping keys to `TokenIndexer`
-            tensors.  At its most basic, using a `SingleIdTokenIndexer` this is : `{"tokens":
-            Tensor(batch_size, num_tokens)}`. This dictionary will have the same keys as were used
-            for the `TokenIndexers` when you created the `TextField` representing your
-            sequence.  The dictionary is designed to be passed directly to a `TextFieldEmbedder`,
-            which knows how to combine different word representations into a single vector per
-            token in your input.
-        tags : `torch.LongTensor`, optional (default = `None`)
-            A torch tensor representing the sequence of integer gold class labels of shape
-            `(batch_size, num_tokens)`.
-        metadata : `List[Dict[str, Any]]`, optional, (default = `None`)
-            metadata containg the original words in the sentence to be tagged under a 'words' key.
-        ignore_loss_on_o_tags : `Optional[bool]`, optional (default = `None`)
-            If True, we compute the loss only for actual spans in `tags`, and not on `O` tokens.
-            This is useful for computing gradients of the loss on a _single span_, for
-            interpretation / attacking.
-            If `None`, `self.ignore_loss_on_o_tags` is used instead.
-
-        # Returns
-
-        An output dictionary consisting of:
-
-        logits : `torch.FloatTensor`
-            The logits that are the output of the `tag_projection_layer`
-        mask : `torch.BoolTensor`
-            The text field mask for the input tokens
-        tags : `List[List[int]]`
-            The predicted tags using the Viterbi algorithm.
-        loss : `torch.FloatTensor`, optional
-            A scalar loss to be optimised. Only computed if gold label `tags` are provided.
+        Returns
+        -------
+        dict with keys:
+            ``"logits"``   — ``(B, L, num_tags)`` raw scores.
+            ``"mask"``     — ``(B, L)`` bool attention mask.
+            ``"tags"``     — ``List[List[str]]`` decoded tag strings, one per item.
+            ``"loss"``     — scalar CRF NLL (only when ``gold_tags`` provided).
+            ``"words"``, ``"sentences"``, ``"doc_ids"`` — pass-through metadata.
         """
-        ignore_loss_on_o_tags = (
-            ignore_loss_on_o_tags
-            if ignore_loss_on_o_tags is not None
-            else self.ignore_loss_on_o_tags
+        bool_mask = attention_mask.bool()
+
+        # ---- BERT ------------------------------------------------
+        bert_out = self.bert(
+            input_ids=input_ids,
+            attention_mask=attention_mask.long(),
         )
-        embedded_text_input = self.text_field_embedder(tokens)
-        mask = util.get_text_field_mask(tokens)
+        embedded = self._dropout(bert_out.last_hidden_state)  # (B, L, 768)
 
-        if self.dropout:
-            embedded_text_input = self.dropout(embedded_text_input)
+        # ---- biLSTM (packed for correctness with padding) --------
+        lengths = bool_mask.sum(dim=1).cpu()
+        packed = nn.utils.rnn.pack_padded_sequence(
+            embedded, lengths, batch_first=True, enforce_sorted=False
+        )
+        lstm_packed_out, _ = self.lstm(packed)
+        lstm_out, _ = nn.utils.rnn.pad_packed_sequence(
+            lstm_packed_out, batch_first=True, total_length=embedded.size(1)
+        )  # (B, L, lstm_hidden*2)
 
-        encoded_text = self.encoder(embedded_text_input, mask)
+        # ---- Relative global attention ---------------------------
+        attn_out = self.attention(lstm_out)       # (B, L, lstm_hidden*2)
 
-        if self.dropout:
-            encoded_text = self.dropout(encoded_text)
+        # ---- Concat + dropout ------------------------------------
+        encoded = self._dropout(
+            torch.cat([lstm_out, attn_out], dim=-1)
+        )                                         # (B, L, concat_dim)
 
-        if self._feedforward is not None:
-            encoded_text = self._feedforward(encoded_text)
+        # ---- FFNN + projection -----------------------------------
+        logits = self.tag_projection(self.ffnn(encoded))  # (B, L, num_tags)
 
-        logits = self.tag_projection_layer(encoded_text)
-        best_paths = self.crf.viterbi_tags(logits, mask, top_k=self.top_k)
+        # ---- Viterbi decode --------------------------------------
+        best_paths = self.crf.viterbi_tags(logits, bool_mask, top_k=None)
+        # Decode integer ids → tag strings (top_k=None returns flat [(path, score), …])
+        predicted_tags: List[List[str]] = [
+            [self._label_map[tag_id] for tag_id in path]
+            for (path, _score) in best_paths
+        ]
 
-        # Just get the top tags and ignore the scores.
-        predicted_tags = cast(List[List[int]], [x[0][0] for x in best_paths])
+        output: Dict[str, Any] = {
+            "logits": logits,
+            "mask": bool_mask,
+            "tags": predicted_tags,
+        }
 
-        output = {"mask": mask, "tags": predicted_tags}
+        # ---- Loss + metric (training / evaluation) ---------------
+        if gold_tags is not None:
+            output["loss"] = -self.crf(logits, gold_tags, bool_mask)
+            # Pass logits directly — SpanBasedF1Measure only uses argmax
+            self._f1_metric(logits.detach(), gold_tags, bool_mask)
 
-        if self.top_k > 1:
-            output["top_k_tags"] = best_paths
+        # ---- Pass-through metadata (used by serving layer) -------
+        if words     is not None: output["words"]     = words
+        if sentences is not None: output["sentences"] = sentences
+        if doc_ids   is not None: output["doc_ids"]   = doc_ids
 
-        if gold_labels is not None:
-            if ignore_loss_on_o_tags:
-                o_tag_index = self.vocab.get_token_index("O", namespace=self.label_namespace)
-                crf_mask = mask & (gold_labels != o_tag_index)
-            else:
-                crf_mask = mask
-            # Add negative log-likelihood as loss
-            log_likelihood = self.crf(logits, gold_labels, crf_mask)
-
-            output["loss"] = -log_likelihood
-
-            # Represent viterbi tags as "class probabilities" that we can
-            # feed into the metrics
-            class_probabilities = logits * 0.0
-            for i, instance_tags in enumerate(predicted_tags):
-                for j, tag_id in enumerate(instance_tags):
-                    class_probabilities[i, j, tag_id] = 1
-
-            for metric in self.metrics.values():
-                metric(class_probabilities, gold_labels, mask)
-            if self.calculate_span_f1:
-                self._f1_metric(class_probabilities, gold_labels, mask)
-        if metadata is not None:
-            output["words"] = [x["words"] for x in metadata]
-            output["sentence"] = [x["original_text"] for x in metadata]
-            output["doc_id"] = [x["doc_id"] for x in metadata]
         return output
 
-    @overrides
-    def make_output_human_readable(
-        self, output_dict: Dict[str, torch.Tensor]
-    ) -> Dict[str, torch.Tensor]:
-        """
-        Converts the tag ids to the actual tags.
-        `output_dict["tags"]` is a list of lists of tag_ids,
-        so we use an ugly nested list comprehension.
-        """
+    # ------------------------------------------------------------------
+    # Metrics
+    # ------------------------------------------------------------------
 
-        def decode_tags(tags):
-            return [
-                self.vocab.get_token_from_index(tag, namespace=self.label_namespace) for tag in tags
-            ]
-
-        def decode_top_k_tags(top_k_tags):
-            return [
-                {"tags": decode_tags(scored_path[0]), "score": scored_path[1]}
-                for scored_path in top_k_tags
-            ]
-
-        output_dict["tags"] = [decode_tags(t) for t in output_dict["tags"]]
-
-        if "top_k_tags" in output_dict:
-            output_dict["top_k_tags"] = [decode_top_k_tags(t) for t in output_dict["top_k_tags"]]
-
-        return output_dict
-
-    @overrides
     def get_metrics(self, reset: bool = False) -> Dict[str, float]:
-        metrics_to_return = {
-            metric_name: metric.get_metric(reset) for metric_name, metric in self.metrics.items()
-        }
-
-        if self.calculate_span_f1:
-            f1_dict = self._f1_metric.get_metric(reset=reset)
-            if self._verbose_metrics:
-                metrics_to_return.update(f1_dict)
-            else:
-                metrics_to_return.update({x: y for x, y in f1_dict.items() if "overall" in x})
-        return metrics_to_return
-
-    default_predictor = "sentence_tagger"
+        """Return accumulated span F1 metrics and optionally reset counters."""
+        return self._f1_metric.get_metric(reset=reset)
