@@ -1,1 +1,1 @@
-from spar_lib.predictors.span_tagger_predictor import SpanTaggerPredictor
+# Predictor package — AllenNLP predictor removed; inference is handled by spar_api_utils.SparPredictor.

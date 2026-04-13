@@ -1,6 +1,6 @@
 import json, os, random, glob
 from collections import Counter
-from allennlp.data.tokenizers import PretrainedTransformerTokenizer
+from transformers import BertTokenizerFast
 
 
 random.seed(14)
@@ -12,7 +12,7 @@ class ObjectAndContextSelector():
         self.gold_doc_ids = [x.rsplit('/',1)[1] for x in all_gold_doc_ids]
 
         if bert_model_name is not None:
-            self.tokenizer = PretrainedTransformerTokenizer(bert_model_name)
+            self.tokenizer = BertTokenizerFast.from_pretrained(bert_model_name)
             self.lowercase_input = "uncased" in bert_model_name
 
         self.defined_terms = []

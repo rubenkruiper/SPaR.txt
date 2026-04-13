@@ -1,86 +1,104 @@
-import json, glob
+"""
+Token-level evaluation script for SPaR.txt.
+
+Compares predictions written to a JSONL file against gold BRAT annotations
+using scikit-learn's classification_report (per-tag token-level P/R/F1).
+
+This complements the span-level F1 computed during training.  It is a
+standalone script and is not called by ``run_tagger.py``.
+
+Requires scikit-learn (``pip install scikit-learn``).
+"""
+import json
 from pathlib import Path
-from typing import List, Dict, Any
-from allennlp.data.tokenizers import PretrainedTransformerTokenizer
+from typing import List
 
-from spar_lib.readers.reader_utils.my_read_utils import *
-from sklearn import metrics
+from transformers import BertTokenizerFast
+
+from spar_lib.readers.tagging_reader import _tokenize
+from spar_lib.readers.reader_utils.my_read_utils import get_annotations_from_ann_file
 
 
-class SimpleEvaluator():
+class SimpleEvaluator:
     """
-    Ugly temporary solution to evaluate a model; compares the predicted output against the gold input
-    Reason was that evaluation of the tagger is not very flexible/adaptable in AllenNLP (if I remember correctly).
+    Compare a JSONL predictions file against gold BRAT ``.ann`` annotations.
+
+    Parameters
+    ----------
+    predictions_fp :
+        Path to a JSONL file where each line is a prediction dict with keys
+        ``mask``, ``tags``, and ``words``.
+    gold_fp :
+        Directory containing ``.txt`` / ``.ann`` file pairs.
+    bert_model_name :
+        HuggingFace identifier for the tokenizer used when the predictions
+        were produced (default: ``bert-base-cased``).
     """
 
-    def __init__(self,
-                 predictions_fp: Path,
-                 gold_fp: Path,
-                 bert_model_name: str = "bert-base-cased"):
+    def __init__(
+        self,
+        predictions_fp: Path,
+        gold_fp: Path,
+        bert_model_name: str = "bert-base-cased",
+    ) -> None:
         self.predictions_input = predictions_fp
-        self.gold_input = gold_fp
+        self.gold_input        = Path(gold_fp)
+        self.tokenizer         = BertTokenizerFast.from_pretrained(bert_model_name)
 
-        if bert_model_name is not None:
-            self.tokenizer = PretrainedTransformerTokenizer(bert_model_name)
-            self.lowercase_input = "uncased" in bert_model_name
-
-    def read_gold(self):
+    def read_gold(self) -> List[dict]:
         text_files = sorted(self.gold_input.glob("*.txt"))
-        ann_files = sorted(self.gold_input.glob("*.ann"))
+        ann_files  = {f.stem: f for f in self.gold_input.glob("*.ann")}
 
         gold_annotations = []
-        for text_file, ann_file in zip(text_files, ann_files):
+        for text_file in text_files:
             doc_name = text_file.stem
+            sentence = text_file.read_text().strip()
+            encoding, token_list = _tokenize(sentence, self.tokenizer, max_length=512)
+            token_strings = self.tokenizer.convert_ids_to_tokens(encoding["input_ids"])
 
-            with open(text_file, "r") as tf:
-                original_sentence = tf.read()
-
-            token_list = self.tokenizer.tokenize(original_sentence)
-            tag_list = get_annotations_from_ann_file(ann_file, original_sentence, token_list)
-            gold_annotations.append({"sent_id": doc_name, "sentence": original_sentence,
-                                     "token_list": [t.text for t in token_list], "tag_list": tag_list})
+            if doc_name not in ann_files:
+                continue
+            tag_list = get_annotations_from_ann_file(
+                ann_files[doc_name], sentence, token_list
+            )
+            gold_annotations.append({
+                "sent_id":    doc_name,
+                "sentence":   sentence,
+                "token_list": token_strings,
+                "tag_list":   tag_list,
+            })
         return gold_annotations
 
-    def evaluate(self):
+    def evaluate(self) -> None:
+        from sklearn import metrics  # optional dev dependency
 
-        # read gold data from 'predictions_input'
         gold_instances = self.read_gold()
 
-        # read predictions from output file
-        with open(self.predictions_input, 'r') as f:
-            predictions_list = [json.loads(jsonline) for jsonline in f.readlines()]
+        with open(self.predictions_input) as f:
+            predictions_list = [json.loads(line) for line in f]
 
-        # sklearn test
-        y_true = []
-        y_pred = []
+        y_true: List[str] = []
+        y_pred: List[str] = []
 
         for prediction in predictions_list:
-            mask = prediction['mask']
-            tag_list = prediction['tags']
-            token_list = prediction['words']
+            mask       = prediction["mask"]
+            tag_list   = prediction["tags"]
+            token_list = prediction["words"]
 
             for gold in gold_instances:
-                # should be same order for predict, at least only 1 match
-                if gold['token_list'] == token_list:
-                    # compare tag_lists
+                if gold["token_list"] == token_list:
                     predicted_tags = [t for m, t in zip(mask, tag_list) if m]
-                    # measure(predicted_tags, gold["tag_list"])
+                    # Skip CLS and SEP (first and last tokens)
                     y_true += gold["tag_list"][1:-1]
                     y_pred += predicted_tags[1:-1]
 
-        # p, r, f = measure.get_metric()
-        # print("Overall precision: {:.4f}, recall: {:.4f}, F1: {:.4f}".format(p, r, f))
-
-        # check using sklearn
         print(metrics.classification_report(y_true, y_pred, digits=4))
-        # print("sklearn P: {}".format(metrics.precision_score(y_true, y_pred, average='macro')))
-        # print("sklearn R: {}".format(metrics.recall_score(y_true, y_pred, average='macro')))
-        # print("sklearn F1: {}".format(metrics.f1_score(y_true, y_pred, average='macro')))
 
 
 if __name__ == "__main__":
-    evaluator = SimpleEvaluator(Path("../predictions/test_predictions.json"),
-                                Path("../data/test/"),
-                                "bert-base-cased")
+    evaluator = SimpleEvaluator(
+        Path("predictions/test_predictions.json"),
+        Path("data/test/"),
+        "bert-base-cased",
+    )
     evaluator.evaluate()
-

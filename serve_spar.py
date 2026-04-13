@@ -1,35 +1,46 @@
+"""
+Interactive terminal demo for SPaR.txt.
+
+Usage
+-----
+    python serve_spar.py
+    python serve_spar.py --model-dir trained_models/
+
+Enter a sentence at the prompt and see extracted spans.  Type 'quit' to exit.
+"""
+import argparse
 import time
 from pathlib import Path
 
-from allennlp.predictors.predictor import Predictor as AllenNLPPredictor
-from allennlp.models.archival import load_archive
-from allennlp.common.util import import_module_and_submodules
-
-import spar_serving_utils as su
+from spar_api_utils import SparPredictor
 
 
-import_module_and_submodules("spar_lib")
-default_path = Path.cwd().joinpath("trained_models", "debugger_train", "model.tar.gz")
+def main():
+    p = argparse.ArgumentParser(description="SPaR.txt interactive terminal demo")
+    p.add_argument("--model-dir",  default="trained_models/",
+                   help="Directory containing model.pt")
+    p.add_argument("--bert-model", default="bert-base-cased")
+    args = p.parse_args()
 
-default_archive = load_archive(default_path)
-predictor = AllenNLPPredictor.from_archive(default_archive)
+    predictor = SparPredictor(
+        model_dir=Path(args.model_dir),
+        bert_model=args.bert_model,
+    )
 
-user_query = ""
-print("NOTE:\tTo stop running, simply enter 'quit' as input.\n-------------------------------------------------------")
-while user_query != "quit":
-    """
-    This script exists mostly to exemplify the output provided by SPaR.txt
-    """
-    user_query = input("Enter text to be parsed: ")
-    start_time = time.time()
-    # prepare instance and run model on single instance
-    docid = ''
-    token_list = predictor._dataset_reader.tokenizer.tokenize(user_query)
-    instance = predictor._dataset_reader.text_to_instance(docid,
-                                                          user_query,
-                                                          token_list,
-                                                          predictor._dataset_reader._token_indexer)
-    res = predictor.predict_instance(instance)
-    printable_result = su.parse_spar_output(res, ['obj'])
-    print(printable_result)
-    print("Parsing took {}".format(time.time() - start_time))
+    print("NOTE:\tTo stop running, simply enter 'quit' as input.")
+    print("-------------------------------------------------------")
+
+    while True:
+        user_query = input("Enter text to be parsed: ")
+        if user_query.strip().lower() == "quit":
+            break
+
+        start = time.time()
+        results = predictor.predict_sentences([user_query])
+        spans, _ = predictor.parse_output(results[0])
+        print(spans)
+        print(f"Parsing took {time.time() - start:.3f}s")
+
+
+if __name__ == "__main__":
+    main()

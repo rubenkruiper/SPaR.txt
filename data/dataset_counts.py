@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 from collections import Counter
 from lib.readers.reader_utils.my_read_utils import *
-from allennlp.data.tokenizers import PretrainedTransformerTokenizer
+from transformers import BertTokenizerFast
 
 
 class DatasetCount:
@@ -20,7 +20,7 @@ class DatasetCount:
 
         # Set a pretrained_transformer_tokenizer
         if "uncased" in bert_model_name:
-            self.tokenizer = PretrainedTransformerTokenizer(bert_model_name)
+            self.tokenizer = BertTokenizerFast.from_pretrained(bert_model_name)
         else:
             # Force cased tokenization for SpanBERT
             self.tokenizer = PretrainedTransformerTokenizer(bert_model_name,

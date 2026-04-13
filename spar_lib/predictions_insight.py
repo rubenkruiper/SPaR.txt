@@ -3,7 +3,6 @@ import numpy as np
 import pandas as pd
 from pathlib import Path
 from collections import Counter
-from allennlp.data.tokenizers import PretrainedTransformerTokenizer
 
 from spar_lib.readers.reader_utils.my_read_utils import *
 
@@ -14,10 +13,7 @@ class PredictionInsight():
     def __init__(self,
                  bert_model_name: str = "bert-base-cased"):
         self.predictions_input = ''
-
-        if bert_model_name is not None:
-            self.tokenizer = PretrainedTransformerTokenizer(bert_model_name)
-            self.lowercase_input = "uncased" in bert_model_name
+        self.lowercase_input = "uncased" in bert_model_name
 
         self.discontiguous_obj_count = 0
         self.discontiguous_act_count = 0

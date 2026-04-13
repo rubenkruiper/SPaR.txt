@@ -1,29 +1,32 @@
-#FROM nvidia/cuda:11.4.2-base-ubuntu18.04
-FROM python:3.8
+FROM python:3.13-slim
 
-RUN apt-get update
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        build-essential \
+        curl \
+    && rm -rf /var/lib/apt/lists/*
 
-# install Python, pip and requirements
-# RUN apt-get install python3.8 -y  python3-pip build-essential libssl-dev libffi-dev python3.8-dev
-RUN apt-get install python3-pip -y build-essential libssl-dev libffi-dev python3.8-dev
-RUN python3.8 -m pip install  pip --upgrade
-COPY requirements.txt app/
-RUN python3.8 -m pip install -r ./app/requirements.txt
-#RUN ["python3.8", "-c", "import nltk; nltk.download('punkt', download_dir='/usr/local/nltk_data'); nltk.download('omw-1.4', download_dir='/usr/local/nltk_data')"]
-RUN [ "python3.8", "-c", "import nltk; nltk.download('stopwords'); nltk.download('punkt'); nltk.download('omw-1.4')" ]
-RUN cp -r /root/nltk_data /usr/local/share/nltk_data
+# Install Poetry
+RUN curl -sSL https://install.python-poetry.org | python3 - \
+    && ln -s /root/.local/bin/poetry /usr/local/bin/poetry
 
-# To rebuild from here, you could pass the following argument to only copy new code
-# USE: docker build --build-arg ONLY_CODE=$(date +%s) spar
-ARG ONLY_CODE=unkown
+# Copy dependency manifests first so this layer is cached independently of code changes
+WORKDIR /app
+COPY pyproject.toml poetry.lock ./
+
+# Install runtime dependencies only (no dev extras)
+RUN poetry config virtualenvs.create false \
+    && poetry install --only main --no-interaction --no-ansi
+
+# To rebuild from here without re-running pip install, pass a build arg:
+#   docker build --build-arg ONLY_CODE=$(date +%s) -t spar .
+ARG ONLY_CODE=unknown
 RUN echo "$ONLY_CODE"
 
-# install app  
-COPY . app/
-WORKDIR /app
+# Copy the rest of the application
+COPY . .
 
 EXPOSE 8501
 ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
 
-CMD ["uvicorn", "spar_api:SPaR_api", "--host", "0.0.0.0", "--port", "8501", "--reload"]
+CMD ["uvicorn", "spar_api:SPaR_api", "--host", "0.0.0.0", "--port", "8501"]
