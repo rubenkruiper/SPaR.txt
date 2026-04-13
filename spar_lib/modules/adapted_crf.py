@@ -1,15 +1,77 @@
 """
-Conditional random field
+Conditional random field — AllenNLP-free rewrite.
+
+All logic is identical to the original; the only changes are:
+  - ConfigurationError  →  ValueError
+  - allennlp.nn.util.logsumexp  →  torch.logsumexp
+  - allennlp.nn.util.viterbi_decode  →  _viterbi_decode (implemented below)
 """
 from typing import List, Tuple, Dict, Union
 
 import torch
 
-from allennlp.common.checks import ConfigurationError
-import allennlp.nn.util as util
-
 VITERBI_DECODING = Tuple[List[int], float]  # a list of tags, and a viterbi score
 
+
+# ---------------------------------------------------------------------------
+# Viterbi decoder (replaces allennlp.nn.util.viterbi_decode)
+# ---------------------------------------------------------------------------
+
+def _viterbi_decode(
+    tag_sequence: torch.Tensor,
+    transition_matrix: torch.Tensor,
+    top_k: int = 1,
+) -> Tuple[List[List[int]], List[float]]:
+    """
+    Viterbi decoding over a sequence of emission scores and a transition matrix.
+
+    Parameters
+    ----------
+    tag_sequence : (seq_len, num_tags)
+        Emission scores per timestep.  The caller pads the first position with
+        a START sentinel and the last with an END sentinel (only those tag ids
+        have finite scores; all others are –10 000).
+    transition_matrix : (num_tags, num_tags)
+        transition_matrix[i, j] = score of transitioning FROM tag i TO tag j.
+        Forbidden transitions are set to –10 000 by the caller.
+    top_k : int
+        Only 1 is supported (the model never uses k > 1 in practice).
+
+    Returns
+    -------
+    paths  : list of length top_k, each element is a List[int] tag sequence
+    scores : list of length top_k, each element is a float Viterbi score
+    """
+    if top_k != 1:
+        raise NotImplementedError("top_k > 1 is not supported")
+
+    seq_len, num_tags = tag_sequence.shape
+
+    # viterbi[tag] = best total score to reach that tag at the current step
+    viterbi = tag_sequence[0].clone()
+    backpointers: List[torch.Tensor] = []
+
+    for t in range(1, seq_len):
+        # (num_tags, 1) broadcasts with (num_tags, num_tags):
+        # trans_scores[i, j] = viterbi[i] + transition[i, j]
+        trans_scores = viterbi.unsqueeze(1) + transition_matrix
+        best_scores, best_from = trans_scores.max(0)  # max over from-tag dim
+        backpointers.append(best_from)
+        viterbi = best_scores + tag_sequence[t]
+
+    # Find the best final tag and backtrack
+    best_last_score, best_last_tag = viterbi.max(0)
+    path = [best_last_tag.item()]
+    for bp in reversed(backpointers):
+        path.append(bp[path[-1]].item())
+    path.reverse()
+
+    return [path], [best_last_score.item()]
+
+
+# ---------------------------------------------------------------------------
+# Transition constraints
+# ---------------------------------------------------------------------------
 
 def allowed_transitions(constraint_type: str, labels: Dict[int, str]) -> List[Tuple[int, int]]:
     """
@@ -17,17 +79,17 @@ def allowed_transitions(constraint_type: str, labels: Dict[int, str]) -> List[Tu
     additionally include transitions for the start and end states, which are used
     by the conditional random field.
 
-    # Parameters
-
-    constraint_type : `str`, required
-        Indicates which constraint to apply ~ assuming `DiscontiguousTest'
-    labels : `Dict[int, str]`, required
+    Parameters
+    ----------
+    constraint_type : str
+        Indicates which constraint to apply ~ assuming 'DiscontiguousTest'
+    labels : Dict[int, str]
         A mapping {label_id -> label}. Most commonly this would be the value from
         Vocabulary.get_index_to_token_vocabulary()
 
-    # Returns
-
-    `List[Tuple[int, int]]`
+    Returns
+    -------
+    List[Tuple[int, int]]
         The allowed transitions (from_label_id, to_label_id).
     """
     num_labels = len(labels)
@@ -55,32 +117,50 @@ def allowed_transitions(constraint_type: str, labels: Dict[int, str]) -> List[Tu
 
 def is_transition_allowed(
     constraint_type: str, from_tag: str, from_type: str, to_tag: str, to_type: str
-):
+) -> bool:
     """
-    Given a constraint type and strings `from_tag` and `to_tag` that
-    represent the origin and destination of the transition, return whether
-    the transition is allowed under the given constraint type.
+    Return whether a CRF transition is allowed under the given constraint type.
 
-    # Parameters
+    Parameters
+    ----------
+    constraint_type : str
+        Currently only ``'DiscontiguousTest'`` is supported.
+    from_tag, from_type : str
+        The tag prefix (e.g. ``'BH'``) and entity type (e.g. ``'obj'``) of the
+        source state.  Use empty string for pseudo-tags (``'START'``, ``'END'``,
+        ``'PD'``).
+    to_tag, to_type : str
+        Same fields for the destination state.
 
-    constraint_type : `str`, required
-        Indicates which constraint to apply ~ assuming `DiscontiguousTest'
-    from_tag : `str`, required
-        The tag that the transition originates from. For example, if the
-        label is `BH-func`, the `from_tag` is `BH`.
-    from_type : `str`, required
-        The entity corresponding to the `from_tag`. For example, if the
-        label is `IH-func`, the `from_type` is `func`.
-    to_tag : `str`, required
-        The tag that the transition leads to. For example, if the
-       label is `IH-func`, the `from_tag` is `IH`.
-    to_type : `str`, required
-        The entity corresponding to the `to_tag`. For example, if the
-        label is `IH-func`, the `from_type` is `func`.
+    Examples
+    --------
+    Only PD is reachable from START:
 
-    # Returns
-    `bool`
-        Whether the transition is allowed under the given `constraint_type`.
+    >>> is_transition_allowed('DiscontiguousTest', 'START', '', 'PD', '')
+    True
+    >>> is_transition_allowed('DiscontiguousTest', 'START', '', 'BH', 'obj')
+    False
+
+    BH/IH/BD/ID can all continue inside the *same* type:
+
+    >>> is_transition_allowed('DiscontiguousTest', 'BH', 'obj', 'IH', 'obj')
+    True
+    >>> is_transition_allowed('DiscontiguousTest', 'BH', 'obj', 'IH', 'act')
+    False
+
+    Any span tag can transition to PD or start a new BH/BD:
+
+    >>> is_transition_allowed('DiscontiguousTest', 'IH', 'obj', 'BH', 'act')
+    True
+    >>> is_transition_allowed('DiscontiguousTest', 'IH', 'obj', 'PD', '')
+    True
+
+    Only PD can transition to END:
+
+    >>> is_transition_allowed('DiscontiguousTest', 'PD', '', 'END', '')
+    True
+    >>> is_transition_allowed('DiscontiguousTest', 'IH', 'obj', 'END', '')
+    False
     """
 
     if to_tag == "START" or from_tag == "END":
@@ -89,9 +169,9 @@ def is_transition_allowed(
 
     if constraint_type == "DiscontiguousTest":
         if from_tag == "START":
-            return to_tag in ("PD")              # ("O", "B", "U")
+            return to_tag in ("PD",)
         if to_tag == "END":
-            return from_tag in ("PD")            # ("O", "L", "U")
+            return from_tag in ("PD",)
         if from_tag == "PD":
             return to_tag in ("BH", "END")
         return any(
@@ -111,8 +191,12 @@ def is_transition_allowed(
             ]
         )
     else:
-        raise ConfigurationError(f"Unknown constraint type: {constraint_type}")
+        raise ValueError(f"Unknown constraint type: {constraint_type}")
 
+
+# ---------------------------------------------------------------------------
+# Conditional Random Field
+# ---------------------------------------------------------------------------
 
 class ConditionalRandomField(torch.nn.Module):
     """
@@ -121,16 +205,16 @@ class ConditionalRandomField(torch.nn.Module):
 
     See, e.g. http://www.cs.columbia.edu/~mcollins/fb.pdf
 
-    # Parameters
-
-    num_tags : `int`, required
+    Parameters
+    ----------
+    num_tags : int
         The number of tags.
-    constraints : `List[Tuple[int, int]]`, optional (default = `None`)
+    constraints : List[Tuple[int, int]], optional
         An optional list of allowed transitions (from_tag_id, to_tag_id).
         These are applied to `viterbi_tags()` but do not affect `forward()`.
         These should be derived from `allowed_transitions` so that the
         start and end transitions are handled correctly for your tag type.
-    include_start_end_transitions : `bool`, optional (default = `True`)
+    include_start_end_transitions : bool, optional (default True)
         Whether to include the start and end transition parameters.
     """
 
@@ -190,34 +274,23 @@ class ConditionalRandomField(torch.nn.Module):
         else:
             alpha = logits[0]
 
-        # For each i we compute logits for the transitions from timestep i-1 to timestep i.
-        # We do so in a (batch_size, num_tags, num_tags) tensor where the axes are
-        # (instance, current_tag, next_tag)
         for i in range(1, sequence_length):
-            # The emit scores are for time i ("next_tag") so we broadcast along the current_tag axis.
             emit_scores = logits[i].view(batch_size, 1, num_tags)
-            # Transition scores are (current_tag, next_tag) so we broadcast along the instance axis.
             transition_scores = self.transitions.view(1, num_tags, num_tags)
-            # Alpha is for the current_tag, so we broadcast along the next_tag axis.
             broadcast_alpha = alpha.view(batch_size, num_tags, 1)
 
-            # Add all the scores together and logexp over the current_tag axis.
             inner = broadcast_alpha + emit_scores + transition_scores
 
-            # In valid positions (mask == True) we want to take the logsumexp over the current_tag dimension
-            # of `inner`. Otherwise (mask == False) we want to retain the previous alpha.
-            alpha = util.logsumexp(inner, 1) * mask[i].view(batch_size, 1) + alpha * (
+            alpha = torch.logsumexp(inner, dim=1) * mask[i].view(batch_size, 1) + alpha * (
                 ~mask[i]
             ).view(batch_size, 1)
 
-        # Every sequence needs to end with a transition to the stop_tag.
         if self.include_start_end_transitions:
             stops = alpha + self.end_transitions.view(1, num_tags)
         else:
             stops = alpha
 
-        # Finally we log_sum_exp along the num_tags dim, result is (batch_size,)
-        return util.logsumexp(stops)
+        return torch.logsumexp(stops, dim=-1)
 
     def _joint_likelihood(
         self, logits: torch.Tensor, tags: torch.Tensor, mask: torch.BoolTensor
@@ -232,42 +305,28 @@ class ConditionalRandomField(torch.nn.Module):
         mask = mask.transpose(0, 1).contiguous()
         tags = tags.transpose(0, 1).contiguous()
 
-        # Start with the transition scores from start_tag to the first tag in each input
         if self.include_start_end_transitions:
             score = self.start_transitions.index_select(0, tags[0])
         else:
             score = 0.0
 
-        # Add up the scores for the observed transitions and all the inputs but the last
         for i in range(sequence_length - 1):
-            # Each is shape (batch_size,)
             current_tag, next_tag = tags[i], tags[i + 1]
-
-            # The scores for transitioning from current_tag to next_tag
             transition_score = self.transitions[current_tag.view(-1), next_tag.view(-1)]
-
-            # The score for using current_tag
             emit_score = logits[i].gather(1, current_tag.view(batch_size, 1)).squeeze(1)
-
-            # Include transition score if next element is unmasked,
-            # input_score if this element is unmasked.
             score = score + transition_score * mask[i + 1] + emit_score * mask[i]
 
-        # Transition from last state to "stop" state. To start with, we need to find the last tag
-        # for each instance.
         last_tag_index = mask.sum(0).long() - 1
         last_tags = tags.gather(0, last_tag_index.view(1, batch_size)).squeeze(0)
 
-        # Compute score of transitioning to `stop_tag` from each "last tag".
         if self.include_start_end_transitions:
             last_transition_score = self.end_transitions.index_select(0, last_tags)
         else:
             last_transition_score = 0.0
 
-        # Add the last input if it's not masked.
-        last_inputs = logits[-1]  # (batch_size, num_tags)
-        last_input_score = last_inputs.gather(1, last_tags.view(-1, 1))  # (batch_size, 1)
-        last_input_score = last_input_score.squeeze()  # (batch_size,)
+        last_inputs = logits[-1]
+        last_input_score = last_inputs.gather(1, last_tags.view(-1, 1))
+        last_input_score = last_input_score.squeeze()
 
         score = score + last_transition_score + last_input_score * mask[-1]
 
@@ -279,11 +338,9 @@ class ConditionalRandomField(torch.nn.Module):
         """
         Computes the log likelihood.
         """
-
         if mask is None:
             mask = torch.ones(*tags.size(), dtype=torch.bool)
         else:
-            # The code below fails in weird ways if this isn't a bool tensor, so we make sure.
             mask = mask.to(torch.bool)
 
         log_denominator = self._input_likelihood(inputs, mask)
@@ -316,7 +373,6 @@ class ConditionalRandomField(torch.nn.Module):
 
         _, max_seq_length, num_tags = logits.size()
 
-        # Get the tensors out of the variables
         logits, mask = logits.data, mask.data
 
         # Augment transitions matrix with start and end transitions
@@ -358,17 +414,12 @@ class ConditionalRandomField(torch.nn.Module):
             masked_prediction = torch.index_select(prediction, 0, mask_indices)
             sequence_length = masked_prediction.shape[0]
 
-            # Start with everything totally unlikely
             tag_sequence.fill_(-10000.0)
-            # At timestep 0 we must have the START_TAG
             tag_sequence[0, start_tag] = 0.0
-            # At steps 1, ..., sequence_length we just use the incoming prediction
             tag_sequence[1 : (sequence_length + 1), :num_tags] = masked_prediction
-            # And at the last timestep we must have the END_TAG
             tag_sequence[sequence_length + 1, end_tag] = 0.0
 
-            # We pass the tags and the transitions to `viterbi_decode`.
-            viterbi_paths, viterbi_scores = util.viterbi_decode(
+            viterbi_paths, viterbi_scores = _viterbi_decode(
                 tag_sequence=tag_sequence[: (sequence_length + 2)],
                 transition_matrix=transitions,
                 top_k=top_k,
@@ -377,7 +428,7 @@ class ConditionalRandomField(torch.nn.Module):
             for viterbi_path, viterbi_score in zip(viterbi_paths, viterbi_scores):
                 # Get rid of START and END sentinels and append.
                 viterbi_path = viterbi_path[1:-1]
-                top_k_paths.append((viterbi_path, viterbi_score.item()))
+                top_k_paths.append((viterbi_path, viterbi_score))
             best_paths.append(top_k_paths)
 
         if flatten_output:

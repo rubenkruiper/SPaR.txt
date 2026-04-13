@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "spar-txt"
+version = "0.1.0"
+description = "Shallow Parsing for Regulatory Texts — sequence tagger for technical term extraction"
+authors = ["Ruben Kruiper"]
+license = "CC-BY-4.0"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.13"
+torch = "^2.3"
+transformers = "^4.40"
+fastapi = "^0.111"
+uvicorn = "^0.30"
+pysbd = "^0.3"
+pandas = "^2.2"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.2"
+
+[tool.pytest.ini_options]
+# List only modules that have been rewritten (no AllenNLP imports).
+# Add entries here as each module is cleaned up.
+addopts = "--doctest-modules"
+testpaths = [
+    "tests",
+    "spar_lib/modules/adapted_crf.py",
+]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry-core.masonry.api"
