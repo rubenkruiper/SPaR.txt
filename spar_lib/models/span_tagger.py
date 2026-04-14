@@ -202,8 +202,14 @@ class SparTagger(nn.Module):
         # ---- Loss + metric (training / evaluation) ---------------
         if gold_tags is not None:
             output["loss"] = -self.crf(logits, gold_tags, bool_mask)
-            # Pass logits directly — SpanBasedF1Measure only uses argmax
-            self._f1_metric(logits.detach(), gold_tags, bool_mask)
+            # Build a one-hot tensor from Viterbi paths so the F1 metric
+            # accumulates the same predictions that are reported at test time,
+            # not the raw-logit argmax (which ignores CRF constraints).
+            viterbi_onehot = torch.zeros_like(logits)
+            for i, path in enumerate(predicted_tags):
+                for j, tag_str in enumerate(path):
+                    viterbi_onehot[i, j, TAG_TO_IDX[tag_str]] = 1.0
+            self._f1_metric(viterbi_onehot.detach(), gold_tags, bool_mask)
 
         # ---- Pass-through metadata (used by serving layer) -------
         if words     is not None: output["words"]     = words

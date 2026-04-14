@@ -184,7 +184,7 @@ class SparDataset(Dataset):
         samples = []
         for txt_file in txt_files:
             doc_id = txt_file.stem
-            sentence = txt_file.read_text().strip()
+            sentence = txt_file.read_text().rstrip('\r\n')
             encoding, token_list = _tokenize(sentence, self.tokenizer, self.max_length)
 
             tags: Optional[torch.Tensor] = None
