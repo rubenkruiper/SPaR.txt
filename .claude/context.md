@@ -124,3 +124,123 @@ HTTP API contract (unchanged): `POST /predict_objects/` → `{texts, sentences, 
 1. **Multi-seed evaluation** — run 5 seeds, compute mean ± std F1 to determine true gap vs original
 2. **Tokenization decision** — decide whether to stay with subword or switch to word-boundary tokenization
 3. **Update CLAUDE.md** — stack description there is now accurate (done alongside this update)
+
+---
+
+## Multi-Sentence Context Window Plan
+
+### Motivation
+
+The sentence-level restriction is adequate for span extraction but prevents BERT from using cross-sentence context when encoding token representations. Coreference ("the appliance" → "it"), conditional chains, and discourse structure spanning multiple sentences are invisible to the model. The tagging scheme and spans themselves stay within-sentence; only BERT's context window expands.
+
+### Decisions
+
+| Decision | Choice | Rationale |
+|----------|--------|-----------|
+| Window size | **3 sentences** | Covers requirement + condition + exception; fits comfortably in 512 tokens; increase later by switching BERT model |
+| Stride | **1 sentence** (overlap = 2 sentences) | Each sentence appears in 3 windows; boundary sentences get more context |
+| Overlapping predictions | **Character-span voting** — see below | Same token predicted in multiple windows; majority label wins |
+| BERT | **Stays frozen** | Matches current setup; unfreezing top 1–2 layers becomes viable once passage-level data is available (flag for future experiment once training on 3k+ passages) |
+| Training data format | **JSONL passages** | Simpler than multi-doc BRAT; tokenizer-agnostic char offsets are the ground truth |
+| Sentence boundaries | **Character-level** | Stored as `(start_char, end_char)` per sentence in the passage; robust to tokenizer changes |
+| Corpus for bootstrapping | **ScotReg + Merged Approved Documents** (+ extensible via offline script) | ScotReg already in repo; Approved Documents at `/Users/rubenk/dev/irec/data/term_extraction_input/`; more corpora added via the same pipeline |
+
+### Overlapping Window Prediction Strategy
+
+When stride < window_size, each sentence appears in multiple context windows, potentially getting different predicted tags. Reconciliation at inference time:
+
+1. Collect all tag sequences predicted for each character position across all windows that covered it.
+2. For each token position (identified by char offset), take the **majority vote** label. Ties broken by preferring the label from the centre window (the window where the sentence is in the middle position, not at an edge).
+3. Fallback: if no majority, keep the prediction from the window where the target sentence is at position 1 (middle of a 3-sentence window).
+
+This is implemented in the serving layer, not the model itself — the model always sees full passage windows; reconciliation happens post-decode.
+
+### JSONL Format
+
+Each passage sample:
+```json
+{
+  "passage_id": "scotreg_d_0.1.1_i3_w0",
+  "doc_id": "d_0.1.1",
+  "sentences": [
+    {"text": "The door shall be fire-resisting.", "start_char": 0, "end_char": 32},
+    {"text": "It shall be self-closing.", "start_char": 33, "end_char": 57},
+    {"text": "The ironmongery shall be compatible.", "start_char": 58, "end_char": 94}
+  ],
+  "passage": "The door shall be fire-resisting. It shall be self-closing. The ironmongery shall be compatible.",
+  "token_tags": ["BH-obj", "IH-obj", "BH-act", ...],
+  "source": "scotreg"
+}
+```
+
+`token_tags` is absent for silver-label samples where only span-level predictions are stored, or present as model predictions for training.
+
+### Data Pipeline — Phases
+
+#### Phase 1 — Reconstruct gold passage data from existing BRAT annotations
+
+The filename pattern `d_{doc}_{item}_s_{idx}` in `data/all_annotated/` encodes paragraph membership. Sentences sharing the same `d_{doc}_{item}` prefix are adjacent in the original text. Grouping and concatenating them (with BRAT char-offset shifts) yields passage-level gold data at no annotation cost.
+
+Script: `data/build_passage_data.py`
+- Group `all_annotated/` files by `d_{doc}_{item}` prefix
+- Concatenate sentence texts with a single space separator; record per-sentence `(start_char, end_char)`
+- Shift each sentence's BRAT offsets by its `start_char` within the passage
+- Emit JSONL with `token_tags` derived from the merged BRAT annotations
+
+Expected output: ~60–80 gold passage samples (some groups have only 1 sentence).
+
+#### Phase 2 — Build a silver-label corpus from larger regulatory corpora
+
+Script: `data/build_silver_corpus.py`
+- Accepts one or more input sources, each as a path to a `.txt` file or a directory of `.txt` files (output from `/read_pdf` or any preprocessing)
+- Splits text into sentences via pysbd; groups consecutive sentences into passages of `window_size=3` with stride 1
+- Runs `SparPredictor.predict_sentences()` on the concatenated passage string
+- Saves per-sentence predictions as JSONL with `"source"` field tagging the corpus
+- Designed to be run **offline** (CPU, long-running); writes incrementally so partial runs are resumable
+
+Planned corpora:
+1. **ScotReg** — 13,606 sentence files in `data/all_non_annotated_sents/`; already sentence-split. Expected: ~4,500 passages.
+2. **Merged Approved Documents** — `/Users/rubenk/dev/irec/data/term_extraction_input/The Merged Approved Documents.pdf`. Extract with pdfplumber, then run the pipeline. Expected: ~20,000+ passages.
+
+Adding further corpora: simply run `build_silver_corpus.py --input <path> --source <name>` on any new `.txt` or directory.
+
+#### Phase 3 — Adapt the reader and model pipeline
+
+1. **`PassageDataset`** (`spar_lib/readers/tagging_reader.py`) — reads JSONL, tokenises the full passage string, recovers token-level tags from `token_tags`, stores `sentence_boundaries` as char offsets. Parallel class to `SentenceDataset` (renamed from current `SparDataset`); existing tests unaffected.
+
+2. **`collate_fn` update** — carry `sentence_boundaries` through batching.
+
+3. **`run_tagger.py`** — add `--data-format {sentence,passage}` flag; default stays `sentence` to preserve current behaviour.
+
+4. **`SparPredictor.predict_sentences()`** (`spar_api_utils.py`) — add `window_size` parameter (default 1 = current behaviour). When `window_size > 1`: assemble passage windows with stride 1, run inference, reconcile overlapping predictions by character-span majority vote, return per-sentence span dicts. The HTTP API contract is unchanged.
+
+#### Phase 4 — Training and comparison
+
+- Train on gold passages alone (Phase 1 data) to establish the passage-level baseline.
+- Add silver data incrementally; monitor val F1 to find the useful silver data volume.
+- Compare against the current sentence-level 78–79 F1 baseline.
+- **BERT unfreezing note**: once passage-level training is stable and data volume > 3,000 passages, run an experiment unfreezing the top 2 BERT layers (layers 10–11). Expect +1–2 F1 but requires a GPU and careful LR scaling (BERT layers at ~10× lower LR than the task head).
+
+### Files To Create
+
+| File | Purpose |
+|------|---------|
+| `data/build_passage_data.py` | Phase 1: BRAT → JSONL gold passages |
+| `data/build_silver_corpus.py` | Phase 2: offline silver-label pipeline for any text corpus |
+| `data/passages/` | Output directory for JSONL passage files |
+
+### Files To Modify
+
+| File | Change |
+|------|--------|
+| `spar_lib/readers/tagging_reader.py` | Add `PassageDataset`; rename `SparDataset` → `SentenceDataset`; update `collate_fn` |
+| `run_tagger.py` | Add `--data-format` flag |
+| `spar_api_utils.py` | Add `window_size` + overlapping prediction reconciliation to `SparPredictor` |
+
+### What Does NOT Change
+
+- Tagging scheme (BH/IH/BD/ID + PD-pad) — spans remain within-sentence
+- Model architecture (`span_tagger.py`) — zero changes
+- CRF constraints (`DiscontiguousTest`) — unchanged
+- HTTP API contract (`spar_api.py`) — unchanged
+- Existing 120/40/40 BRAT split — kept as sentence-level baseline
